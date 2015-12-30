@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd 
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <import resource="../mybatis/datasource.xml"/>
+    <!--<import resource="../coa-cmns.xml" />-->
+
+    <context:component-scan base-package="com.solland.paidao">
+        <context:exclude-filter type="annotation"
+                                expression="org.springframework.stereotype.Controller" />
+    </context:component-scan>
+
+    <!--
+    <bean name="autoLoginFilter" class="com.yunpc.dm.web.support.filter.AutoLoginFilter">
+        <property name="needLoginUrls">
+            <list>
+                <value>/index</value>
+                <value>/dm</value>
+                <value>/job</value>
+                <value>/org</value>
+                <value>/staff</value>
+                <value>/capability</value>
+                <value>/res</value>
+                <value>/role</value>
+                <value>/mutual</value>
+                <value>/admin</value>
+                <value>/wallpaper</value>
+                <value>/saver</value>
+                <value>/</value>
+            </list>
+        </property>
+        <property name="indexUrls">
+            <list>
+                <value>/dm</value>
+                <value>/job</value>
+                <value>/org</value>
+                <value>/mutual</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="ticketService" class="com.taobao.hsf.app.spring.util.HSFSpringConsumerBean"
+          init-method="init">
+        <property name="interfaceName" value="com.alibaba.havana.sso.api.ticket.TicketService" />
+        <property name="version" value="1.0.0" />
+    </bean>-->
+
+    <bean id="systemServer" class="com.solland.paidao.service.SystemService"
+          init-method="startServerInit">
+    </bean>
+
+
+</beans>

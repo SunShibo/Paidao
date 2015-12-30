@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+         http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <!--   开发数据源-->
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+          destroy-method="close">
+        <property name="driverClassName">
+            <value>com.mysql.jdbc.Driver</value>
+        </property>
+        <property name="url">
+            <value><![CDATA[jdbc:mysql://127.0.0.1:3306/wyvs-working-platform?useUnicode=true&characterEncoding=utf8]]></value>
+        </property>
+        <property name="username">
+            <value>root</value>
+        </property>
+        <property name="password">
+            <!--<value>admin</value>-->
+            <value>123456</value>
+        </property>
+        <property name="initialSize" value="1" />
+        <property name="maxActive" value="30" />
+        <property name="maxWait" value="60000" />
+        <property name="minIdle" value="8" />
+        <property name="maxIdle" value="23" />
+        <property name="removeAbandoned" value="true" />
+        <property name="removeAbandonedTimeout" value="300" />
+        <property name="minEvictableIdleTimeMillis" value="1800000" />
+        <property name="testOnBorrow" value="false" />
+        <property name="testOnReturn" value="false" />
+        <property name="testWhileIdle" value="true" />
+        <property name="timeBetweenEvictionRunsMillis" value="300000" />
+        <property name="numTestsPerEvictionRun" value="23"/>
+        <property name="validationQuery" value="select 1 from dual"/>
+    </bean>
+
+    <!--<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">-->
+        <!--<property name="dataSource" ref="dataSource" />-->
+        <!--<property name="mapperLocations"-->
+                  <!--value="classpath:mapper/*Mapper.xml" />-->
+        <!--<property name="typeAliasesPackage" value="com.wyvs.wp.entity" />-->
+    <!--</bean>-->
+
+    <bean id="sqlSessionFactory" class="com.solland.paidao.support.WrapAndChangeConfigureSqlSessionFactory">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="typeHandlers">
+            <bean class="com.solland.paidao.support.typehandler.IntEnumTypeHandlersFactoryBean"
+                  p:basePackage="com.solland.paidao.entity"/>
+        </property>
+        <property name="mapperLocations" value="classpath:mapper/*Mapper.xml"/>
+        <property name="typeAliasesPackage" value="com.solland.paidao.entity" />
+    </bean>
+
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer"
+          p:basePackage="com.solland.paidao.dao"
+          p:sqlSessionFactoryBeanName="sqlSessionFactory"/>
+
+
+</beans>
