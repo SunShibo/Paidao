@@ -4,10 +4,8 @@
 
 <mapper namespace="com.solland.paidao.dao.TestDAO">
 
-    <select id="getCount" resultType="int"
-            parameterType="String">
-
-      select count(id) from pms_member_info
+    <select id="getCount" resultType="int" parameterType="String">
+        select count(id) from test_table
     </select>
 
 

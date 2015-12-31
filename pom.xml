@@ -123,11 +123,11 @@
       <artifactId>druid</artifactId>
       <version>0.2.6</version>
     </dependency>
-    <dependency>
-      <groupId>mysql</groupId>
-      <artifactId>mysql-connector-java</artifactId>
-      <version>5.1.22</version>
-    </dependency>
+    <!--<dependency>-->
+      <!--<groupId>mysql</groupId>-->
+      <!--<artifactId>mysql-connector-java</artifactId>-->
+      <!--<version>5.1.22</version>-->
+    <!--</dependency>-->
     <dependency>
       <groupId>org.mybatis</groupId>
       <artifactId>mybatis-spring</artifactId>
@@ -214,7 +214,6 @@
     </dependency>
 
     <!-- taobao -->
-
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
       <artifactId>httpclient</artifactId>
@@ -235,17 +234,12 @@
       <scope>test</scope>
     </dependency>
 
-    <!--<dependency>-->
-    <!--<groupId>javax.servlet</groupId>-->
-    <!--<artifactId>javax.servlet-api</artifactId>-->
-    <!--<version>3.1-b09</version>-->
-    <!--</dependency>-->
-
-    <!--<dependency>-->
-    <!--<groupId>com.danga</groupId>-->
-    <!--<artifactId>java-memcached</artifactId>-->
-    <!--<version>2.6.6</version>-->
-    <!--</dependency>-->
+    <!--postgresql-->
+    <dependency>
+      <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <version>9.3-1102-jdbc41</version>
+    </dependency>
 
     <!-- velocity -->
     <dependency>

@@ -24,7 +24,12 @@ public class TestController extends BaseCotroller {
     public void initTestPage(HttpServletRequest request
 			, HttpServletResponse response ){
 
-		int a = testService.getCount() ;
+		int a = 0;
+		try {
+			a = testService.getCount();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		safeJsonPrint(response, "a==>" + a) ;
 	}
 
