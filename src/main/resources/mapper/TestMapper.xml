@@ -5,7 +5,7 @@
 <mapper namespace="com.solland.paidao.dao.TestDAO">
 
     <select id="getCount" resultType="int" parameterType="String">
-        select count(id) from test_table
+        select count(id) from test
     </select>
 
 
