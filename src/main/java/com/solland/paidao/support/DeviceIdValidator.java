@@ -1,8 +1,8 @@
 package com.solland.paidao.support;
 
+import com.solland.paidao.common.constants.SysConstants;
 import org.apache.commons.lang.StringUtils;
 
-import com.solland.paidao.constants.SysConstants;
 
 /**
  * 设备唯一标识码较验器
