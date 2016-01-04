@@ -1,6 +1,7 @@
 package com.solland.paidao.web.controller.base;
 
 import com.google.common.collect.Lists;
+import com.solland.paidao.util.RedisUtil;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.FileUploadException;
@@ -177,18 +178,18 @@ public class BaseCotroller {
     }
 
     /**session赋值*/
-    public void putSession (HttpServletRequest request,String key , Object value) {
-        request.getSession().setAttribute(key , value);
+    public void putSession (String key , Object value) {
+        RedisUtil.set(value , key) ;
     }
 
     /**获取session*/
-    public Object getSession (HttpServletRequest request,String key) {
-        return request.getSession().getAttribute(key);
+    public Object getSession (String key) {
+        return RedisUtil.get(key) ;
     }
 
 
     /**移除session*/
-    public void removeSession (HttpServletRequest request,String key) {
-        request.getSession().removeAttribute(key);
+    public void removeSession (String key) {
+        RedisUtil.del(key) ;
     }
 }
