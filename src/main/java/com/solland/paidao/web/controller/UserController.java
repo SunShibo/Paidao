@@ -11,7 +11,7 @@ import com.solland.paidao.web.controller.base.BaseCotroller;
 
 /**
  * @author Shibo Sun
- * 登录controller
+ * 用户controller
  */
 @Controller
 @RequestMapping("/user")
