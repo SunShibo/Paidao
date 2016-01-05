@@ -37,7 +37,7 @@ public class TestController extends BaseCotroller {
 
 	@RequestMapping( value = "/insert/{name}")
 	public void insert(HttpServletRequest request
-			, HttpServletResponse response ,@PathVariable("name") String name ){
+			, HttpServletResponse response ,String name ){
 
 		TestDO testDO = new TestDO() ;
 		testDO.setName(name);
