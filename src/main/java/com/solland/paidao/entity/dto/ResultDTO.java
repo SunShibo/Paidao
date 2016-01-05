@@ -6,6 +6,7 @@ import java.io.Serializable;
  * @author Shibo Sun
  * 2016/1/4.
  */
+@SuppressWarnings("serial")
 public class ResultDTO<T> implements Serializable {
     public static final String ERRCODE_NONE = "0";
     public static final String ERRCODE_CONSTRAINT_VIOLATION = "-1";
