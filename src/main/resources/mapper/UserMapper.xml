@@ -8,10 +8,15 @@
         select count(id) from test
     </select>
 
-    <insert id="insert" parameterType="com.solland.paidao.entity.UserDO" useGeneratedKeys="true" keyProperty="id">
+	<!-- 注册 -->
+    <insert id="register" parameterType="com.solland.paidao.entity.UserDO" useGeneratedKeys="true" keyProperty="id">
         <![CDATA[
            INSERT INTO pd_user_profile( username, password ) VALUES( #{username}, #{password} )
         ]]>
     </insert>
+    
+    <select id="login" parameterType="com.solland.paidao.entity.UserDO" resultType="String">
+    	SELECT password FROM pd_user_profile WHERE username = #{username}
+    </select>
 
 </mapper>

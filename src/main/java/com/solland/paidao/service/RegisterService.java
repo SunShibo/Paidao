@@ -9,5 +9,5 @@ import com.solland.paidao.entity.UserDO;
  * 2016年1月5日 下午6:02:33
  */
 public interface RegisterService {
-	public int insert (UserDO userDO);
+	public int register (UserDO userDO);
 }

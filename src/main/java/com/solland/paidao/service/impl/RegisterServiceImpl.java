@@ -22,8 +22,8 @@ public class RegisterServiceImpl implements RegisterService {
     private UserDAO userDAO;
 
 	@Override
-	public int insert(UserDO userDO) {
-		return userDAO.insert(userDO);
+	public int register(UserDO userDO) {
+		return userDAO.register(userDO);
 	}
 
 }

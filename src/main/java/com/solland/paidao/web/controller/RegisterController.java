@@ -1,7 +1,6 @@
 package com.solland.paidao.web.controller;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
@@ -56,27 +55,6 @@ public class RegisterController extends BaseCotroller {
     		return;
     	}
 
-    	registerService.insert(userDO);		// 执行【注册】
+    	registerService.register(userDO);		// 执行【注册】
 	}
-
-	/**
-	 * 检查登录状态（长登录）
-	 * @param request
-	 * @param response
-	 * @param loginId
-	 * @param uniqueCode
-	 */
-	@RequestMapping( value = "/queryLoginStatus")
-	public void queryLoginStatus (HttpServletRequest request, HttpServletResponse response ,String loginId  ,String uniqueCode ){
-
-		// 验证参数是否合法
-		if ( StringUtils.isEmpty(loginId) || StringUtils.isEmpty(uniqueCode)) {
-			String json = JsonUtils.getJsonString4JavaPOJO(new ResultDTO(false ,"" ,"参数不能为空!")) ;
-			super.safeJsonPrint(response , json);
-		}
-
-	}
-
-
-
 }
