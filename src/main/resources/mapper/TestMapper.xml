@@ -8,5 +8,10 @@
         select count(id) from test
     </select>
 
+    <insert id="insert" parameterType="com.solland.paidao.entity.TestDO" useGeneratedKeys="true" keyProperty="id">
+        <![CDATA[
+           INSERT INTO test( name ) VALUES( #{name} )
+        ]]>
+    </insert>
 
 </mapper>
