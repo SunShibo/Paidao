@@ -30,6 +30,7 @@ public class UserServiceImpl implements UserService {
 	 */
 	@Override
 	public boolean isExists(String username) {
+		// FIXME 这里通过手机号查找，注册的时候是用手机号注册的
 		int count = userDAO.selectCountByUsername(username);
 		
 		if(0 < count){

@@ -46,6 +46,7 @@ public class LoginServiceImpl implements LoginService {
 	
 	@Override
 	public boolean isLogin(String loginId) {
+		// FIXME zhaojiafu 这不可能获取的到用户，咱们已经没有session了 需要通过loginId获取，登录用户信息作为参数传进service
 		LoginParam loginParam_server = (LoginParam) RedisUtil.get(Constants.CURRENT_LOGINED_USER) ;
 		
 		if(loginId.equals(loginParam_server.getLoginId())){

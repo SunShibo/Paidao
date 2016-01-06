@@ -62,6 +62,7 @@ public class LoginController extends BaseCotroller {
     		return;
     	}
 
+		// FIXME zhaojiafu 这里需要返回用户信息（包括头像路径，用户名等等）
 		boolean bool = loginService.login(loginParam);
 		
 		
@@ -93,6 +94,7 @@ public class LoginController extends BaseCotroller {
 		}
 		
 		if(loginService.isLogin(loginId)){
+			// FIXME zhaojiafu 这里需要返回用户信息（包括头像路径，用户名等等）
 			String json = JsonUtils.getJsonString4JavaPOJO(new ResultDTO(true, "1", "已登录!")) ;
 			super.safeJsonPrint(response , json);
 			
