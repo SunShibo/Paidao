@@ -4,6 +4,13 @@ package com.solland.paidao.dao;
 import com.solland.paidao.entity.UserDO;
 
 public interface UserDAO {
+    /**
+     * getCount
+     * @author zhaojiafu
+     * @param test
+     * @return
+     */
+    // FIXME zhaojiafu 使用文档注释，标注时间，作者，参数，返回结果
     int getCount(String test);
 
     // 注册
