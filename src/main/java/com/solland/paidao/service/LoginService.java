@@ -1,6 +1,6 @@
 package com.solland.paidao.service;
 
-import com.solland.paidao.entity.UserDO;
+import com.solland.paidao.entity.bo.UserBO;
 import com.solland.paidao.entity.dto.param.LoginParam;
 
 /**
@@ -15,11 +15,11 @@ public interface LoginService {
 	 * @param loginParam
 	 * @return
 	 */
-	public UserDO login (LoginParam loginParam);
+	public UserBO login (LoginParam loginParam);
 	
 	/**
 	 * 是否已登录
-	 * @param loginParam
+	 * @param loginId
 	 * @return
 	 */
 	public boolean isLogin (String loginId);

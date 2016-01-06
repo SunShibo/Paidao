@@ -2,6 +2,8 @@ package com.solland.paidao.service.impl;
 
 import javax.annotation.Resource;
 
+import com.solland.paidao.entity.bo.UserBO;
+import com.solland.paidao.util.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -10,7 +12,6 @@ import com.solland.paidao.entity.UserDO;
 import com.solland.paidao.entity.dto.param.LoginParam;
 import com.solland.paidao.service.LoginService;
 import com.solland.paidao.util.RedisUtil;
-import com.solland.paidao.util.StringUtils;
 
 /**
  * 登录
@@ -24,21 +25,13 @@ public class LoginServiceImpl implements LoginService {
 	@Resource
     private UserDAO userDAO;
 
-	@Override
-	public UserDO login(LoginParam loginParam) {
-		UserDO userDO = userDAO.login(loginParam.getAccount());
-		
-		if(null == userDO || org.apache.commons.lang.StringUtils.isEmpty(userDO.getPassword()) || !loginParam.getPassword().equals(userDO.getPassword())){
-			return null;
-		}
-		
-		String loginId = StringUtils.UUIDGenerator();
-		
-		userDO.setLoginId(loginId);
-		
-		RedisUtil.set(userDO , loginId) ;
-		
-		return userDO;
+	/**
+	 * 登录，通过用户名和密码
+	 * @param loginParam
+	 * @return 返回用户记录
+	 */
+	public UserBO login(LoginParam loginParam) {
+		return userDAO.login(loginParam.getAccount() , loginParam.getPassword());
 	}
 	
 	@Override

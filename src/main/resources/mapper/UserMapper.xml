@@ -16,8 +16,16 @@
     </insert>
     
     <!-- 根据【用户名】查询【用户】 -->
-    <select id="login" parameterType="String" resultType="com.solland.paidao.entity.UserDO">
-    	SELECT * FROM pd_user_profile WHERE username = #{username}
+    <select id="login" resultType="com.solland.paidao.entity.bo.UserBO">
+    	SELECT
+            id ,nickname ,gender ,username ,password ,birthday ,location ,
+            head_portrait ,phone_number ,email ,wechat ,sina_weibo ,
+            create_time ,modify_time ,twiter ,facebook ,linkedin ,status
+        FROM
+            pd_user_profile
+        WHERE
+            ( username = #{account} or email = #{account} or phone_number = #{account} )
+            AND password = #{password}
     </select>
     
     <!-- 根据【用户名】查询【用户数】 -->
