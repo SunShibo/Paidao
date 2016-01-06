@@ -25,24 +25,20 @@ public class LoginServiceImpl implements LoginService {
     private UserDAO userDAO;
 
 	@Override
-	public boolean login(LoginParam loginParam) {
-		UserDO userDO = new UserDO();
-		userDO.setUsername(loginParam.getAccount());
-		userDO.setPassword(loginParam.getPassword());
+	public UserDO login(LoginParam loginParam) {
+		UserDO userDO = userDAO.login(loginParam.getAccount());
 		
-		String password = userDAO.login(userDO);
-		
-		if(loginParam.getPassword().equals(password)){
-			String loginId = StringUtils.UUIDGenerator();
-			
-	        loginParam.setLoginId(loginId);
-	        
-	        RedisUtil.set(loginParam , loginId) ;
-	        
-			return true;
-		} else {
-			return false;
+		if(null == userDO || org.apache.commons.lang.StringUtils.isEmpty(userDO.getPassword()) || !loginParam.getPassword().equals(userDO.getPassword())){
+			return null;
 		}
+		
+		String loginId = StringUtils.UUIDGenerator();
+		
+		userDO.setLoginId(loginId);
+		
+		RedisUtil.set(userDO , loginId) ;
+		
+		return userDO;
 	}
 	
 	@Override

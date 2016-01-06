@@ -30,6 +30,13 @@ public class ResultDTO<T> implements Serializable {
         this.errMsg = errMsg ;
     }
 
+    public ResultDTO (T data, boolean success, String errCode, String errMsg) {
+    	this.data = data ;
+    	this.success = success ;
+    	this.errCode = errCode ;
+    	this.errMsg = errMsg ;
+    }
+
     public boolean isSuccess() {
         return this.success;
     }

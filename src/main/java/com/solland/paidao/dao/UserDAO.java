@@ -17,7 +17,7 @@ public interface UserDAO {
     int register(UserDO userDO) ;
     
     // 查询【密码】--登陆
-    String login(UserDO userDO) ;	
+    UserDO login(String username) ;	
     
     // 根据【用户名】查询【用户】的数量
     int selectCountByUsername(String username);

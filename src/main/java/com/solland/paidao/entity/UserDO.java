@@ -45,6 +45,7 @@ public class UserDO implements Serializable {
 	
 	private String imei;		// 移动设备国际识别码
 	private String deviceType;		// 设备类型：browser-电脑；android-安卓；iOS-苹果
+	private String loginId;			// 唯一标识
 	private String token;			// 唯一标识
 	private String captchaCode;		// 验证码
 	private String smsCaptcha;		// 短信验证码
@@ -325,6 +326,14 @@ public class UserDO implements Serializable {
 
 	public void setDeviceType(String deviceType) {
 		this.deviceType = deviceType;
+	}
+
+	public String getLoginId() {
+		return loginId;
+	}
+
+	public void setLoginId(String loginId) {
+		this.loginId = loginId;
 	}
 
 	public String getToken() {

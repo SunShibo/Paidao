@@ -8,6 +8,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.solland.paidao.entity.UserDO;
 import com.solland.paidao.entity.dto.ResultDTO;
 import com.solland.paidao.entity.dto.param.LoginParam;
 import com.solland.paidao.service.UserService;
@@ -62,14 +63,12 @@ public class LoginController extends BaseCotroller {
     		return;
     	}
 
-		// FIXME zhaojiafu 这里需要返回用户信息（包括头像路径，用户名等等）
-		boolean bool = loginService.login(loginParam);
+		UserDO userDO = loginService.login(loginParam);
 		
-		
-		if(bool){
-			json = JsonUtils.getJsonString4JavaPOJO(new ResultDTO(true , "1", "登录成功")) ;
+		if(null == userDO){
+			json = JsonUtils.getJsonString4JavaPOJO(new ResultDTO(false , "0", "您的 账号 或密码输入有误")) ;
 		} else {
-			json = JsonUtils.getJsonString4JavaPOJO(new ResultDTO(false , "0", "登录失败")) ;
+			json = JsonUtils.getJsonString4JavaPOJO(new ResultDTO(userDO, true , "1", "登录成功。")) ;
 		}
 		
 		super.safeJsonPrint(response , json);
