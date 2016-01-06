@@ -34,7 +34,7 @@ public class LoginServiceImpl implements LoginService {
 		String password = userDAO.login(userDO);
 		
 		if(loginParam.getPassword().equals(password)){
-	        loginParam.setUniqueCode(StringUtils.UUIDGenerator());
+	        loginParam.setLoginId(StringUtils.UUIDGenerator());
 	        
 	        RedisUtil.set(loginParam , Constants.CURRENT_LOGINED_USER) ;
 	        
@@ -43,5 +43,15 @@ public class LoginServiceImpl implements LoginService {
 			return false;
 		}
 	}
-
+	
+	@Override
+	public boolean isLogin(String loginId) {
+		LoginParam loginParam_server = (LoginParam) RedisUtil.get(Constants.CURRENT_LOGINED_USER) ;
+		
+		if(loginId.equals(loginParam_server.getLoginId())){
+			return true;
+		} else {
+			return false;
+		}
+	}
 }

@@ -15,8 +15,14 @@
         ]]>
     </insert>
     
+    <!-- 根据【用户名】查询【密码】 -->
     <select id="login" parameterType="com.solland.paidao.entity.UserDO" resultType="String">
     	SELECT password FROM pd_user_profile WHERE username = #{username}
+    </select>
+    
+    <!-- 根据【用户名】查询【用户数】 -->
+    <select id="selectCountByUsername" parameterType="String" resultType="int">
+    	SELECT count(1) FROM pd_user_profile WHERE username = #{username}
     </select>
 
 </mapper>

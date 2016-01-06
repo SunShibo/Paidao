@@ -10,8 +10,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.solland.paidao.entity.dto.ResultDTO;
 import com.solland.paidao.entity.dto.param.LoginParam;
+import com.solland.paidao.service.UserService;
 import com.solland.paidao.service.impl.LoginServiceImpl;
+import com.solland.paidao.systemConfig.Constants;
 import com.solland.paidao.util.JsonUtils;
+import com.solland.paidao.util.RedisUtil;
 import com.solland.paidao.web.controller.base.BaseCotroller;
 
 /**
@@ -24,6 +27,9 @@ public class LoginController extends BaseCotroller {
 
 	@Resource(name = "loginService")
 	LoginServiceImpl loginService ;
+	
+	@Resource(name = "userService")
+	UserService userService ;
 
 	/**
 	 * 登录
@@ -49,7 +55,12 @@ public class LoginController extends BaseCotroller {
 			super.safeJsonPrint(response , json);
 			
 			return ;
-		}
+		} else if(!userService.isExists(loginParam.getAccount())){		// 判断【用户】是否存在
+    		json = JsonUtils.getJsonString4JavaPOJO(new ResultDTO(false , "0" , "用户不存在!")) ;
+    		super.safeJsonPrint(response , json);
+    		
+    		return;
+    	}
 
 		boolean bool = loginService.login(loginParam);
 		
@@ -70,15 +81,28 @@ public class LoginController extends BaseCotroller {
 	 * @param loginId
 	 * @param uniqueCode
 	 */
-	@RequestMapping( value = "/queryLoginStatus")
-	public void queryLoginStatus (HttpServletRequest request, HttpServletResponse response ,String loginId  ,String uniqueCode ){
+	@RequestMapping( value = "/common/queryLoginStatus")
+	public void queryLoginStatus (HttpServletResponse response, String loginId, String uniqueCode ){
 
 		// 验证参数是否合法
 		if ( StringUtils.isEmpty(loginId) || StringUtils.isEmpty(uniqueCode)) {
-			String json = JsonUtils.getJsonString4JavaPOJO(new ResultDTO(false ,"" ,"参数不能为空!")) ;
+			String json = JsonUtils.getJsonString4JavaPOJO(new ResultDTO(false, "0", "参数不能为空!")) ;
 			super.safeJsonPrint(response , json);
+			
+			return;
 		}
-
+		
+		if(loginService.isLogin(loginId)){
+			String json = JsonUtils.getJsonString4JavaPOJO(new ResultDTO(true, "1", "已登录!")) ;
+			super.safeJsonPrint(response , json);
+			
+			return;
+		} else {
+			String json = JsonUtils.getJsonString4JavaPOJO(new ResultDTO(false, "0", "未登录!")) ;
+			super.safeJsonPrint(response , json);
+			
+			return;
+		}
 	}
 
 

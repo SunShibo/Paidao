@@ -9,6 +9,17 @@ import com.solland.paidao.entity.dto.param.LoginParam;
  * 2016年1月5日 下午7:15:44
  */
 public interface LoginService {
-	// 登录
+	/**
+	 * 验证登录
+	 * @param loginParam
+	 * @return
+	 */
 	public boolean login (LoginParam loginParam);
+	
+	/**
+	 * 是否已登录
+	 * @param loginParam
+	 * @return
+	 */
+	public boolean isLogin (String loginId);
 }

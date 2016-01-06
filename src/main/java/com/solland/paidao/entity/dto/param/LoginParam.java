@@ -21,6 +21,11 @@ public class LoginParam extends BaseModel implements Serializable{
      * 密码
      */
     private String password ;
+    
+    /**
+     * 登录唯一标识码
+     */
+    private String loginId;	
 
     /**
      * 设备唯一码
@@ -43,7 +48,15 @@ public class LoginParam extends BaseModel implements Serializable{
         this.password = password;
     }
 
-    public String getUniqueCode() {
+    public String getLoginId() {
+		return loginId;
+	}
+
+	public void setLoginId(String loginId) {
+		this.loginId = loginId;
+	}
+
+	public String getUniqueCode() {
         return uniqueCode;
     }
 
