@@ -2,13 +2,11 @@ package com.solland.paidao.service.impl;
 
 import javax.annotation.Resource;
 
-import com.solland.paidao.entity.bo.UserBO;
-import com.solland.paidao.util.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.solland.paidao.dao.UserDAO;
-import com.solland.paidao.entity.UserDO;
+import com.solland.paidao.entity.bo.UserBO;
 import com.solland.paidao.entity.dto.param.LoginParam;
 import com.solland.paidao.service.LoginService;
 import com.solland.paidao.util.RedisUtil;
@@ -35,13 +33,7 @@ public class LoginServiceImpl implements LoginService {
 	}
 	
 	@Override
-	public boolean isLogin(String loginId) {
-		LoginParam loginParam_server = (LoginParam) RedisUtil.get(loginId) ;
-		
-		if(null == loginParam_server || null == loginParam_server.getLoginId() || !loginParam_server.getLoginId().equals(loginId)) {
-			return false;
-		} else {
-			return true;
-		}
+	public UserBO isLogin(String loginId) {
+		return (UserBO) RedisUtil.get(loginId) ;
 	}
 }

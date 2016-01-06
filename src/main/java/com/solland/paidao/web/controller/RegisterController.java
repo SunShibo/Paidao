@@ -48,7 +48,7 @@ public class RegisterController extends BaseCotroller {
     		return;
     	}
     	// 验证【账号】是否为空
-    	if(StringUtils.isEmpty(userDO.getUsername())){
+    	if(StringUtils.isEmpty(userDO.getPhoneNumber())){
     		json = JsonUtils.getJsonString4JavaPOJO(new ResultDTO(false , "0" , "账号不能为空!")) ;
     		super.safeJsonPrint(response , json);
 
@@ -62,7 +62,7 @@ public class RegisterController extends BaseCotroller {
     		return;
     	}
     	// 判断【用户】是否存在
-    	if(userService.isExists(userDO.getUsername())){
+    	if(userService.isExists(userDO.getPhoneNumber())){
     		json = JsonUtils.getJsonString4JavaPOJO(new ResultDTO(false , "0" , "用户已存在!")) ;
     		super.safeJsonPrint(response , json);
     		

@@ -11,7 +11,7 @@
 	<!-- 注册 -->
     <insert id="register" parameterType="com.solland.paidao.entity.UserDO" useGeneratedKeys="true" keyProperty="id">
         <![CDATA[
-           INSERT INTO pd_user_profile( username, password ) VALUES( #{username}, #{password} )
+           INSERT INTO pd_user_profile( phone_number, password ) VALUES( #{phoneNumber}, #{password} )
         ]]>
     </insert>
     
