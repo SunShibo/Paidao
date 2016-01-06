@@ -9,7 +9,6 @@ import com.solland.paidao.dao.UserDAO;
 import com.solland.paidao.entity.UserDO;
 import com.solland.paidao.entity.dto.param.LoginParam;
 import com.solland.paidao.service.LoginService;
-import com.solland.paidao.systemConfig.Constants;
 import com.solland.paidao.util.RedisUtil;
 import com.solland.paidao.util.StringUtils;
 
@@ -34,9 +33,11 @@ public class LoginServiceImpl implements LoginService {
 		String password = userDAO.login(userDO);
 		
 		if(loginParam.getPassword().equals(password)){
-	        loginParam.setLoginId(StringUtils.UUIDGenerator());
+			String loginId = StringUtils.UUIDGenerator();
+			
+	        loginParam.setLoginId(loginId);
 	        
-	        RedisUtil.set(loginParam , Constants.CURRENT_LOGINED_USER) ;
+	        RedisUtil.set(loginParam , loginId) ;
 	        
 			return true;
 		} else {
@@ -46,12 +47,12 @@ public class LoginServiceImpl implements LoginService {
 	
 	@Override
 	public boolean isLogin(String loginId) {
-		LoginParam loginParam_server = (LoginParam) RedisUtil.get(Constants.CURRENT_LOGINED_USER) ;
+		LoginParam loginParam_server = (LoginParam) RedisUtil.get(loginId) ;
 		
-		if(loginId.equals(loginParam_server.getLoginId())){
-			return true;
-		} else {
+		if(null == loginParam_server || null == loginParam_server.getLoginId() || !loginParam_server.getLoginId().equals(loginId)) {
 			return false;
+		} else {
+			return true;
 		}
 	}
 }
