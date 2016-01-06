@@ -9,6 +9,9 @@ import com.solland.paidao.dao.UserDAO;
 import com.solland.paidao.entity.UserDO;
 import com.solland.paidao.entity.dto.param.LoginParam;
 import com.solland.paidao.service.LoginService;
+import com.solland.paidao.systemConfig.Constants;
+import com.solland.paidao.util.RedisUtil;
+import com.solland.paidao.util.StringUtils;
 
 /**
  * 登录
@@ -31,6 +34,10 @@ public class LoginServiceImpl implements LoginService {
 		String password = userDAO.login(userDO);
 		
 		if(loginParam.getPassword().equals(password)){
+	        loginParam.setUniqueCode(StringUtils.UUIDGenerator());
+	        
+	        RedisUtil.set(loginParam , Constants.CURRENT_LOGINED_USER) ;
+	        
 			return true;
 		} else {
 			return false;

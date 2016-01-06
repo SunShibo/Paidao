@@ -9,6 +9,9 @@ public class Constants {
      * 登陆用户
      */
     public static final String LOGIN_MEMBER = "login_member" ;
+    
+    // 当前登录中的用户
+    public static final String CURRENT_LOGINED_USER = "current_logined_user" ;
 
     /**
      * 登陆用户的角色与权限列表

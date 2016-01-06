@@ -3560,6 +3560,20 @@ public class StringUtils {
     	return newstrs;
     }
     
+    
+    /**
+	 * UUID 生成器 
+	 * @return uuid
+	 * @date 2014-09-15
+	 * @author zhaojiafu
+	 */
+	public static String UUIDGenerator() {
+		UUID uuid = UUID.randomUUID();
+		String target = uuid.toString().replace("-", "");
+		
+		return target;
+	}
+    
 	
 	// Test only.
 	public static void main(String[] args) throws Exception {

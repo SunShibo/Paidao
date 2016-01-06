@@ -32,29 +32,33 @@ public class RegisterController extends BaseCotroller {
 	 */
     @RequestMapping( value = "/common/register")
     public void register(HttpServletResponse response, UserDO userDO){
+    	String json = null;
 
 		// 验证参数是否合法
     	if(null == userDO){
-    		String json = JsonUtils.getJsonString4JavaPOJO(new ResultDTO(false , "0" , "参数不能为空!")) ;
+    		json = JsonUtils.getJsonString4JavaPOJO(new ResultDTO(false , "0" , "参数不能为空!")) ;
     		super.safeJsonPrint(response , json);
 
     		return;
     	}
     	// 验证【账号】是否为空
     	if(StringUtils.isEmpty(userDO.getUsername())){
-    		String json = JsonUtils.getJsonString4JavaPOJO(new ResultDTO(false , "0" , "账号不能为空!")) ;
+    		json = JsonUtils.getJsonString4JavaPOJO(new ResultDTO(false , "0" , "账号不能为空!")) ;
     		super.safeJsonPrint(response , json);
 
     		return;
     	}
     	// 验证【密码】是否为空
     	if(StringUtils.isEmpty(userDO.getPassword())){
-    		String json = JsonUtils.getJsonString4JavaPOJO(new ResultDTO(false , "0" , "密码不能为空!")) ;
+    		json = JsonUtils.getJsonString4JavaPOJO(new ResultDTO(false , "0" , "密码不能为空!")) ;
     		super.safeJsonPrint(response , json);
     		
     		return;
     	}
 
     	registerService.register(userDO);		// 执行【注册】
+
+    	json = JsonUtils.getJsonString4JavaPOJO(new ResultDTO(true , "1" , "注册成功。")) ;
+    	super.safeJsonPrint(response , json);
 	}
 }
