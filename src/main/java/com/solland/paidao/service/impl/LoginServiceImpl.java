@@ -9,7 +9,6 @@ import com.solland.paidao.dao.UserDAO;
 import com.solland.paidao.entity.bo.UserBO;
 import com.solland.paidao.entity.dto.param.LoginParam;
 import com.solland.paidao.service.LoginService;
-import com.solland.paidao.util.RedisUtil;
 
 /**
  * 登录
@@ -32,8 +31,8 @@ public class LoginServiceImpl implements LoginService {
 		return userDAO.login(loginParam.getAccount() , loginParam.getPassword());
 	}
 	
-	@Override
+	/*@Override
 	public UserBO isLogin(String loginId) {
 		return (UserBO) RedisUtil.get(loginId) ;
-	}
+	}*/
 }

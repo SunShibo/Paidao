@@ -22,5 +22,5 @@ public interface LoginService {
 	 * @param loginId
 	 * @return
 	 */
-	public UserBO isLogin (String loginId);
+//	public UserBO isLogin (String loginId);
 }
