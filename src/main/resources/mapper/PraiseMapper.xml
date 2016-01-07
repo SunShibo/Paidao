@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.solland.paidao.dao.PraiseDAO">
+
+	<!-- 添加【赞】 -->
+    <insert id="insert" parameterType="com.solland.paidao.entity.PraiseDO" useGeneratedKeys="true" keyProperty="id">
+        <![CDATA[
+        ]]>
+           INSERT INTO 
+           		pd_praise_link(
+           			create_time
+           			<if test="0 &lt; bePraiseUserId">, be_praise_user_id </if>
+           			<if test="0 &lt; doPraiseUserId">, do_praise_user_id </if>
+           		) 
+           VALUES(
+           		CURRENT_TIMESTAMP
+           		<if test="0 &lt; bePraiseUserId">, #{bePraiseUserId} </if>
+           		<if test="0 &lt; doPraiseUserId">, #{doPraiseUserId} </if>
+           )
+    </insert>
+    
+</mapper>
