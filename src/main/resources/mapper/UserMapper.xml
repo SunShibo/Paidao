@@ -32,10 +32,36 @@
     <select id="selectCountByUsername" parameterType="String" resultType="int">
     	SELECT count(1) FROM pd_user_profile WHERE username = #{username}
     </select>
+
+    <!-- 根据【手机号】查询【用户数】 -->
+    <select id="selectCountByMobileCode" parameterType="String" resultType="int">
+    	SELECT count(1) FROM pd_user_profile WHERE phone_number = #{phoneNumber}
+    </select>
     
     <!-- 根据【手机号】更新【密码】 -->
     <update id="updatePasswordByMobileCode" parameterType="com.solland.paidao.entity.UserDO">
     	UPDATE pd_user_profile SET password = #{password} WHERE phone_number = #{phoneNumber}
+    </update>
+    
+    <!-- 更加【手机号】更新【用户】信息 -->
+    <update id="updateUserByMobileCode" parameterType="com.solland.paidao.entity.UserDO">
+    	UPDATE 
+    		pd_user_profile
+    	SET
+    		modify_time = CURRENT_TIMESTAMP
+    		<if test="null != username and '' != username">, username = #{username} </if>
+    		<if test="null != name and '' != name">, name = #{name} </if>
+    		<if test="null != nickname and '' != nickname">, nickname = #{nickname} </if>
+    		<if test="null != gender and '' != gender">, gender = #{gender} </if>
+    		<if test="null != email and '' != email">, email = #{email} </if>
+    		<if test="null != wechat and '' != wechat">, wechat = #{wechat} </if>
+    		<if test="null != sinaWeibo and '' != sinaWeibo">, sina_weibo = #{sinaWeibo} </if>
+    		<if test="null != twiter and '' != twiter">, twiter = #{twiter} </if>
+    		<if test="null != facebook and '' != facebook">, facebook = #{facebook} </if>
+    		<if test="null != linkedin and '' != linkedin">, linkedin = #{linkedin} </if>
+    		<if test="null != headPortrait and '' != headPortrait">, headPortrait = #{headPortrait} </if>
+    	WHERE
+    		phone_number = #{phoneNumber}
     </update>
 
 </mapper>

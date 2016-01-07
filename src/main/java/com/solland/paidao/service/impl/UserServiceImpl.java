@@ -25,12 +25,8 @@ public class UserServiceImpl implements UserService {
 		return 0;
 	}
 
-	/**
-	 * 验证【用户】是否已存在
-	 */
 	@Override
-	public boolean isExists(String username) {
-		// FIXME 这里通过手机号查找，注册的时候是用手机号注册的
+	public boolean isExistsByUsername(String username) {
 		int count = userDAO.selectCountByUsername(username);
 		
 		if(0 < count){
@@ -38,5 +34,21 @@ public class UserServiceImpl implements UserService {
 		} else {
 			return false;
 		}
+	}
+
+	@Override
+	public boolean isExistsByMobileCode(String mobileCode) {
+		int count = userDAO.selectCountByMobileCode(mobileCode);
+		
+		if(0 == count){
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
+	@Override
+	public void updateUserByMobileCode(UserDO userDO) {
+		userDAO.updateUserByMobileCode(userDO);
 	}
 }

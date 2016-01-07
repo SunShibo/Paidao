@@ -40,12 +40,29 @@ public interface UserDAO {
      * @return 用户数
      */
     int selectCountByUsername(String username);
+    
+    /**
+     * 根据【手机号】查询【用户数】
+     * 2016年1月7日 下午3:17:09
+     * @author zhaojiafu
+     * @param mobileCode
+     * @return 【用户数】
+     */
+    int selectCountByMobileCode(String mobileCode);
 
     /**
      * 根据【手机号】更新【密码】
-     * 2016年1月7日 下午12:33:17
+     * 2016年1月7日 下午2:58:47
      * @author zhaojiafu
-     * @param mobileCode
+     * @param userDO
      */
     void updatePasswordByMobileCode(UserDO userDO);
+    
+    /**
+     * 根据【手机号】更新【用户】信息
+     * 2016年1月7日 下午2:58:23
+     * @author zhaojiafu
+     * @param userDO
+     */
+    void updateUserByMobileCode(UserDO userDO);
 }

@@ -12,7 +12,6 @@ import com.solland.paidao.entity.UserDO;
 import com.solland.paidao.entity.dto.ResultDTO;
 import com.solland.paidao.service.UserService;
 import com.solland.paidao.service.impl.RegisterServiceImpl;
-import com.solland.paidao.service.impl.UserServiceImpl;
 import com.solland.paidao.util.JsonUtils;
 import com.solland.paidao.web.controller.base.BaseCotroller;
 
@@ -61,9 +60,9 @@ public class RegisterController extends BaseCotroller {
     		
     		return;
     	}
-    	// 判断【用户】是否存在
-    	if(userService.isExists(userDO.getPhoneNumber())){
-    		json = JsonUtils.getJsonString4JavaPOJO(new ResultDTO(false , "0" , "用户已存在!")) ;
+    	// 判断【手机号】是否存在
+    	if(userService.isExistsByMobileCode(userDO.getPhoneNumber())){
+    		json = JsonUtils.getJsonString4JavaPOJO(new ResultDTO(false , "0" , "手机号已存在!")) ;
     		super.safeJsonPrint(response , json);
     		
     		return;
