@@ -32,5 +32,10 @@
     <select id="selectCountByUsername" parameterType="String" resultType="int">
     	SELECT count(1) FROM pd_user_profile WHERE username = #{username}
     </select>
+    
+    <!-- 根据【手机号】更新【密码】 -->
+    <update id="updatePasswordByMobileCode" parameterType="com.solland.paidao.entity.UserDO">
+    	UPDATE pd_user_profile SET password = #{password} WHERE phone_number = #{phoneNumber}
+    </update>
 
 </mapper>

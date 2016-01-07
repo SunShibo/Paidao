@@ -3484,7 +3484,7 @@ public class StringUtils {
 	}
 
 	// =====================判断密码是否正确格式
-	public boolean checkPassword(String pwd) {
+	public static boolean checkPassword(String pwd) {
 		Pattern pattern = Pattern.compile("^[a-zA-Z0-9_]{6,20}$");
 		Matcher matcher = pattern.matcher(pwd);
 		if (matcher.matches()) {
