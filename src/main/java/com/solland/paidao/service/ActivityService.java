@@ -1,5 +1,7 @@
 package com.solland.paidao.service;
 
+import java.util.List;
+
 import com.solland.paidao.entity.ActivityDO;
 
 /**
@@ -31,7 +33,7 @@ public interface ActivityService {
 	 * @author zhaojiafu
 	 * @param activityDO
 	 */
-	ActivityDO selectActivityById(ActivityDO activityDO);
+	ActivityDO selectActivityById(int id);
 
 	/**
 	 * 更加【ID】删除【活动圈】
@@ -57,5 +59,5 @@ public interface ActivityService {
 	 * @param activityDO
 	 * @return
 	 */
-	ActivityDO selectActivityList(ActivityDO activityDO);
+	List<ActivityDO> selectActivityList(ActivityDO activityDO);
 }

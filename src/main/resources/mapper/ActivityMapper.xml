@@ -5,6 +5,16 @@
 <!-- 【活动圈】 -->
 <mapper namespace="com.solland.paidao.dao.ActivityDAO">
 
+	<!-- 查询全部【活动圈】 -->
+	<sql id="selectAll">
+		SELECT * FROM pd_activity_profile
+	</sql>
+	
+	<!-- 查询【活动圈】的记录数 -->
+	<sql id="selectCount">
+		SELECT count(1) FROM pd_activity_profile
+	</sql>
+
 	<!-- 添加【活动圈】 -->
     <insert id="insertActivity" parameterType="com.solland.paidao.entity.ActivityDO" useGeneratedKeys="true" keyProperty="id">
         <![CDATA[	]]>
@@ -29,5 +39,60 @@
    			<if test="null != voicePath and '' != voicePath">, #{voicePath} </if>
         )
     </insert>
+    
+    <!-- 根据【ID】更新【活动圈】 -->
+    <update id="updateActivityById" parameterType="com.solland.paidao.entity.ActivityDO">
+    	UPDATE 
+    		pd_activity_profile
+    	SET
+    		modify_time = now() 
+    		<if test="0 &lt; issuerId">, issuer_id = #{issuerId} </if>
+   			<if test="null != tags and '' != tags">, tags = #{tags} </if>
+   			<if test="null != position and '' != position">, position = #{position} </if>
+   			<if test="null != shortMessage and '' != shortMessage">, short_message = #{shortMessage} </if>
+   			<if test="null != imagePaths and '' != imagePaths">, image_paths = #{imagePaths} </if>
+   			<if test="null != videoPaths and '' != videoPaths">, video_paths = #{videoPaths} </if>
+   			<if test="null != voicePath and '' != voicePath">, voice_path = #{voicePath} </if>
+   		WHERE
+   			id = #{id}
+    </update>
+    
+    <!-- 根据【ID】删除【活动圈】 -->
+    <delete id="deleteActivityById" parameterType="int">
+    	UPDATE 
+    		pd_activity_profile
+    	SET
+    		modify_time = now(), is_valid = 2
+    	WHERE
+   			id = #{id}
+    </delete>
+    
+    <!-- 根据【ID】查询【活动圈】 -->
+    <select id="selectActivityById" parameterType="int" resultType="com.solland.paidao.entity.ActivityDO">
+    	<include refid="selectAll" />
+    	WHERE id = #{id}
+    </select>
+    
+    <!-- 查询【活动圈】的总记录数 -->
+    <select id="selectActivityTotalCount" parameterType="com.solland.paidao.entity.ActivityDO" resultType="int">
+    	<include refid="selectCount" />
+    	<where>
+    		1 = 1
+	    	<if test="0 &lt; issuerId">AND issuer_id = #{issuerId} </if>
+   			<if test="null != position and '' != position">AND position LIKE ('%' || #{position, jdbcType=VARCHAR} || '%') </if>
+   			<if test="null != shortMessage and '' != shortMessage">AND short_message LIKE ('%' || #{shortMessage, jdbcType=VARCHAR} || '%') </if>
+    	</where>
+    </select>
+
+    <!-- 查询【活动圈】列表 -->
+    <select id="selectActivityList" parameterType="com.solland.paidao.entity.ActivityDO" resultType="com.solland.paidao.entity.ActivityDO">
+    	<include refid="selectAll" />
+    	<where>
+    		1 = 1
+	    	<if test="0 &lt; issuerId">AND issuer_id = #{issuerId} </if>
+   			<if test="null != position and '' != position">AND position LIKE ('%' || #{position, jdbcType=VARCHAR} || '%') </if>
+   			<if test="null != shortMessage and '' != shortMessage">AND short_message LIKE ('%' || #{shortMessage, jdbcType=VARCHAR} || '%') </if>
+    	</where>
+    </select>
     
 </mapper>

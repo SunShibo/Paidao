@@ -1,5 +1,7 @@
 package com.solland.paidao.service.impl;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
@@ -14,8 +16,7 @@ import com.solland.paidao.service.ActivityService;
  *
  * 2016年1月8日 下午3:10:17
  */
-//@Service( value = "activityService" )
-@Service("activityService")
+@Service( value = "activityService" )
 public class ActivityServiceImpl implements ActivityService {
 	@Resource
 	ActivityDAO activityDAO;
@@ -31,8 +32,8 @@ public class ActivityServiceImpl implements ActivityService {
 	}
 
 	@Override
-	public ActivityDO selectActivityById(ActivityDO activityDO) {
-		return activityDAO.selectActivityById(activityDO);
+	public ActivityDO selectActivityById(int id) {
+		return activityDAO.selectActivityById(id);
 	}
 
 	@Override
@@ -46,7 +47,7 @@ public class ActivityServiceImpl implements ActivityService {
 	}
 
 	@Override
-	public ActivityDO selectActivityList(ActivityDO activityDO) {
+	public List<ActivityDO> selectActivityList(ActivityDO activityDO) {
 		return activityDAO.selectActivityList(activityDO);
 	}
 
