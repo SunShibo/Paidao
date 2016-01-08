@@ -1,12 +1,15 @@
 package com.solland.paidao.entity;
 
+import java.io.Serializable;
+
 /**
  * 赞
  * @author zhaojiafu
  *
  * 2016年1月7日 下午5:28:58
  */
-public class PraiseDO {
+@SuppressWarnings("serial")
+public class PraiseDO implements Serializable {
 	private int id;		// ID
 	private int bePraiseUserId;		// 被赞的用户ID
 	private int doPraiseUserId;		// 点赞的用户ID

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 【评论】 -->
+<mapper namespace="com.solland.paidao.dao.CommentDAO">
+
+	<!-- 添加【评论】 -->
+    <insert id="insertComment" parameterType="com.solland.paidao.entity.CommentDO" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO pd_comment_profile (
+   			create_time
+   			<if test="0 &lt; activityId">, activity_id </if>
+   			<if test="0 &lt; criticId">, critic_id </if>
+   			<if test="null != content and '' != content">, content </if>
+       	) 
+        VALUES(
+        	now()
+       		<if test="0 &lt; activityId">, #{activityId} </if>
+       		<if test="0 &lt; criticId">, #{criticId} </if>
+   			<if test="null != content and '' != content">, #{content} </if>
+        )
+    </insert>
+    
+</mapper>

@@ -1,12 +1,15 @@
 package com.solland.paidao.entity;
 
+import java.io.Serializable;
+
 /**
  * 动态圈
  * @author zhaojiafu
  *
  * 2016年1月8日 下午12:46:54
  */
-public class ActivityDO {
+@SuppressWarnings("serial")
+public class ActivityDO implements Serializable {
 	private int id;		// ID
 	private int issuerId;	// 发布人ID
 	private String tags;	// 标签集
