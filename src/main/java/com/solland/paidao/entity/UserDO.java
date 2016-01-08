@@ -1,9 +1,9 @@
 package com.solland.paidao.entity;
 
-import com.solland.paidao.common.BaseModel;
-
 import java.io.Serializable;
 import java.util.Date;
+
+import com.solland.paidao.common.BaseModel;
 
 /**
  * 用户
@@ -31,6 +31,8 @@ public class UserDO extends BaseModel implements Serializable {
 	private String nickname;	// 昵称
 	private String gender;		// 性别
 	private Date birthday;	// 生日
+	private String location;	// 地址
+	private String signature;	// 签名
 	private String phoneNumber;	// 手机号
 	private String email;		// 电子邮箱
 	private String wechat;		// 微信号
@@ -101,6 +103,22 @@ public class UserDO extends BaseModel implements Serializable {
 
 	public void setBirthday(Date birthday) {
 		this.birthday = birthday;
+	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
+
+	public String getSignature() {
+		return signature;
+	}
+
+	public void setSignature(String signature) {
+		this.signature = signature;
 	}
 
 	public String getPhoneNumber() {

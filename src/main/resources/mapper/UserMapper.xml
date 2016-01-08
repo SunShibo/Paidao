@@ -53,6 +53,8 @@
     		<if test="null != name and '' != name">, name = #{name} </if>
     		<if test="null != nickname and '' != nickname">, nickname = #{nickname} </if>
     		<if test="null != gender and '' != gender">, gender = #{gender} </if>
+    		<if test="null != location and '' != location">, location = #{location} </if>
+    		<if test="null != signature and '' != signature">, signature = #{signature} </if>
     		<if test="null != email and '' != email">, email = #{email} </if>
     		<if test="null != wechat and '' != wechat">, wechat = #{wechat} </if>
     		<if test="null != sinaWeibo and '' != sinaWeibo">, sina_weibo = #{sinaWeibo} </if>

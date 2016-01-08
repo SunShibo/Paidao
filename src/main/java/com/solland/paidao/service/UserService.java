@@ -1,5 +1,7 @@
 package com.solland.paidao.service;
 
+import org.springframework.web.multipart.MultipartRequest;
+
 import com.solland.paidao.entity.UserDO;
 
 /**
@@ -36,5 +38,5 @@ public interface UserService {
 	 * @author zhaojiafu
 	 * @param userDO
 	 */
-	void updateUserByMobileCode(UserDO userDO);
+	void updateUserByMobileCode(MultipartRequest multipartRequest, UserDO userDO, String projectRootPath);
 }

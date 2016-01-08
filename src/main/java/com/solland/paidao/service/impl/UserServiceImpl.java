@@ -1,12 +1,22 @@
 package com.solland.paidao.service.impl;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.List;
+
 import javax.annotation.Resource;
 
+import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartRequest;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import com.solland.paidao.dao.UserDAO;
 import com.solland.paidao.entity.UserDO;
 import com.solland.paidao.service.UserService;
+import com.solland.paidao.util.StringUtils;
 
 /**
  * 用户
@@ -48,7 +58,46 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public void updateUserByMobileCode(UserDO userDO) {
+	public void updateUserByMobileCode(MultipartRequest multipartRequest, UserDO userDO, String projectRootPath) {
+		if (null != multipartRequest) {
+			List<MultipartFile> multipartFileList = multipartRequest.getFiles("fileToUpload");
+			
+			if(null == multipartFileList || 0 == multipartFileList.size()){
+				return;
+			}
+			
+			CommonsMultipartFile commonsMultipartFile = (CommonsMultipartFile) multipartFileList.get(0);
+
+			if (null == commonsMultipartFile || 0 == commonsMultipartFile.getSize()) {
+				return;
+			}
+
+			String headPortraitFolderAbsolutePath = projectRootPath + "upload/user/headPortrait/"; // 存储头像的绝对路径
+
+			File headPortraitFolderFile = new File(headPortraitFolderAbsolutePath);
+			if (!headPortraitFolderFile.exists()) {
+				headPortraitFolderFile.mkdir(); // 创建【头像】文件夹
+			}
+
+			String originalFileName = commonsMultipartFile.getOriginalFilename();	// 获取【源文件名】
+			String extensionName = originalFileName.substring(originalFileName.lastIndexOf(".")); // 获取【扩展名】
+			String systemHeadPortraitName = StringUtils.UUIDGenerator(); // 生成【系统头像文件】的名字
+			String systemHeadPortraitAbsolutePath = projectRootPath + "upload/user/headPortrait/"
+					+ systemHeadPortraitName + extensionName;
+			File celebrityImageFile = new File(systemHeadPortraitAbsolutePath); //
+
+			try {
+				commonsMultipartFile.transferTo(celebrityImageFile);
+				// FileUtils.copyInputStreamToFile(commonsMultipartFile.getInputStream(),
+				// celebrityImageFile);
+			} catch (IllegalStateException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+		}
+
 		userDAO.updateUserByMobileCode(userDO);
 	}
 }

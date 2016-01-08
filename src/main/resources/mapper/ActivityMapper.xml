@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 【活动圈】 -->
+<mapper namespace="com.solland.paidao.dao.ActivityDAO">
+
+	<!-- 添加【活动圈】 -->
+    <insert id="insertActivity" parameterType="com.solland.paidao.entity.ActivityDO" useGeneratedKeys="true" keyProperty="id">
+        <![CDATA[	]]>
+        INSERT INTO pd_activity_profile(
+   			create_time
+   			<if test="0 &lt; issuerId">, issuer_id </if>
+   			<if test="null != tags and '' != tags">, tags </if>
+   			<if test="null != position and '' != position">, position </if>
+   			<if test="null != shortMessage and '' != shortMessage">, short_message </if>
+   			<if test="null != imagePaths and '' != imagePaths">, image_paths </if>
+   			<if test="null != videoPaths and '' != videoPaths">, video_paths </if>
+   			<if test="null != voicePath and '' != voicePath">, voice_path </if>
+       	) 
+        VALUES(
+       		CURRENT_TIMESTAMP
+       		<if test="0 &lt; issuerId">, #{issuerId} </if>
+   			<if test="null != tags and '' != tags">, #{tags} </if>
+   			<if test="null != position and '' != position">, #{position} </if>
+   			<if test="null != shortMessage and '' != shortMessage">, #{shortMessage} </if>
+   			<if test="null != imagePaths and '' != imagePaths">, #{imagePaths} </if>
+   			<if test="null != videoPaths and '' != videoPaths">, #{videoPaths} </if>
+   			<if test="null != voicePath and '' != voicePath">, #{voicePath} </if>
+        )
+    </insert>
+    
+</mapper>

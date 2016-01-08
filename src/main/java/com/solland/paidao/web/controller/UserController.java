@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartRequest;
 
 import com.solland.paidao.entity.UserDO;
 import com.solland.paidao.entity.dto.ResultDTO;
@@ -44,7 +45,7 @@ public class UserController extends BaseCotroller {
      * @param userDO
      */
     @RequestMapping(value = "updateUserByMobileCode" )
-    public void updateUserByMobileCode(HttpServletResponse response, UserDO userDO){
+    public void updateUserByMobileCode(HttpServletRequest request, HttpServletResponse response, UserDO userDO){
     	String json = null;
     	
     	/* 1. 验证参数是否完整  */
@@ -70,8 +71,11 @@ public class UserController extends BaseCotroller {
 		FIXME 暂忽略，待 诗博 完善好配置文件后启用
 		*/
     	
+    	String projectRootPath = request.getSession().getServletContext().getRealPath("/");        // 项目目录
+    	MultipartRequest multipartRequest = null;
+    	
     	/* 3. 执行更新【用户】*/
-    	userService.updateUserByMobileCode(userDO);
+    	userService.updateUserByMobileCode(multipartRequest, userDO, projectRootPath);
     	
     	/* 4. 返回提示信息到客户端 */
     	json = JsonUtils.getJsonString4JavaPOJO(new ResultDTO("更新【用户】信息成功。")) ;
