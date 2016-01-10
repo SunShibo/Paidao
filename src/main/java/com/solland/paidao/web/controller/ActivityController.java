@@ -105,6 +105,8 @@ public class ActivityController extends BaseCotroller {
 	 * @author zhaojiafu
 	 * @param response
 	 * @param activityDO
+	 *
+	 * FIXME 这个方法有意义吗
 	 */
 	@RequestMapping( value = "/selectActivityById" )
 	public void selectActivityById(HttpServletResponse response, int id){

@@ -53,12 +53,14 @@ public class PasswordController extends BaseCotroller {
 		*/
 		
 		/* 3. 生成 4 位的验证码 */
+		// FIXME zhaojiafu 验证码只能是数字
 		String captcha = StringUtils.UUIDGenerator().substring(0, 4);
-		
+		// FIXME zhaojiafu 验证码没有被保存
+
 //		super.putSession(mobileCode, null);		// test
 		
 		/* 4. 获取当前手机号对应的验证码发送规则 */
-		@SuppressWarnings("unchecked")
+		@SuppressWarnings("unchecked")   // FIXME zhaojiafu  把所有这种东西全部去掉
 		Map<String, Object> regulationMap = (Map<String, Object>) super.getSession(mobileCode);
 		
 		int count = 0;	// 次数
@@ -103,9 +105,12 @@ public class PasswordController extends BaseCotroller {
 	 * @author zhaojiafu
 	 * @param response
 	 * @param mobileCode
+	 * FIXME zhaojiafu 为什么没有验证码
 	 */
 	@RequestMapping( value = "/password/updatePasswordByMobileCode" )
 	public void updatePasswordByMobileCode(HttpServletResponse response, String mobileCode, String password){
+
+		// TODO zhaojiafu 没有验证过验证码
 		/* 1. 验证手机号是否完整 */
 		if(StringUtils.isEmpty(mobileCode)){
 			String result = JsonUtils.getJsonString4JavaPOJO(new ResultDTO(false, "0", "手机号不可为空！")) ;
