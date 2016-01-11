@@ -3,7 +3,7 @@ package com.solland.paidao.entity;
 import java.io.Serializable;
 
 /**
- * 赞
+ * 赞 FIXME zhaojiafu 咱们没有点赞的概念，只有加热
  * @author zhaojiafu
  *
  * 2016年1月7日 下午5:28:58
