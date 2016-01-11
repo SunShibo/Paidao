@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.solland.paidao.entity.ActivityDO;
+import com.solland.paidao.entity.bo.ActivityBO;
 import com.solland.paidao.entity.dto.ResultDTO;
 import com.solland.paidao.service.ActivityService;
 import com.solland.paidao.util.JsonUtils;
@@ -141,18 +142,18 @@ public class ActivityController extends BaseCotroller {
 	}
 
 	/**
-	 * 查询【活动圈】列表
+	 * 查询【活动】列表
 	 * 2016年1月8日 下午3:16:48
 	 * @author zhaojiafu
 	 * @param response
 	 * @param activityDO
 	 */
 	@RequestMapping( value = "/selectActivityList" )
-	public void selectActivityList(HttpServletResponse response, ActivityDO activityDO){
+	public void selectActivityList(HttpServletResponse response, ActivityBO activityBO){
 		String result = null; 
 		
 		/* 1. 执行查询【活动圈】的列表 */
-		List<ActivityDO> activityList = activityService.selectActivityList(activityDO);
+		List<ActivityBO> activityList = activityService.selectActivityList(activityBO);
 		
 		/* 2. 发送消息到客户端 */
 		result = JsonUtils.getJsonString4JavaPOJO(new ResultDTO(activityList)) ;

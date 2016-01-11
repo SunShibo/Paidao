@@ -3,6 +3,7 @@ package com.solland.paidao.service;
 import java.util.List;
 
 import com.solland.paidao.entity.ActivityDO;
+import com.solland.paidao.entity.bo.ActivityBO;
 
 /**
  * 活动圈
@@ -59,5 +60,5 @@ public interface ActivityService {
 	 * @param activityDO
 	 * @return
 	 */
-	List<ActivityDO> selectActivityList(ActivityDO activityDO);
+	List<ActivityBO> selectActivityList(ActivityBO activityBO);
 }

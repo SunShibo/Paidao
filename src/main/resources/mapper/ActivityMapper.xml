@@ -7,7 +7,11 @@
 
 	<!-- 查询全部【活动圈】 -->
 	<sql id="selectAll">
-		SELECT * FROM pd_activity_profile
+		SELECT 
+			*, (SELECT count(1) FROM pd_heat_info WHERE trigger_user_id = 10 AND activity_id = a.id) heat_count, 
+			CASE (SELECT count(1) FROM pd_heat_info WHERE trigger_user_id = 10 AND activity_id = a.id) WHEN 0 THEN 0 ELSE 1 END AS is_heat 
+		FROM 
+			pd_activity_profile a
 	</sql>
 	
 	<!-- 查询【活动圈】的记录数 -->
@@ -125,18 +129,23 @@
     		1 = 1
 	    	<if test="0 &lt; issuerId">AND issuer_id = #{issuerId} </if>
    			<if test="null != position and '' != position">AND position LIKE ('%' || #{position, jdbcType=VARCHAR} || '%') </if>
-   			<if test="null != shortMessage and '' != shortMessage">AND short_message LIKE ('%' || #{shortMessage, jdbcType=VARCHAR} || '%') </if>
+   			<if test="null != descriptionText and '' != descriptionText">AND short_message LIKE ('%' || #{descriptionText, jdbcType=VARCHAR} || '%') </if>
     	</where>
     </select>
 
     <!-- 查询【活动圈】列表 -->
-    <select id="selectActivityList" parameterType="com.solland.paidao.entity.ActivityDO" resultType="com.solland.paidao.entity.ActivityDO">
-    	<include refid="selectAll" />
+    <select id="selectActivityList" parameterType="com.solland.paidao.entity.bo.ActivityBO" resultType="com.solland.paidao.entity.bo.ActivityBO">
+		SELECT 
+			*
+			, CASE (SELECT count(1) FROM pd_heat_info WHERE trigger_user_id = #{loginedUserId} AND activity_id = a.id) WHEN 0 THEN 2 ELSE 1 END AS is_heat
+			, CASE (SELECT count(1) FROM pd_enshrine_info WHERE collector_id = #{loginedUserId} AND activity_id = a.id) WHEN 0 THEN 2 ELSE 1 END AS is_enshrine
+		FROM 
+			pd_activity_profile a
     	<where>
     		1 = 1
 	    	<if test="0 &lt; issuerId">AND issuer_id = #{issuerId} </if>
    			<if test="null != position and '' != position">AND position LIKE ('%' || #{position, jdbcType=VARCHAR} || '%') </if>
-   			<if test="null != shortMessage and '' != shortMessage">AND short_message LIKE ('%' || #{shortMessage, jdbcType=VARCHAR} || '%') </if>
+   			<if test="null != descriptionText and '' != descriptionText">AND short_message LIKE ('%' || #{descriptionText, jdbcType=VARCHAR} || '%') </if>
     	</where>
     </select>
     

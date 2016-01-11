@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.solland.paidao.dao.ActivityDAO;
 import com.solland.paidao.entity.ActivityDO;
+import com.solland.paidao.entity.bo.ActivityBO;
 import com.solland.paidao.service.ActivityService;
 
 /**
@@ -47,8 +48,8 @@ public class ActivityServiceImpl implements ActivityService {
 	}
 
 	@Override
-	public List<ActivityDO> selectActivityList(ActivityDO activityDO) {
-		return activityDAO.selectActivityList(activityDO);
+	public List<ActivityBO> selectActivityList(ActivityBO activityBO) {
+		return activityDAO.selectActivityList(activityBO);
 	}
 
 }
