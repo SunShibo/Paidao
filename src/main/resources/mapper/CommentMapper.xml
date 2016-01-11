@@ -5,6 +5,11 @@
 <!-- 【评论】 -->
 <mapper namespace="com.solland.paidao.dao.CommentDAO">
 
+	<!-- 查询【评论】的记录数 -->
+	<sql id="selectCount">
+		SELECT count(1) FROM pd_comment_profile
+	</sql>
+
 	<!-- 添加【评论】 -->
     <insert id="insertComment" parameterType="com.solland.paidao.entity.CommentDO" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO pd_comment_profile (
@@ -20,5 +25,11 @@
    			<if test="null != content and '' != content">, #{content} </if>
         )
     </insert>
+    
+    <!-- 根据【活动ID】查询【评论】的数量 -->
+    <select id="selectCommentCountByActivityId" parameterType="int" resultType="int">
+    	<include refid="selectCount" />
+    	where activity_id = #{activityId}
+    </select>
     
 </mapper>

@@ -5,6 +5,11 @@
 <!-- 【收藏】 -->
 <mapper namespace="com.solland.paidao.dao.EnshrineDAO">
 
+	<!-- 查询【收藏】的记录数 -->
+	<sql id="selectCount">
+		SELECT count(1) FROM pd_enshrine_info
+	</sql>
+
 	<!-- 添加【收藏】 -->
     <insert id="insert" parameterType="com.solland.paidao.entity.EnshrineDO" useGeneratedKeys="true" keyProperty="id">
 			INSERT INTO 
@@ -21,5 +26,11 @@
            		<if test="0 &lt; collectorId">, #{collectorId} </if>
             )
     </insert>
+    
+    <!-- 根据【活动ID】查询【收藏】的数量 -->
+    <select id="selectEnshrineCountByActivityId" parameterType="int" resultType="int">
+    	<include refid="selectCount" />
+    	where activity_id = #{activityId}
+    </select>
     
 </mapper>

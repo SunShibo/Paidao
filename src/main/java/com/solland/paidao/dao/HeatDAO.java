@@ -16,4 +16,13 @@ public interface HeatDAO {
 	 * @param heatDO
 	 */
 	void insert(HeatDO heatDO);
+	
+	/**
+	 * 根据【活动ID】查询【加热】的数量
+	 * 2016年1月11日 下午6:23:14
+	 * @author zhaojiafu
+	 * @param activityId
+	 * @return
+	 */
+	int selectHeatCountByActivityId(int activityId);
 }

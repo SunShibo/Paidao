@@ -14,10 +14,23 @@ public class ActivityDO implements Serializable {
 	private int issuerId;	// 发布人ID
 	private String tags;	// 标签集
 	private String position;	// 位置
-	private String shortMessage;	// 短消息
-	private String imagePaths;		// 图片路径集
-	private String videoPaths;		// 视频路径集
-	private String voicePath;		// 音频路径
+//	private String shortMessage;	// 短消息
+//	private String imagePaths;		// 图片路径集
+//	private String videoPaths;		// 视频路径集
+	private String mediaType;		// 媒体类型（image-图片；video-视频）
+	private String mediaPaths;		// 媒体路径集
+//	private String voicePath;		// 音频路径
+	private String descriptionVoicePath;		// 音频路径
+	private String descriptionType;		// 描述类型：voice-语音、text-文本
+	private String descriptionText;		// 文本描述
+	private int likeNum;		// 被赞的数量
+	private int heatValue;		// 热度值
+	private int commentNum;	// 评论数
+	private int enshrineNum;	// 收藏数
+	private String longitude;	// 经度
+	private String latitude;	// 纬度
+	private String geohash;		// Geohash值
+	private String status;	// 状态：illegal-违规、normal-正常
 	private String createTime;		// 创建时间
 	private String modifyTime;		// 修改时间
 	
@@ -57,36 +70,108 @@ public class ActivityDO implements Serializable {
 		this.position = position;
 	}
 
-	public String getShortMessage() {
-		return shortMessage;
+	public String getMediaType() {
+		return mediaType;
 	}
 
-	public void setShortMessage(String shortMessage) {
-		this.shortMessage = shortMessage;
+	public void setMediaType(String mediaType) {
+		this.mediaType = mediaType;
 	}
 
-	public String getImagePaths() {
-		return imagePaths;
+	public String getMediaPaths() {
+		return mediaPaths;
 	}
 
-	public void setImagePaths(String imagePaths) {
-		this.imagePaths = imagePaths;
+	public void setMediaPaths(String mediaPaths) {
+		this.mediaPaths = mediaPaths;
 	}
 
-	public String getVideoPaths() {
-		return videoPaths;
+	public String getDescriptionVoicePath() {
+		return descriptionVoicePath;
 	}
 
-	public void setVideoPaths(String videoPaths) {
-		this.videoPaths = videoPaths;
+	public void setDescriptionVoicePath(String descriptionVoicePath) {
+		this.descriptionVoicePath = descriptionVoicePath;
 	}
 
-	public String getVoicePath() {
-		return voicePath;
+	public String getDescriptionText() {
+		return descriptionText;
 	}
 
-	public void setVoicePath(String voicePath) {
-		this.voicePath = voicePath;
+	public void setDescriptionText(String descriptionText) {
+		this.descriptionText = descriptionText;
+	}
+
+	public String getDescriptionType() {
+		return descriptionType;
+	}
+
+	public void setDescriptionType(String descriptionType) {
+		this.descriptionType = descriptionType;
+	}
+
+	public int getLikeNum() {
+		return likeNum;
+	}
+
+	public void setLikeNum(int likeNum) {
+		this.likeNum = likeNum;
+	}
+
+	public int getHeatValue() {
+		return heatValue;
+	}
+
+	public void setHeatValue(int heatValue) {
+		this.heatValue = heatValue;
+	}
+
+	public int getCommentNum() {
+		return commentNum;
+	}
+
+	public void setCommentNum(int commentNum) {
+		this.commentNum = commentNum;
+	}
+
+	public int getEnshrineNum() {
+		return enshrineNum;
+	}
+
+	public void setEnshrineNum(int enshrineNum) {
+		this.enshrineNum = enshrineNum;
+	}
+
+	public String getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(String longitude) {
+		this.longitude = longitude;
+	}
+
+	public String getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(String latitude) {
+		this.latitude = latitude;
+	}
+
+	public String getGeohash() {
+		return geohash;
+	}
+
+	public void setGeohash(String geohash) {
+		this.geohash = geohash;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 	public String getCreateTime() {

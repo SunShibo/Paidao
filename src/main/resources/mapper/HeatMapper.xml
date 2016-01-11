@@ -2,7 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
+<!-- 【加热】 -->
 <mapper namespace="com.solland.paidao.dao.HeatDAO">
+
+	<!-- 查询【加热】的记录数 -->
+	<sql id="selectCount">
+		SELECT count(1) FROM pd_heat_info
+	</sql>
 
 	<!-- 添加【加热】 -->
     <insert id="insert" parameterType="com.solland.paidao.entity.HeatDO" useGeneratedKeys="true" keyProperty="id">
@@ -26,5 +32,11 @@
            		<if test="0 &lt; authorId">, #{authorId} </if>
             )
     </insert>
+    
+    <!-- 根据【活动ID】查询【加热】的数量 -->
+    <select id="selectHeatCountByActivityId" parameterType="int" resultType="int">
+    	<include refid="selectCount" />
+    	where activity_id = #{activityId}
+    </select>
     
 </mapper>

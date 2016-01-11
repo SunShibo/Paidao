@@ -23,20 +23,50 @@
    			<if test="0 &lt; issuerId">, issuer_id </if>
    			<if test="null != tags and '' != tags">, tags </if>
    			<if test="null != position and '' != position">, position </if>
+   			<!-- 
    			<if test="null != shortMessage and '' != shortMessage">, short_message </if>
    			<if test="null != imagePaths and '' != imagePaths">, image_paths </if>
    			<if test="null != videoPaths and '' != videoPaths">, video_paths </if>
    			<if test="null != voicePath and '' != voicePath">, voice_path </if>
+   			 -->
+   			<if test="null != mediaType and '' != mediaType">, media_type </if>
+   			<if test="null != mediaPaths and '' != mediaPaths">, media_paths </if>
+   			<if test="null != descriptionVoicePath and '' != descriptionVoicePath">, description_voice_path </if>
+   			<if test="null != descriptionType and '' != descriptionType">, description_type </if>
+   			<if test="null != descriptionText and '' != descriptionText">, description_text </if>
+   			<if test="0 &lt; likeNum">, like_num </if>
+   			<if test="0 &lt; heatValue">, heat_value </if>
+   			<if test="0 &lt; commentNum">, comment_num </if>
+   			<if test="0 &lt; enshrineNum">, enshrine_num </if>
+   			<if test="null != longitude and '' != longitude">, longitude </if>
+   			<if test="null != latitude and '' != latitude">, latitude </if>
+   			<if test="null != geohash and '' != geohash">, geohash </if>
+   			<if test="null != status and '' != status">, status </if>
        	) 
         VALUES(
        		CURRENT_TIMESTAMP
        		<if test="0 &lt; issuerId">, #{issuerId} </if>
    			<if test="null != tags and '' != tags">, #{tags} </if>
    			<if test="null != position and '' != position">, #{position} </if>
+   			<!-- 
    			<if test="null != shortMessage and '' != shortMessage">, #{shortMessage} </if>
    			<if test="null != imagePaths and '' != imagePaths">, #{imagePaths} </if>
    			<if test="null != videoPaths and '' != videoPaths">, #{videoPaths} </if>
    			<if test="null != voicePath and '' != voicePath">, #{voicePath} </if>
+   			 -->
+   			<if test="null != mediaType and '' != mediaType">, #{mediaType} </if>
+   			<if test="null != mediaPaths and '' != mediaPaths">, #{mediaPaths} </if>
+   			<if test="null != descriptionVoicePath and '' != descriptionVoicePath">, #{descriptionVoicePath} </if>
+   			<if test="null != descriptionType and '' != descriptionType">, #{descriptionType} </if>
+   			<if test="null != descriptionText and '' != descriptionText">, #{descriptionText} </if>
+       		<if test="0 &lt; likeNum">, #{likeNum} </if>
+       		<if test="0 &lt; heatValue">, #{heatValue} </if>
+       		<if test="0 &lt; commentNum">, #{commentNum} </if>
+       		<if test="0 &lt; enshrineNum">, #{enshrineNum} </if>
+   			<if test="null != longitude and '' != longitude">, #{longitude} </if>
+   			<if test="null != latitude and '' != latitude">, #{latitude} </if>
+   			<if test="null != geohash and '' != geohash">, #{geohash} </if>
+   			<if test="null != status and '' != status">, #{status} </if>
         )
     </insert>
     
@@ -49,10 +79,25 @@
     		<if test="0 &lt; issuerId">, issuer_id = #{issuerId} </if>
    			<if test="null != tags and '' != tags">, tags = #{tags} </if>
    			<if test="null != position and '' != position">, position = #{position} </if>
+   			<!-- 
    			<if test="null != shortMessage and '' != shortMessage">, short_message = #{shortMessage} </if>
    			<if test="null != imagePaths and '' != imagePaths">, image_paths = #{imagePaths} </if>
    			<if test="null != videoPaths and '' != videoPaths">, video_paths = #{videoPaths} </if>
    			<if test="null != voicePath and '' != voicePath">, voice_path = #{voicePath} </if>
+   			 -->
+   			<if test="null != mediaType and '' != mediaType">, media_type = #{mediaType} </if>
+   			<if test="null != mediaPaths and '' != mediaPaths">, media_paths = #{mediaPaths} </if>
+   			<if test="null != descriptionVoicePath and '' != descriptionVoicePath">, description_voice_path = #{descriptionVoicePath} </if>
+   			<if test="null != descriptionType and '' != descriptionType">, description_type = #{descriptionType} </if>
+   			<if test="null != descriptionText and '' != descriptionText">, description_text = #{descriptionText} </if>
+       		<if test="0 &lt; likeNum">, like_num = #{likeNum} </if>
+       		<if test="0 &lt; heatValue">, heat_value = #{heatValue} </if>
+       		<if test="0 &lt; commentNum">, comment_num = #{commentNum} </if>
+       		<if test="0 &lt; enshrineNum">, enshrine_num = #{enshrineNum} </if>
+   			<if test="null != longitude and '' != longitude">, longitude = #{longitude} </if>
+   			<if test="null != latitude and '' != latitude">, latitude = #{latitude} </if>
+   			<if test="null != geohash and '' != geohash">, geohash = #{geohash} </if>
+   			<if test="null != status and '' != status">, status = #{status} </if>
    		WHERE
    			id = #{id}
     </update>
