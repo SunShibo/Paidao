@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 【收藏】 -->
+<mapper namespace="com.solland.paidao.dao.EnshrineDAO">
+
+	<!-- 添加【收藏】 -->
+    <insert id="insert" parameterType="com.solland.paidao.entity.EnshrineDO" useGeneratedKeys="true" keyProperty="id">
+			INSERT INTO 
+			pd_enshrine_info (
+      			create_time
+      			<if test="0 &lt; activityId">, activity_id </if>
+      			<if test="0 &lt; activityAuthorId">, activity_author_id </if>
+      			<if test="0 &lt; collectorId">, collector_id </if>
+      		) 
+            VALUES (
+           		CURRENT_TIMESTAMP
+           		<if test="0 &lt; activityId">, #{activityId} </if>
+           		<if test="0 &lt; activityAuthorId">, #{activityAuthorId} </if>
+           		<if test="0 &lt; collectorId">, #{collectorId} </if>
+            )
+    </insert>
+    
+</mapper>
