@@ -107,6 +107,7 @@ public class ActivityController extends BaseCotroller {
 	 * @param activityDO
 	 *
 	 * FIXME 这个方法有意义吗
+	 * @sunshibo 对应于“paidao-1.4.1-D2图片查看1.png”和“paidao-1.4.1-D2图片查看2.png”
 	 */
 	@RequestMapping( value = "/selectActivityById" )
 	public void selectActivityById(HttpServletResponse response, int id){
