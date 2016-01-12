@@ -29,7 +29,7 @@ public class UserDO extends BaseModel implements Serializable {
 	private String password;	// 密码
 	private String name;		// 姓名
 	private String nickname;	// 昵称
-	private String gender;		// 性别
+	private String gender;		// 性别（female-女；male-男）
 	private Date birthday;	// 生日
 	private String location;	// 地址
 	private String signature;	// 签名

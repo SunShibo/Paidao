@@ -3,6 +3,9 @@ package com.solland.paidao.dao;
 
 import com.solland.paidao.entity.UserDO;
 import com.solland.paidao.entity.bo.UserBO;
+
+import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
 /**
@@ -65,4 +68,13 @@ public interface UserDAO {
      * @param userDO
      */
     void updateUserByMobileCode(UserDO userDO);
+    
+    /**
+     * 查询【用户】列表
+     * 2016年1月12日 下午4:49:54
+     * @author zhaojiafu
+     * @param userDO
+     * @return
+     */
+    List<UserDO> selectUserList(UserDO userDO);
 }

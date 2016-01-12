@@ -100,4 +100,9 @@ public class UserServiceImpl implements UserService {
 
 		userDAO.updateUserByMobileCode(userDO);
 	}
+	
+	@Override
+	public List<UserDO> selectUserList(UserDO userDO) {
+		return userDAO.selectUserList(userDO);
+	}
 }

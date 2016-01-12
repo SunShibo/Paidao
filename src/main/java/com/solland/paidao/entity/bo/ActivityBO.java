@@ -33,6 +33,8 @@ public class ActivityBO implements Serializable {
 	private short isHeat;	// 是否已加热
 	private short isEnshrine;	// 是否已收藏
 	private int loginedUserId;	// 当前登录用户ID
+	private int followerCount;	// 所关注的用户数
+	private int beFollowerCount;	// 被关注的用户数
 	
 	public ActivityBO() {
 		// TODO Auto-generated constructor stub
@@ -212,5 +214,21 @@ public class ActivityBO implements Serializable {
 
 	public void setLoginedUserId(int loginedUserId) {
 		this.loginedUserId = loginedUserId;
+	}
+
+	public int getFollowerCount() {
+		return followerCount;
+	}
+
+	public void setFollowerCount(int followerCount) {
+		this.followerCount = followerCount;
+	}
+
+	public int getBeFollowerCount() {
+		return beFollowerCount;
+	}
+
+	public void setBeFollowerCount(int beFollowerCount) {
+		this.beFollowerCount = beFollowerCount;
 	}
 }

@@ -2,13 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
+<!-- 【用户】 -->
 <mapper namespace="com.solland.paidao.dao.UserDAO">
 
     <select id="getCount" resultType="int" parameterType="String">
         select count(id) from test
     </select>
 
-	<!-- 注册 -->
+	<!-- 【注册】 -->
     <insert id="register" parameterType="com.solland.paidao.entity.UserDO" useGeneratedKeys="true" keyProperty="id">
         <![CDATA[
            INSERT INTO pd_user_profile( phone_number, password ) VALUES( #{phoneNumber}, #{password} )
@@ -65,5 +66,27 @@
     	WHERE
     		phone_number = #{phoneNumber}
     </update>
+    
+    <!-- 查询【用户】列表 -->
+    <select id="selectUserList" parameterType="com.solland.paidao.entity.UserDO" resultType="com.solland.paidao.entity.UserDO">
+    	SELECT *
+    		<if test="0 &lt; id">
+    			, (SELECT count(1) FROM pd_follow_link WHERE follower_id = #{id}) follow_count
+    			, (SELECT count(1) FROM pd_follow_link WHERE be_follower_id = #{id}) be_follower_count 
+    		</if>
+		FROM 
+			pd_user_profile 
+		<where>
+			1 = 1
+			<if test="null != username and '' != username"> AND username LIKE ('%' || #{username} || '%')</if>
+			<if test="null != nickname and '' != nickname"> AND nickname LIKE ('%' || #{nickname} || '%')</if>
+			<if test="null != gender and '' != gender"> AND gender = #{nickname} </if>
+			<if test="null != signature and '' != signature"> AND signature LIKE ('%' || #{signature} || '%')</if>
+			<if test="null != phoneNumber and '' != phoneNumber"> AND phone_number LIKE ('%' || #{phoneNumber} || '%')</if>
+			<if test="null != email and '' != email"> AND email LIKE ('%' || #{email} || '%')</if>
+			<if test="null != wechat and '' != wechat"> AND wechat LIKE ('%' || #{wechat} || '%')</if>
+			<if test="null != sinaWeibo and '' != sinaWeibo"> AND sina_weibo LIKE ('%' || #{sinaWeibo} || '%')</if>
+		</where>
+    </select>
 
 </mapper>

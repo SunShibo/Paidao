@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 【关注】 -->
+<mapper namespace="com.solland.paidao.dao.FollowDAO">
+
+	<!-- 查询【关注】的记录数 -->
+	<sql id="selectCount">
+		SELECT count(1) FROM pd_follow_link
+	</sql>
+
+	<!-- 添加【关注】 -->
+    <insert id="insertFollow" parameterType="com.solland.paidao.entity.FollowDO" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO pd_follow_link (
+   			create_time
+   			<if test="0 &lt; beFollowerId">, be_follower_id </if>
+   			<if test="0 &lt; followerId">, follower_id </if>
+       	) 
+        VALUES(
+        	now()
+       		<if test="0 &lt; beFollowerId">, #{beFollowerId} </if>
+       		<if test="0 &lt; followerId">, #{followerId} </if>
+        )
+    </insert>
+    
+    <!-- 根据【关注人ID】查询【关注】的数量 -->
+    <select id="selectFollowCountByFollowId" parameterType="int" resultType="int">
+    	<include refid="selectCount" />
+    	WHERE follower_id = #{followerId}
+    </select>
+
+    <!-- 根据【被关注人ID】查询【关注】的数量 -->
+    <select id="selectFollowCountByBeFollowId" parameterType="int" resultType="int">
+    	<include refid="selectCount" />
+    	WHERE be_follower_id = #{beFollowerId}
+    </select>
+    
+</mapper>

@@ -2,10 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<!-- 【活动圈】 -->
+<!-- 【活动】 -->
 <mapper namespace="com.solland.paidao.dao.ActivityDAO">
 
-	<!-- 查询全部【活动圈】 -->
+	<!-- 查询全部【活动】 -->
 	<sql id="selectAll">
 		SELECT 
 			*, (SELECT count(1) FROM pd_heat_info WHERE trigger_user_id = 10 AND activity_id = a.id) heat_count, 
@@ -14,12 +14,12 @@
 			pd_activity_profile a
 	</sql>
 	
-	<!-- 查询【活动圈】的记录数 -->
+	<!-- 查询【活动】的记录数 -->
 	<sql id="selectCount">
 		SELECT count(1) FROM pd_activity_profile
 	</sql>
 
-	<!-- 添加【活动圈】 -->
+	<!-- 添加【活动】 -->
     <insert id="insertActivity" parameterType="com.solland.paidao.entity.ActivityDO" useGeneratedKeys="true" keyProperty="id">
         <![CDATA[	]]>
         INSERT INTO pd_activity_profile(
@@ -139,6 +139,8 @@
 			*
 			, CASE (SELECT count(1) FROM pd_heat_info WHERE trigger_user_id = #{loginedUserId} AND activity_id = a.id) WHEN 0 THEN 2 ELSE 1 END AS is_heat
 			, CASE (SELECT count(1) FROM pd_enshrine_info WHERE collector_id = #{loginedUserId} AND activity_id = a.id) WHEN 0 THEN 2 ELSE 1 END AS is_enshrine
+			, (SELECT count(1) FROM pd_follow_link WHERE follower_id = #{loginedUserId}) follower_count
+			, (SELECT count(1) FROM pd_follow_link WHERE be_follower_id = #{loginedUserId}) be_follower_count
 		FROM 
 			pd_activity_profile a
     	<where>

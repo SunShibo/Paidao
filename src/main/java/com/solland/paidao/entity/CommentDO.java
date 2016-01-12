@@ -14,6 +14,7 @@ public class CommentDO implements Serializable {
 	private int id;		// ID
 	private int activityId;		// 活动ID
 	private int criticId;		// 评论人ID
+	private int beReplyerId;		// 被回复人ID
 	private String content;		// 内容
 	private Date createTime;	// 创建时间
 	
@@ -43,6 +44,14 @@ public class CommentDO implements Serializable {
 
 	public void setCriticId(int criticId) {
 		this.criticId = criticId;
+	}
+
+	public int getBeReplyerId() {
+		return beReplyerId;
+	}
+
+	public void setBeReplyerId(int beReplyerId) {
+		this.beReplyerId = beReplyerId;
 	}
 
 	public String getContent() {

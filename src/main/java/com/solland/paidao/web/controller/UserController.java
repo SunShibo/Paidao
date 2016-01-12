@@ -1,5 +1,7 @@
 package com.solland.paidao.web.controller;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -83,4 +85,28 @@ public class UserController extends BaseCotroller {
 
     }
 
+    /**
+     * 查询【用户】列表
+     * 2016年1月12日 下午4:54:16
+     * @author zhaojiafu
+     */
+    @RequestMapping( value = "/selectUserList" )
+    public void selectUserList(HttpServletResponse response, UserDO userDO){
+    	String json = null;
+    	
+    	/* 1. 验证参数是否完整  */
+    	if(null == userDO){
+    		json = JsonUtils.getJsonString4JavaPOJO(new ResultDTO(false , "0" , "参数异常!")) ;
+    		super.safeJsonPrint(response , json);
+
+    		return;
+    	}
+
+    	/* 2. 执行查询【用户】列表 */
+    	List<UserDO> userList = userService.selectUserList(userDO);
+    	
+    	/* 3. 返回提示信息到客户端 */
+    	json = JsonUtils.getJsonString4JavaPOJO(new ResultDTO(userList)) ;
+		super.safeJsonPrint(response , json);
+    }
 }
