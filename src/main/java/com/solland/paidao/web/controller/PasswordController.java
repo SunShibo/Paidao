@@ -24,19 +24,19 @@ import com.solland.paidao.web.controller.base.BaseCotroller;
  * 2016年1月7日 上午11:05:20
  */
 @Controller
-@RequestMapping( value = "/user")
+@RequestMapping( value = "/password")
 public class PasswordController extends BaseCotroller {
 	@Resource(name = "passwordService")
 	PasswordService passwordService ;
 	
 	/**
-	 * 发送【手机验证码】
+	 * 发送【短信验证码】
 	 * 以短信的形式发送【验证码】
 	 * @param response
 	 * @param mobileCode 手机号
 	 */
-	@RequestMapping( value = "/password/sendMobileCaptcha")
-	public void sendMobileCaptcha(HttpServletResponse response, String mobileCode){
+	@RequestMapping( value = "/sendSMSCaptcha")
+	public void sendSMSCaptcha(HttpServletResponse response, String mobileCode){
 		/* 1. 验证参数是否完整  */
 		if(!StringUtils.isEmpty(mobileCode)){
 			String result = JsonUtils.getJsonString4JavaPOJO(new ResultDTO(false, "0", "参数异常")) ;
@@ -107,7 +107,7 @@ public class PasswordController extends BaseCotroller {
 	 * @param mobileCode
 	 * FIXME zhaojiafu 为什么没有验证码
 	 */
-	@RequestMapping( value = "/password/updatePasswordByMobileCode" )
+	@RequestMapping( value = "/updatePasswordByMobileCode" )
 	public void updatePasswordByMobileCode(HttpServletResponse response, String mobileCode, String password){
 
 		// TODO zhaojiafu 没有验证过验证码

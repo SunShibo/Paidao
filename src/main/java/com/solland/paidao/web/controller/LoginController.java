@@ -79,7 +79,7 @@ public class LoginController extends BaseCotroller {
 	 * @param loginId
 	 * @param uniqueCode
 	 */
-	@RequestMapping( value = "/common/queryLoginStatus")
+	@RequestMapping( value = "/queryLoginStatus")
 	public void queryLoginStatus (HttpServletResponse response, String loginId, String uniqueCode ){
 
 		/* 1. 验证参数是否完整 */
