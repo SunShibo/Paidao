@@ -9,11 +9,13 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.RandomStringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.solland.paidao.entity.dto.ResultDTO;
 import com.solland.paidao.service.PasswordService;
+import com.solland.paidao.service.UserService;
 import com.solland.paidao.util.JsonUtils;
 import com.solland.paidao.util.StringUtils;
 import com.solland.paidao.web.controller.base.BaseCotroller;
@@ -30,6 +32,9 @@ public class PasswordController extends BaseCotroller {
 	@Resource(name = "passwordService")
 	PasswordService passwordService ;
 	
+	@Autowired
+	UserService userService ;
+	
 	/**
 	 * 发送【短信验证码】
 	 * 以短信的形式发送【验证码】
@@ -38,9 +43,11 @@ public class PasswordController extends BaseCotroller {
 	 */
 	@RequestMapping( value = "/sendSMSCaptcha")
 	public void sendSMSCaptcha(HttpServletResponse response, String mobileCode){
+		String result = null;
+		
 		/* 1. 验证参数是否完整  */
-		if(!StringUtils.isEmpty(mobileCode)){
-			String result = JsonUtils.getJsonString4JavaPOJO(new ResultDTO(false, "0", "参数异常")) ;
+		if(StringUtils.isEmpty(mobileCode)){
+			result = JsonUtils.getJsonString4JavaPOJO(new ResultDTO(false, "0", "参数异常")) ;
 			super.safeJsonPrint(response , result);
 			return ;
 		}
@@ -52,50 +59,60 @@ public class PasswordController extends BaseCotroller {
 		}
 		FIXME 暂忽略，待 诗博 完善好配置文件后启用
 		*/
+		// 
+		/* 3. 判断【手机号】是否存在 */
+    	if(!userService.isExistsByMobileCode(mobileCode)){
+    		result = JsonUtils.getJsonString4JavaPOJO(new ResultDTO(false , "0" , "手机号不存在!")) ;
+    		super.safeJsonPrint(response , result);
+    		
+    		return;
+    	}
 		
-		/* 3. 生成 4 位的验证码 */
-		String captcha = String.valueOf(RandomStringUtils.random(4, false, true));
-		// FIXME zhaojiafu 验证码没有被保存		FIXME sunshibo 后台要再次验证么
-
+		String captcha = null;
+		
 //		super.putSession(mobileCode, null);		// test
 		
 		/* 4. 获取当前手机号对应的验证码发送规则 */
-		@SuppressWarnings("unchecked")   // FIXME zhaojiafu  把所有这种东西全部去掉
-		Map<String, Object> regulationMap = (Map<String, Object>) super.getSession(mobileCode);
+		Map<String, Object> smsMap = (Map<String, Object>) super.getSession(mobileCode);
 		
 		int count = 0;	// 次数
 		Date expiresTime = null;	// 过期时间
 		
-		if(null == regulationMap){
-			regulationMap = new HashMap<String, Object>();
+		if(null == smsMap){
+			smsMap = new HashMap<String, Object>();
 			
 			Date date = new Date();		// 当前时间
-			Calendar calendar = Calendar.getInstance();
-			calendar.setTime(date);
-			calendar.add(Calendar.HOUR_OF_DAY, 24);		// 加 24 小时
+			Calendar calendar = Calendar.getInstance();		// 获取 Calendar 的对象 
+			calendar.setTime(date);		// 设置“当前日期”
+			calendar.add(Calendar.HOUR_OF_DAY, 24);		// 在“当前日期”的基础上加 24 小时
 			expiresTime = calendar.getTime();
 			
-			regulationMap.put("count", 1);
-			regulationMap.put("expiresTime", expiresTime);
+			captcha = String.valueOf(RandomStringUtils.random(4, false, true));
+			
+			smsMap.put("count", 1);
+			smsMap.put("expiresTime", expiresTime);
+			smsMap.put("captcha", captcha);
 		} else {
-			count = (Integer) regulationMap.get("count");
+			count = (Integer) smsMap.get("count");
 			count++;
-			regulationMap.put("count", count);
-			expiresTime = (Date) regulationMap.get("expiresTime");
+			smsMap.put("count", count);
+			expiresTime = (Date) smsMap.get("expiresTime");
+			
+			captcha = (String) smsMap.get("captcha");
 		}
-		
+
 		/* 5. 同一个手机号一天之内最多可发送 5 条验证码短信！ */
 		if((new Date().getTime() - expiresTime.getTime()) <= 0 && count > 5){
-			String result = JsonUtils.getJsonString4JavaPOJO(new ResultDTO(false, "0", "同一个手机号一天之内最多可发送 5 条验证码短信！")) ;
+			result = JsonUtils.getJsonString4JavaPOJO(new ResultDTO(false, "0", "同一个手机号一天之内最多可发送 5 条验证码短信！")) ;
 			super.safeJsonPrint(response , result);
 			return ;
 		}
 		
 		/* 6. 将手机验证码发送规则放入 redis 中 */
-		super.putSession(mobileCode, regulationMap);
+		super.putSession(mobileCode, smsMap);
 		
 		/* 7. 发送验证码到客户端 */
-		String result = JsonUtils.getJsonString4JavaPOJO(new ResultDTO(captcha)) ;
+		result = JsonUtils.getJsonString4JavaPOJO(new ResultDTO(captcha)) ;
 		super.safeJsonPrint(response , result);
 	}
 	
@@ -108,12 +125,13 @@ public class PasswordController extends BaseCotroller {
 	 * FIXME zhaojiafu 为什么没有验证码
 	 */
 	@RequestMapping( value = "/updatePasswordByMobileCode" )
-	public void updatePasswordByMobileCode(HttpServletResponse response, String mobileCode, String password){
+	public void updatePasswordByMobileCode(HttpServletResponse response, String mobileCode, String password, String captcha){
+		String result = null;
 
 		// TODO zhaojiafu 没有验证过验证码
 		/* 1. 验证手机号是否完整 */
 		if(StringUtils.isEmpty(mobileCode)){
-			String result = JsonUtils.getJsonString4JavaPOJO(new ResultDTO(false, "0", "手机号不可为空！")) ;
+			result = JsonUtils.getJsonString4JavaPOJO(new ResultDTO(false, "0", "手机号不可为空！")) ;
 			super.safeJsonPrint(response , result);
 			return ;
 		}
@@ -125,23 +143,53 @@ public class PasswordController extends BaseCotroller {
 		}
 		FIXME 暂忽略，待 诗博 完善好配置文件后启用
 		*/
-		/* 3. 验证【密码】是否为空 */
+		
+		/* 3. 判断【手机号】是否存在 */
+    	if(!userService.isExistsByMobileCode(mobileCode)){
+    		result = JsonUtils.getJsonString4JavaPOJO(new ResultDTO(false , "0" , "手机号不存在!")) ;
+    		super.safeJsonPrint(response , result);
+    		
+    		return;
+    	}
+    	
+		/* 4. 验证【密码】是否为空 */
 		if(org.apache.commons.lang.StringUtils.isEmpty(password)){
-			String result = JsonUtils.getJsonString4JavaPOJO(new ResultDTO(false, "0", "密码不可为空！")) ;
+			result = JsonUtils.getJsonString4JavaPOJO(new ResultDTO(false, "0", "密码不可为空！")) ;
 			super.safeJsonPrint(response , result);
 			return ;
 		}
+		/* 5. 验证【密码】格式 */
 		if(!StringUtils.checkPassword(password)){
-			String result = JsonUtils.getJsonString4JavaPOJO(new ResultDTO(false, "0", "密码格式不正确！")) ;
+			result = JsonUtils.getJsonString4JavaPOJO(new ResultDTO(false, "0", "密码格式不正确！")) ;
 			super.safeJsonPrint(response , result);
+			return ;
+		}
+		/* 6. 验证【验证码】是否为空 */
+		if(org.apache.commons.lang.StringUtils.isEmpty(captcha)){
+			result = JsonUtils.getJsonString4JavaPOJO(new ResultDTO(false, "0", "验证码不可为空！")) ;
+			super.safeJsonPrint(response , result);
+			
 			return ;
 		}
 		
-		/* 3. 执行更新【密码】 */
+		Map<String, Object> smsMap = (Map<String, Object>) super.getSession(mobileCode);
+		if(null != smsMap){
+			String captcha_server = (String) smsMap.get("captcha");
+			
+			/* 6. 验证【验证码】是否正确 */
+			if(!captcha.equals(captcha_server)){
+				result = JsonUtils.getJsonString4JavaPOJO(new ResultDTO(false, "0", "验证码不正确！")) ;
+				super.safeJsonPrint(response , result);
+				
+				return ;
+			}
+		}
+		
+		/* 7. 执行更新【密码】 */
 		passwordService.updatePasswordByMobileCode(mobileCode, password);
 		
-		/* 4. 发送消息到客户端 */
-		String result = JsonUtils.getJsonString4JavaPOJO(new ResultDTO("更新【密码】成功。")) ;
+		/* 8. 发送消息到客户端 */
+		result = JsonUtils.getJsonString4JavaPOJO(new ResultDTO("更新【密码】成功。")) ;
 		super.safeJsonPrint(response , result);
 	}
 }
