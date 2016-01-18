@@ -16,7 +16,7 @@ import com.solland.paidao.util.JsonUtils;
 import com.solland.paidao.web.controller.base.BaseCotroller;
 
 /**
- * 活动圈
+ * 活动
  * @author zhaojiafu
  *
  * 2016年1月8日 下午3:11:08
@@ -28,7 +28,7 @@ public class ActivityController extends BaseCotroller {
 	private ActivityService activityService;
 	
 	/**
-	 * 添加【活动圈】
+	 * 添加【活动】
 	 * 2016年1月8日 下午3:16:48
 	 * @author zhaojiafu
 	 * @param response
@@ -50,12 +50,12 @@ public class ActivityController extends BaseCotroller {
 		activityService.insertActivity(activityDO);
 		
 		/* 3. 发送消息到客户端 */
-		result = JsonUtils.getJsonString4JavaPOJO(new ResultDTO("添加【活动圈】成功。")) ;
+		result = JsonUtils.getJsonString4JavaPOJO(new ResultDTO("添加【活动】成功。")) ;
 		super.safeJsonPrint(response , result);
 	}
 
 	/**
-	 * 根据【ID】更新【活动圈】
+	 * 根据【ID】更新【活动】
 	 * 2016年1月8日 下午3:16:48
 	 * @author zhaojiafu
 	 * @param response
@@ -73,16 +73,16 @@ public class ActivityController extends BaseCotroller {
 			return ;
 		}
 		
-		/* 2. 执行更新【活动圈】*/
+		/* 2. 执行更新【活动】*/
 		activityService.updateActivityById(activityDO);
 		
 		/* 3. 发送消息到客户端 */
-		result = JsonUtils.getJsonString4JavaPOJO(new ResultDTO("更新【活动圈】成功。")) ;
+		result = JsonUtils.getJsonString4JavaPOJO(new ResultDTO("更新【活动】成功。")) ;
 		super.safeJsonPrint(response , result);
 	}
 
 	/**
-	 * 根据【ID】删除【活动圈】
+	 * 根据【ID】删除【活动】
 	 * 2016年1月8日 下午3:16:48
 	 * @author zhaojiafu
 	 * @param response
@@ -96,12 +96,12 @@ public class ActivityController extends BaseCotroller {
 		activityService.deleteActivityById(id);
 		
 		/* 2. 发送消息到客户端 */
-		result = JsonUtils.getJsonString4JavaPOJO(new ResultDTO("删除【活动圈】成功。")) ;
+		result = JsonUtils.getJsonString4JavaPOJO(new ResultDTO("删除【活动】成功。")) ;
 		super.safeJsonPrint(response , result);
 	}
 
 	/**
-	 * 根据【ID】查询【活动圈】
+	 * 根据【ID】查询【活动】
 	 * 2016年1月8日 下午3:16:48
 	 * @author zhaojiafu
 	 * @param response
@@ -123,7 +123,7 @@ public class ActivityController extends BaseCotroller {
 	}
 
 	/**
-	 * 查询【活动圈】的总记录数
+	 * 查询【活动】的总记录数
 	 * 2016年1月8日 下午3:16:48
 	 * @author zhaojiafu
 	 * @param response

@@ -25,16 +25,16 @@ public class ActivityBO implements Serializable {
 	private int enshrineNum;	// 收藏数
 	private String longitude;	// 经度
 	private String latitude;	// 纬度
+	private int range;	// 范围
 	private String geohash;		// Geohash值
 	private String status;	// 状态：illegal-违规、normal-正常
-	private String createTime;		// 创建时间
-	private String modifyTime;		// 修改时间
-	
 	private short isHeat;	// 是否已加热
 	private short isEnshrine;	// 是否已收藏
 	private int loginedUserId;	// 当前登录用户ID
 	private int followerCount;	// 所关注的用户数
 	private int beFollowerCount;	// 被关注的用户数
+	private String createTime;		// 创建时间
+	private String modifyTime;		// 修改时间
 	
 	public ActivityBO() {
 		// TODO Auto-generated constructor stub
@@ -158,6 +158,14 @@ public class ActivityBO implements Serializable {
 
 	public void setLatitude(String latitude) {
 		this.latitude = latitude;
+	}
+
+	public int getRange() {
+		return range;
+	}
+
+	public void setRange(int range) {
+		this.range = range;
 	}
 
 	public String getGeohash() {

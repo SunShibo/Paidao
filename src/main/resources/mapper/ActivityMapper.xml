@@ -130,6 +130,9 @@
 	    	<if test="0 &lt; issuerId">AND issuer_id = #{issuerId} </if>
    			<if test="null != position and '' != position">AND position LIKE ('%' || #{position, jdbcType=VARCHAR} || '%') </if>
    			<if test="null != descriptionText and '' != descriptionText">AND short_message LIKE ('%' || #{descriptionText, jdbcType=VARCHAR} || '%') </if>
+   			<if test="0 &lt; range and 0 &lt; longitude and 0 &lt; latitude">
+   				earth_box(ll_to_earth(#{longitude}, #{latitude}), #{range}) @> ll_to_earth(pd_activity_profile.latitude, pd_activity_profile.longitude); 
+   			</if>
     	</where>
     </select>
 
@@ -148,6 +151,9 @@
 	    	<if test="0 &lt; issuerId">AND issuer_id = #{issuerId} </if>
    			<if test="null != position and '' != position">AND position LIKE ('%' || #{position, jdbcType=VARCHAR} || '%') </if>
    			<if test="null != descriptionText and '' != descriptionText">AND short_message LIKE ('%' || #{descriptionText, jdbcType=VARCHAR} || '%') </if>
+   			<if test="0 &lt; range and 0 &lt; longitude and 0 &lt; latitude">
+   				earth_box(ll_to_earth(#{longitude}, #{latitude}), #{range}) @> ll_to_earth(pd_activity_profile.latitude, pd_activity_profile.longitude); 
+   			</if>
     	</where>
     </select>
     

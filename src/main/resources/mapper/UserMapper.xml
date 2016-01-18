@@ -86,6 +86,9 @@
 			<if test="null != email and '' != email"> AND email LIKE ('%' || #{email} || '%')</if>
 			<if test="null != wechat and '' != wechat"> AND wechat LIKE ('%' || #{wechat} || '%')</if>
 			<if test="null != sinaWeibo and '' != sinaWeibo"> AND sina_weibo LIKE ('%' || #{sinaWeibo} || '%')</if>
+			<if test="null != twiter and '' != twiter">AND twiter = #{twiter} </if>
+    		<if test="null != facebook and '' != facebook">AND facebook = #{facebook} </if>
+    		<if test="null != linkedin and '' != linkedin">AND linkedin = #{linkedin} </if>
 		</where>
     </select>
 

@@ -15,6 +15,7 @@ public class InformDO implements Serializable {
 	private int activityId;		// 活动ID
 	private int activityAuthorId;		// 活动的作者ID
 	private int informerId;		// 举报人ID
+	private String content;		// 内容
 	private Date createTime;	// 创建时间
 	
 	public InformDO() {
@@ -51,6 +52,14 @@ public class InformDO implements Serializable {
 
 	public void setInformerId(int informerId) {
 		this.informerId = informerId;
+	}
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
 	}
 
 	public Date getCreateTime() {

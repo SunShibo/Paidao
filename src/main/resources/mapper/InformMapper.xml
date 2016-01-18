@@ -18,12 +18,14 @@
      			<if test="0 &lt; activityId">, activity_id </if>
      			<if test="0 &lt; activityAuthorId">, activity_author_id </if>
      			<if test="0 &lt; informerId">, informer_id </if>
+     			<if test="null != content and '' != content">, content</if>
      		) 
            VALUES (
           		CURRENT_TIMESTAMP
           		<if test="0 &lt; activityId">, #{activityId} </if>
           		<if test="0 &lt; activityAuthorId">, #{activityAuthorId} </if>
           		<if test="0 &lt; informerId">, #{informerId} </if>
+     			<if test="null != content and '' != content">, #{content}</if>
            )
     </insert>
     

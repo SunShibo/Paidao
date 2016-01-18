@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -53,9 +54,8 @@ public class PasswordController extends BaseCotroller {
 		*/
 		
 		/* 3. 生成 4 位的验证码 */
-		// FIXME zhaojiafu 验证码只能是数字
-		String captcha = StringUtils.UUIDGenerator().substring(0, 4);
-		// FIXME zhaojiafu 验证码没有被保存
+		String captcha = String.valueOf(RandomStringUtils.random(4, false, true));
+		// FIXME zhaojiafu 验证码没有被保存		FIXME sunshibo 后台要再次验证么
 
 //		super.putSession(mobileCode, null);		// test
 		

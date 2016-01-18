@@ -14,7 +14,7 @@ public class HeatDO implements Serializable {
 	private int id;		// ID
 	private int triggerUserId;		// 触发用户，（是谁增加的）
 	private int increaseHeatValue;	// 增加的热度值
-	private String increaseType;		// 加热的类型，（用户加热、系统加热、系统减热、）
+	private String increaseType;		// 加热的类型，（UA-用户加热、SA系统加热、SS-系统减热、）
 	private Date createTime;		// 创建时间
 	private Date modifyTime;		// 修改时间
 	private int lastTimeHeatValue;	// 最后一次的热度值
