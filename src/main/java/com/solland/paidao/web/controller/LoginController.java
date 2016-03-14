@@ -74,7 +74,6 @@ public class LoginController extends BaseCotroller {
 
 	/**
 	 * 检查登录状态（长登录）
-	 * @param request
 	 * @param response
 	 * @param loginId
 	 * @param uniqueCode

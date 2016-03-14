@@ -2,11 +2,13 @@ package com.solland.paidao.service.impl;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -104,5 +106,14 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public List<UserDO> selectUserList(UserDO userDO) {
 		return userDAO.selectUserList(userDO);
+	}
+
+	/**
+	 * 检查邮箱是否存在
+	 * @param email
+	 * @return true存在， false不存在
+	 */
+	public boolean isExistsByEmail(String email) {
+		return CollectionUtils.isNotEmpty(userDAO.selectUserByEmail(email)) ;
 	}
 }

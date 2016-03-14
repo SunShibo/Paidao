@@ -6,7 +6,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.StringUtils;
+import com.solland.paidao.util.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartRequest;
@@ -39,33 +39,35 @@ public class UserController extends BaseCotroller {
 	 * @param userDO
 	 */
     @RequestMapping( value = "/signUp")
-    public void signIn(HttpServletRequest request, HttpServletResponse response , UserDO userDO){
+    public void signUp(HttpServletRequest request, HttpServletResponse response , UserDO userDO){
 		// 验证参数是否合法
 		if(null == userDO){
-			String json = JsonUtils.getJsonString4JavaPOJO(new ResultDTO(false , "0" , "参数不能为空!")) ;
+			String json = JsonUtils.getJsonString4JavaPOJO(new ResultDTO(false , "0" , "参数异常!")) ;
 			super.safeJsonPrint(response , json);
-
 			return;
 		}
 		// 验证【账号】是否为空
-		if(StringUtils.isEmpty(userDO.getPhoneNumber())) {
-			String json = JsonUtils.getJsonString4JavaPOJO(new ResultDTO(false , "0" , "账号不能为空!")) ;
+		if(StringUtils.isBlank(userDO.getEmail())) {
+			String json = JsonUtils.getJsonString4JavaPOJO(new ResultDTO(false , "0" , "邮箱不能为空!")) ;
 			super.safeJsonPrint(response , json);
-
+			return;
+		}
+		// 验证邮箱正则
+		if (!StringUtils.checkemail(userDO.getEmail())) {
+			String json = JsonUtils.getJsonString4JavaPOJO(new ResultDTO(false , "0" , "非法的邮箱格式!")) ;
+			super.safeJsonPrint(response , json);
 			return;
 		}
 		// 验证【密码】是否为空
-		if(StringUtils.isEmpty(userDO.getPassword())) {
+		if(StringUtils.isBlank(userDO.getPassword())) {
 			String json = JsonUtils.getJsonString4JavaPOJO(new ResultDTO(false , "0" , "密码不能为空!")) ;
 			super.safeJsonPrint(response , json);
-
 			return;
 		}
 		// 判断【手机号】是否存在
-		if(userService.isExistsByMobileCode(userDO.getPhoneNumber())) {
-			String json = JsonUtils.getJsonString4JavaPOJO(new ResultDTO(false , "0" , "手机号已存在!")) ;
+		if(userService.isExistsByEmail(userDO.getEmail())) {
+			String json = JsonUtils.getJsonString4JavaPOJO(new ResultDTO(false , "0" , "邮箱已存在!")) ;
 			super.safeJsonPrint(response , json);
-
 			return;
 		}
 
@@ -145,4 +147,5 @@ public class UserController extends BaseCotroller {
     	json = JsonUtils.getJsonString4JavaPOJO(new ResultDTO(userList)) ;
 		super.safeJsonPrint(response , json);
     }
+
 }

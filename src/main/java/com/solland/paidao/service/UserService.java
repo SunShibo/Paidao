@@ -33,6 +33,13 @@ public interface UserService {
 	 * @return
 	 */
 	public boolean isExistsByMobileCode(String mobileCode) ;
+
+	/**
+	 * 检查邮箱是否存在
+	 * @param email
+	 * @return
+	 */
+	public boolean isExistsByEmail(String email) ;
 	
 	/**
 	 * 根据【手机号】更新【用户】

@@ -1,12 +1,12 @@
 package com.solland.paidao.dao;
 
 
-import com.solland.paidao.entity.UserDO;
-import com.solland.paidao.entity.bo.UserBO;
-
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
+
+import com.solland.paidao.entity.UserDO;
+import com.solland.paidao.entity.bo.UserBO;
 
 /**
  * 用户
@@ -77,4 +77,11 @@ public interface UserDAO {
      * @return
      */
     List<UserDO> selectUserList(UserDO userDO);
+
+    /**
+     * 通过邮箱查找用户
+     * @param email
+     * @return
+     */
+    List<UserDO> selectUserByEmail(@Param("email")String email) ;
 }

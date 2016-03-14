@@ -2,6 +2,7 @@ package com.solland.paidao.service.impl;
 
 import javax.annotation.Resource;
 
+import com.solland.paidao.util.MD5Util;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +24,8 @@ public class RegisterServiceImpl implements RegisterService {
 
 	@Override
 	public int register(UserDO userDO) {
+		userDO.setPassword(MD5Util.digest(userDO.getPassword()));
+		userDO.setStatus(UserDO.STATUS_NORMAL);
 		return userDAO.register(userDO);
 	}
 

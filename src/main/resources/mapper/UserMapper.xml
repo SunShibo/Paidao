@@ -12,7 +12,7 @@
 	<!-- 【注册】 -->
     <insert id="register" parameterType="com.solland.paidao.entity.UserDO" useGeneratedKeys="true" keyProperty="id">
         <![CDATA[
-           INSERT INTO pd_user_profile( phone_number, password ) VALUES( #{phoneNumber}, #{password} )
+           INSERT INTO pd_user_profile( email, password, status,create_time ) VALUES( #{email}, #{password}, #{status}, NOW() )
         ]]>
     </insert>
     
@@ -28,6 +28,17 @@
             ( username = #{account} or email = #{account} or phone_number = #{account} )
             AND password = #{password}
     </select>
+
+	<!-- 通过邮箱查找用户 -->
+	<select id="selectUserByEmail" resultType="com.solland.paidao.entity.bo.UserBO">
+		SELECT
+		id ,nickname ,gender ,username ,password ,birthday ,location ,
+		head_portrait ,phone_number ,email ,wechat ,sina_weibo ,
+		create_time ,modify_time ,twiter ,facebook ,linkedin ,status
+		FROM
+		pd_user_profile
+		WHERE email = #{email}
+	</select>
     
     <!-- 根据【用户名】查询【用户数】 -->
     <select id="selectCountByUsername" parameterType="String" resultType="int">

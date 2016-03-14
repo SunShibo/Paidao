@@ -3468,7 +3468,7 @@ public class StringUtils {
 
 	// =====================判断邮件email是否正确格式
 
-	public boolean checkemail(String email) {
+	public static boolean checkemail(String email) {
 		Pattern pattern = Pattern.compile("\\w+[\\w]*@[\\w]+\\.[\\w]+$");
 		Matcher matcher = pattern.matcher(email);
 		if (matcher.matches()) {

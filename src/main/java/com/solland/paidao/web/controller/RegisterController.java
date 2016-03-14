@@ -56,14 +56,14 @@ public class RegisterController extends BaseCotroller {
     	if(StringUtils.isEmpty(userDO.getPassword())){
 			String json = JsonUtils.getJsonString4JavaPOJO(new ResultDTO(false , "0" , "密码不能为空!")) ;
     		super.safeJsonPrint(response , json);
-    		
+
     		return;
     	}
     	// 判断【手机号】是否存在
     	if(userService.isExistsByMobileCode(userDO.getPhoneNumber())){
 			String json = JsonUtils.getJsonString4JavaPOJO(new ResultDTO(false , "0" , "手机号已存在!")) ;
     		super.safeJsonPrint(response , json);
-    		
+
     		return;
     	}
 
