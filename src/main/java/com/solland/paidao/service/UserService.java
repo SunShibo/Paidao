@@ -24,6 +24,14 @@ public interface UserService {
 	 * @return
 	 */
 	public boolean isExistsByUsername(String username) ;
+
+	/**
+	 * 修改用户头像
+	 * @param userId
+	 * @param url
+	 * @return
+	 */
+	public boolean updateUserHeadPortrait (String userId , String url ) ;
 	
 	/**
 	 * 验证【手机号】是否已存在

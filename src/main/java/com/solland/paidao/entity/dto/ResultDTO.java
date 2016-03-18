@@ -8,14 +8,11 @@ import java.io.Serializable;
  */
 @SuppressWarnings("serial")
 public class ResultDTO<T> implements Serializable {
-    public static final String ERRCODE_NONE = "0";
-    public static final String ERRCODE_CONSTRAINT_VIOLATION = "-1";
-    public static final String ERRCODE_PROCESSING = "-2";
-    public static final String ERRCODE_UNKOWN = "-9";
-    private boolean success = true;
-    protected String errCode = "0";
-    protected String errMsg;
-    protected T data;
+
+    private boolean success = true ;
+    protected String errCode ;
+    protected String errMsg ;
+    protected T data ;
 
     public ResultDTO() {
     }

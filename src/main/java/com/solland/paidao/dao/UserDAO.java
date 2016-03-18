@@ -23,6 +23,13 @@ public interface UserDAO {
      */
     public UserBO login(@Param("account") String account , @Param("password") String password) ;
 
+    /**
+     * 修改用户头像
+     * @param userDO
+     * @return
+     */
+    public int updateUserHeadPortrait(UserDO userDO) ;
+
     // FIXME zhaojiafu 使用文档注释，标注时间，作者，参数，返回结果
     int getCount(String test);
 

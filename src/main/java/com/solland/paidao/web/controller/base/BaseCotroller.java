@@ -1,6 +1,8 @@
 package com.solland.paidao.web.controller.base;
 
 import com.google.common.collect.Lists;
+import com.solland.paidao.common.constants.SysConstants;
+import com.solland.paidao.entity.bo.UserBO;
 import com.solland.paidao.util.RedisUtil;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemFactory;
@@ -8,6 +10,7 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
@@ -177,19 +180,76 @@ public class BaseCotroller {
         return"";
     }
 
-    /**session赋值*/
-    public void putSession (String key , Object value) {
+    /** 移除session*/
+    public void removeSession (HttpServletRequest request , String key) {
+        RedisUtil.del(createKey(this.getLoginID(request), key)) ;
+    }
+
+    /** 获取登录用户*/
+    public UserBO getLoginUser (HttpServletRequest request ) {
+        return (UserBO)this.getSession(request, SysConstants.CURRENT_LOGIN_USER) ;
+    }
+
+    /** putLoginUser*/
+    public void putLoginUser (String loginId , UserBO loginUser) {
+        this.putSession(createKey(loginId, SysConstants.CURRENT_LOGIN_USER), loginUser) ;
+    }
+
+    /** putSession */
+    public void putSession (HttpServletRequest request, String key , String value ) {
+        this.putSession(createKey(this.getLoginID(request), key), value) ;
+    }
+    /**
+     * 获取登录ID (从cookie中获取)
+     * @param request
+     * @return
+     */
+    public String getLoginID(HttpServletRequest request) {
+        return getCookie(request , SysConstants.CURRENT_LOGIN_ID) ;
+    }
+
+    /**
+     * session赋值
+     */
+    private void putSession (String key , Object value) {
         RedisUtil.set(value , key) ;
     }
 
-    /**获取session*/
-    public Object getSession (String key) {
-        return RedisUtil.get(key) ;
+    /**
+     * 生成在redis中存储的key
+     * @param loginId 登录用户ID
+     * @param key key
+     * @return
+     */
+    public String createKey (String loginId, String key) {
+        return loginId + "@" + key ;
+    }
+
+    /**
+     * 获取session
+     * session存储格式为
+     * loginUuid + @ + key
+     * */
+    public Object getSession (HttpServletRequest request , String key) {
+        return RedisUtil.get(createKey(this.getLoginID(request), key)) ;
+    }
+
+    public String getCookie(HttpServletRequest request , String key) {
+        Cookie[] cookies = request.getCookies();
+        for(Cookie c :cookies ){
+            if (c.getName().equals(key)) {
+               return c.getValue() ;
+            }
+        }
+        return null ;
+    }
+
+    public void setCookie(HttpServletResponse response, String key , String value ,int expiry) {
+        Cookie cookie = new Cookie(key, value);
+        cookie.setMaxAge(expiry); //365 * 24 * 60 * 60
+        cookie.setPath("/");
+        response.addCookie(cookie);
     }
 
 
-    /**移除session*/
-    public void removeSession (String key) {
-        RedisUtil.del(key) ;
-    }
 }

@@ -2,6 +2,7 @@ package com.solland.paidao.service.impl;
 
 import javax.annotation.Resource;
 
+import com.solland.paidao.util.MD5Util;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,7 +29,7 @@ public class LoginServiceImpl implements LoginService {
 	 * @return 返回用户记录
 	 */
 	public UserBO login(LoginParam loginParam) {
-		return userDAO.login(loginParam.getAccount() , loginParam.getPassword());
+		return userDAO.login(loginParam.getAccount() , MD5Util.digest(loginParam.getPassword()));
 	}
 	
 	/*@Override

@@ -35,9 +35,14 @@ public class SysConstants {
 
 
     /**
-     * 当前用户
+     * 当前用户登录的uuid
      */
-    public static final String CURRENT_USER = "user";
+    public static final String CURRENT_LOGIN_ID = "userLoginID";
+
+    /**
+     * 登录用户
+     */
+    public static final String CURRENT_LOGIN_USER = "currentLoginUser";
 
     public static final String MENU = "menu";
 

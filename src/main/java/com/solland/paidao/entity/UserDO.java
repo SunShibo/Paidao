@@ -18,6 +18,8 @@ public class UserDO extends BaseModel implements Serializable {
 	public static final String STATUS_FREEZE = "status_freeze" ;
 	/**正常状态*/
 	public static final String STATUS_NORMAL = "status_normal" ;
+	/**未激活*/
+	public static final String STATUS_INACTIVE = "status_inactive" ;
 
 	/**男*/
 	public static final String GENDER_MALE = "gender_male" ;

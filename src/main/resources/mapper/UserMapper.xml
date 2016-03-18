@@ -54,6 +54,11 @@
     <update id="updatePasswordByMobileCode" parameterType="com.solland.paidao.entity.UserDO">
     	UPDATE pd_user_profile SET password = #{password} WHERE phone_number = #{phoneNumber}
     </update>
+
+	<!-- 修改用户头像 -->
+	<update id="updateUserHeadPortrait" >
+		UPDATE pd_user_profile SET head_portrait = #{headPortrait} WHERE id = #{id}
+	</update>
     
     <!-- 更加【手机号】更新【用户】信息 -->
     <update id="updateUserByMobileCode" parameterType="com.solland.paidao.entity.UserDO">

@@ -86,7 +86,6 @@ public class ActivityController extends BaseCotroller {
 	 * 2016年1月8日 下午3:16:48
 	 * @author zhaojiafu
 	 * @param response
-	 * @param activityDO
 	 */
 	@RequestMapping( value = "/deleteActivityById" )
 	public void deleteActivityById(HttpServletResponse response, int id){
@@ -105,7 +104,6 @@ public class ActivityController extends BaseCotroller {
 	 * 2016年1月8日 下午3:16:48
 	 * @author zhaojiafu
 	 * @param response
-	 * @param activityDO
 	 *
 	 * FIXME 这个方法有意义吗
 	 * @sunshibo 对应于“paidao-1.4.1-D2图片查看1.png”和“paidao-1.4.1-D2图片查看2.png”
@@ -146,7 +144,6 @@ public class ActivityController extends BaseCotroller {
 	 * 2016年1月8日 下午3:16:48
 	 * @author zhaojiafu
 	 * @param response
-	 * @param activityDO
 	 */
 	@RequestMapping( value = "/selectActivityList" )
 	public void selectActivityList(HttpServletResponse response, ActivityBO activityBO){

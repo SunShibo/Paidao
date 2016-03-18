@@ -1,14 +1,24 @@
 package com.solland.paidao.web.controller;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import javax.annotation.Resource;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.solland.paidao.entity.bo.UserBO;
+import com.solland.paidao.entity.dto.ResultDTOBuilder;
+import com.solland.paidao.util.OssManage;
 import com.solland.paidao.util.StringUtils;
+import net.sf.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartRequest;
 
 import com.solland.paidao.entity.UserDO;
@@ -17,6 +27,7 @@ import com.solland.paidao.service.UserService;
 import com.solland.paidao.service.impl.RegisterServiceImpl;
 import com.solland.paidao.util.JsonUtils;
 import com.solland.paidao.web.controller.base.BaseCotroller;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 /**
  * @author Shibo Sun
@@ -32,6 +43,9 @@ public class UserController extends BaseCotroller {
 	@Resource(name = "registerService")
 	RegisterServiceImpl registerService ;
 
+	@Resource(name = "ossManage")
+	OssManage ossManage ;
+
 	/**
 	 * 用户注册
 	 * @param request
@@ -41,43 +55,63 @@ public class UserController extends BaseCotroller {
     @RequestMapping( value = "/signUp")
     public void signUp(HttpServletRequest request, HttpServletResponse response , UserDO userDO){
 		// 验证参数是否合法
-		if(null == userDO){
-			String json = JsonUtils.getJsonString4JavaPOJO(new ResultDTO(false , "0" , "参数异常!")) ;
-			super.safeJsonPrint(response , json);
-			return;
-		}
-		// 验证【账号】是否为空
-		if(StringUtils.isBlank(userDO.getEmail())) {
-			String json = JsonUtils.getJsonString4JavaPOJO(new ResultDTO(false , "0" , "邮箱不能为空!")) ;
+		if(null == userDO || StringUtils.isBlank(userDO.getEmail()) || StringUtils.isBlank(userDO.getPassword())){
+			String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001" , "参数异常!")) ;
 			super.safeJsonPrint(response , json);
 			return;
 		}
 		// 验证邮箱正则
 		if (!StringUtils.checkemail(userDO.getEmail())) {
-			String json = JsonUtils.getJsonString4JavaPOJO(new ResultDTO(false , "0" , "非法的邮箱格式!")) ;
+			String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0010001" , "非法的邮箱格式!")) ;
 			super.safeJsonPrint(response , json);
 			return;
 		}
-		// 验证【密码】是否为空
-		if(StringUtils.isBlank(userDO.getPassword())) {
-			String json = JsonUtils.getJsonString4JavaPOJO(new ResultDTO(false , "0" , "密码不能为空!")) ;
-			super.safeJsonPrint(response , json);
-			return;
-		}
-		// 判断【手机号】是否存在
+		// 判断【邮箱号】是否存在
 		if(userService.isExistsByEmail(userDO.getEmail())) {
-			String json = JsonUtils.getJsonString4JavaPOJO(new ResultDTO(false , "0" , "邮箱已存在!")) ;
+			String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0010002" , "邮箱已存在!")) ;
 			super.safeJsonPrint(response , json);
 			return;
 		}
 
-		registerService.register(userDO);		// 执行【注册】
+		registerService.register(userDO);
 
-		String json = JsonUtils.getJsonString4JavaPOJO(new ResultDTO(true , "1" , "注册成功。")) ;
+		// 注册成功返回用户id
+		String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(userDO.getId())) ;
 		super.safeJsonPrint(response , json);
 	}
-    
-    /**
+
+	@RequestMapping("/uploadHeadPortrait")
+	public void uploadHeadPortrait(@RequestParam("file") CommonsMultipartFile[] files,HttpServletRequest request
+			, HttpServletResponse response, @RequestParam("userId") String userId) {
+
+		if (files == null || files.length != 1 || StringUtils.isBlank(userId)) {
+			String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001" , "参数异常!")) ;
+			super.safeJsonPrint(response , json);
+			return ;
+		}
+
+		if (!files[0].isEmpty()) {
+			try {
+				String fileName = files[0].getOriginalFilename();
+				String type = fileName.substring(fileName.lastIndexOf(".") + 1);
+				String key = userId + "_" + "HeadPortrait" + "_" + System.currentTimeMillis();
+				String url = ossManage.uploadFile(files[0].getInputStream(), key, type);
+
+				boolean result =userService.updateUserHeadPortrait(userId , url) ;
+				String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(result)) ;
+				super.safeJsonPrint(response , json);
+				return ;
+			} catch (Exception e) {
+				e.printStackTrace();
+				System.out.println("上传出错");
+				String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000002" , "上传文件出错！")) ;
+				super.safeJsonPrint(response , json);
+				return ;
+			}
+		}
+
+	}
+	/**
      * 根据【手机号】更新【用户】信息
      * 2016年1月7日 下午3:30:31
      * @author zhaojiafu
@@ -89,27 +123,12 @@ public class UserController extends BaseCotroller {
     	String json = null;
     	
     	/* 1. 验证参数是否完整  */
-    	if(null == userDO){
-    		json = JsonUtils.getJsonString4JavaPOJO(new ResultDTO(false , "0" , "参数异常!")) ;
+    	if(null == userDO || StringUtils.isEmpty(userDO.getPhoneNumber())){
+    		json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001" , "参数异常!")) ;
     		super.safeJsonPrint(response , json);
 
     		return;
     	}
-    	/* 2. 验证手机号是否为空 */
-    	if(StringUtils.isEmpty(userDO.getPhoneNumber())){
-    		json = JsonUtils.getJsonString4JavaPOJO(new ResultDTO(false , "0" , "手机号不能为空!")) ;
-    		super.safeJsonPrint(response , json);
-
-    		return;
-    	}
-    	/* 2. 验证参数是否完整 */
-		/*if(!StringUtils.isMobile(mobileCode)){
-			String result = JsonUtils.getJsonString4JavaPOJO(new ResultDTO(false, "0", "手机号格式不正确！")) ;
-			super.safeJsonPrint(response , result);
-			return ;
-		}
-		FIXME 暂忽略，待 诗博 完善好配置文件后启用
-		*/
     	
     	String projectRootPath = request.getSession().getServletContext().getRealPath("/");        // 项目目录
     	MultipartRequest multipartRequest = null;
