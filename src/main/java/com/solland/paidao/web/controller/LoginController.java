@@ -6,14 +6,15 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.solland.paidao.entity.dto.ResultDTOBuilder;
+import com.solland.paidao.common.constants.SysConstants;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import com.solland.paidao.entity.UserDO;
 import com.solland.paidao.entity.bo.UserBO;
-import com.solland.paidao.entity.dto.ResultDTO;
+import com.solland.paidao.entity.dto.ResultDTOBuilder;
 import com.solland.paidao.entity.dto.param.LoginParam;
 import com.solland.paidao.service.UserService;
 import com.solland.paidao.service.impl.LoginServiceImpl;
@@ -27,6 +28,8 @@ import com.solland.paidao.web.controller.base.BaseCotroller;
 @Controller
 @RequestMapping("/login")
 public class LoginController extends BaseCotroller {
+
+	private static Logger log = LoggerFactory.getLogger(LoginController.class);
 
 	@Resource(name = "loginService")
 	LoginServiceImpl loginService ;
@@ -42,11 +45,12 @@ public class LoginController extends BaseCotroller {
     @RequestMapping( value = "/signIn")
     public void signIn(HttpServletResponse response, LoginParam loginParam){
 
+		log.error("[LoginController] enter, account{}, password{}", loginParam.getAccount() , loginParam.getPassword() );
 		/* 1. 验证参数是否完整 */
 
 		if(null == loginParam || StringUtils.isEmpty(loginParam.getPassword()) || StringUtils.isEmpty(loginParam.getAccount())){
-			String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("", "参数异常!")) ;
-			super.safeJsonPrint(response , result);
+			String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001" , "参数异常!")) ;
+			super.safeJsonPrint(response , json);
 			return ;
 		}
 
@@ -55,12 +59,17 @@ public class LoginController extends BaseCotroller {
 
 		/* 3. 验证账户状态 */
 		if (userBO == null ) {
-			String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("", "用户名或密码错误!")) ;
+			String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0010004", "用户名或密码错误!")) ;
 			super.safeJsonPrint(response , result);
 			return ;
 		}
-		if ( StringUtils.isEmpty(userBO.getStatus()) || UserDO.STATUS_FREEZE.equals(userBO.getStatus()) ) {   	// 验证登录状态
-			String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("", "账户存在异常，请联系客服！")) ;
+		if (StringUtils.isBlank(userBO.getStatus()) || userBO.getStatus().equals(UserDO.STATUS_FREEZE)) {
+			String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0010005" , "该账户已被冻结!")) ;
+			super.safeJsonPrint(response , result);
+			return ;
+		}
+		if (StringUtils.isBlank(userBO.getStatus()) || userBO.getStatus().equals(UserDO.STATUS_INACTIVE)) {
+			String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0010006" , "该账户没有被激活!")) ;
 			super.safeJsonPrint(response , result);
 			return ;
 		}
@@ -68,41 +77,43 @@ public class LoginController extends BaseCotroller {
 		/* 4. 登录业务 */
 		String uuid = UUID.randomUUID().toString() ; //生成UUID
 		userBO.setUuid(uuid); // 保存到BO对象，返回给移动端
-		super.putLoginUser( uuid , userBO); // 保存到缓存
+		super.putLoginUser(uuid, userBO); // 保存到缓存
+		super.setCookie(response , SysConstants.CURRENT_LOGIN_ID , uuid , SysConstants.SEVEN_DAY_TIME) ;
 
 		/* 5. 返回用户信息 */
-		String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(userBO)) ;
+		String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(userBO) , JsonUtils.LONG_DATE_PATTERN) ;
 		super.safeJsonPrint(response , result);
 	}
 
 	/**
 	 * 检查登录状态（长登录）
 	 * @param response
-	 * @param loginId
-	 * @param uniqueCode
 	 */
 	@RequestMapping( value = "/queryLoginStatus")
-	public void queryLoginStatus (HttpServletResponse response,HttpServletRequest request, String loginId, String uniqueCode ){
+	public void queryLoginStatus (HttpServletResponse response,HttpServletRequest request ){
 
-		/* 1. 验证参数是否完整 */
-		if ( StringUtils.isEmpty(loginId) || StringUtils.isEmpty(uniqueCode)) {
-			String json = JsonUtils.getJsonString4JavaPOJO(new ResultDTO(false, "0", "参数不能为空!")) ;
-			super.safeJsonPrint(response , json);
-			return;
-		}
-		
-		/* 2. 找到对应的账户记录 */
+		/* 1. 找到对应的账户记录 */
 		UserBO userBO = super.getLoginUser(request) ;
 		
-		/* 3. 验证账户状态 */
-		if (userBO == null ) { // 登录名活密码错误
-			String result = JsonUtils.getJsonString4JavaPOJO(new ResultDTO(false, "0", "Access denied")) ;
+		/* 2. 验证账户状态 */
+		if (userBO == null ) {
+			String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0010007" , "用户未登录！")) ;
+			super.safeJsonPrint(response , result);
+			return ;
+		}
+		if (StringUtils.isBlank(userBO.getStatus()) || userBO.getStatus().equals(UserDO.STATUS_FREEZE)) {
+			String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0010005" , "该账户已被冻结!")) ;
+			super.safeJsonPrint(response , result);
+			return ;
+		}
+		if (StringUtils.isBlank(userBO.getStatus()) || userBO.getStatus().equals(UserDO.STATUS_INACTIVE)) {
+			String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0010006" , "该账户没有被激活!")) ;
 			super.safeJsonPrint(response , result);
 			return ;
 		}
 		
-		/* 4. 返回用户信息 */
-		String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(userBO)) ;
+		/* 3. 返回用户信息 */
+		String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(userBO) , JsonUtils.LONG_DATE_PATTERN) ;
 		super.safeJsonPrint(response , result);
 	}
 

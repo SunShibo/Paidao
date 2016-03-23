@@ -75,6 +75,8 @@ public interface UserDAO {
      * @param userDO
      */
     void updateUserByMobileCode(UserDO userDO);
+
+    int updateStatusByEmail(UserDO userDO);
     
     /**
      * 查询【用户】列表

@@ -65,4 +65,12 @@ public interface UserService {
 	 * @return
 	 */
 	public List<UserDO> selectUserList(UserDO userDO);
+
+	/**
+	 * 修改用户状态
+	 * @param email
+	 * @param status
+	 * @return
+	 */
+	public int updateUserStatus(String email , String status) ;
 }

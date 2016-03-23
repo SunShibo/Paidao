@@ -25,7 +25,7 @@ public class RegisterServiceImpl implements RegisterService {
 	@Override
 	public int register(UserDO userDO) {
 		userDO.setPassword(MD5Util.digest(userDO.getPassword()));
-		userDO.setStatus(UserDO.STATUS_NORMAL);
+		userDO.setStatus(UserDO.STATUS_INACTIVE);
 		return userDAO.register(userDO);
 	}
 

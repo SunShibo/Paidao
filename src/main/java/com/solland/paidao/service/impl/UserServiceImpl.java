@@ -116,6 +116,14 @@ public class UserServiceImpl implements UserService {
 		return userDAO.selectUserList(userDO);
 	}
 
+	@Override
+	public int updateUserStatus(String email, String status) {
+		UserDO userDO = new UserDO() ;
+		userDO.setEmail(email);
+		userDO.setStatus(status);
+		return userDAO.updateStatusByEmail(userDO);
+	}
+
 	/**
 	 * 检查邮箱是否存在
 	 * @param email

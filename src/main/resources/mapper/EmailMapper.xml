@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 【用户】 -->
+<mapper namespace="com.solland.paidao.dao.EmailDAO">
+
+	<!-- 【注册】 -->
+    <insert id="insert" parameterType="com.solland.paidao.entity.EmailDO" useGeneratedKeys="true" keyProperty="id">
+        <![CDATA[
+           	INSERT INTO pd_email(
+           		from_address, to_address,create_time,result,description,subject)
+			VALUES(
+				#{fromAddress}, #{toAddress}, NOW(), #{result}, #{description}, #{subject}
+				)
+        ]]>
+    </insert>
+    
+    <!-- 根据【用户名】查询【用户】 -->
+    <select id="login" resultType="com.solland.paidao.entity.bo.UserBO">
+    	SELECT
+            id ,nickname ,gender ,username ,password ,birthday ,location ,
+            head_portrait ,phone_number ,email ,wechat ,sina_weibo ,
+            create_time ,modify_time ,twiter ,facebook ,linkedin ,status
+        FROM
+            pd_user_profile
+        WHERE
+            ( username = #{account} or email = #{account} or phone_number = #{account} )
+            AND password = #{password}
+    </select>
+
+</mapper>

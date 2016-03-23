@@ -13,26 +13,47 @@ public class RedisUtil {
     /**set Object*/
     public static String set(Object object,String key) {
         Jedis jedis = RedisConnectFactory.getJedis() ;
-        String result = jedis.set(key.getBytes(), SerializeUtil.serialize(object));
-        RedisConnectFactory.returnResource(jedis);
+        String result = null;
+        try {
+            result = jedis.set(key.getBytes(), SerializeUtil.serialize(object));
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (jedis != null)
+                RedisConnectFactory.returnResource(jedis);
+        }
         return result;
     }
 
     /**get Object*/
     public static Object get(String key) {
         Jedis jedis = RedisConnectFactory.getJedis() ;
-        byte[] value = jedis.get(key.getBytes());
-        Object object = SerializeUtil. unserialize(value);
-        RedisConnectFactory.returnResource(jedis);
+        Object object = null;
+        try {
+            byte[] value = jedis.get(key.getBytes());
+            object = SerializeUtil. unserialize(value);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (jedis != null)
+                RedisConnectFactory.returnResource(jedis);
+        }
         return object;
     }
 
     /**delete a key**/
     public static boolean del(String key) {
         Jedis jedis = RedisConnectFactory.getJedis() ;
-        boolean result =  jedis.del(key.getBytes())>0;
-        RedisConnectFactory.returnResource(jedis);
-        return result;
+        try {
+            boolean result =  jedis.del(key.getBytes())>0;
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (jedis != null)
+             RedisConnectFactory.returnResource(jedis);
+        }
+        return false ;
     }
 
     public static void main(String[] args) {

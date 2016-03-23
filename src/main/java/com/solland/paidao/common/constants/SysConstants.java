@@ -7,15 +7,6 @@ public class SysConstants {
     /**所有权限*/
     public static final String ALL_PERMISSION = "all_permission";
 
-    /**
-     * tair命名空间
-     */
-    int TAIR_NAME_SPACE = 851;
-
-    /**
-     * OSS CONFIG
-     */
-
     //静态资源文件夹
     public static final String OSS_FOLDER_STATIC = "static/";
     //JS文件夹
@@ -31,42 +22,35 @@ public class SysConstants {
     //壁纸资源文件夹
     public static final String OSS_FOLDER_RES_WALLPAPER = "res/wallpaper/";
 
-
-
-
     /**
      * 当前用户登录的uuid
      */
     public static final String CURRENT_LOGIN_ID = "userLoginID";
 
     /**
+     * 登录用户id
+     */
+    public static final String CURRENT_USER_ID = "userID";
+
+    /**
      * 登录用户
      */
     public static final String CURRENT_LOGIN_USER = "currentLoginUser";
 
-    public static final String MENU = "menu";
-
-    public static final String BUTTON = "button";
-
-    /**所有的权限资源map*/
-    public static final String ALL_RESOURCE_MAP = "all_resource_map" ;
-
-    /**用户的权限资源map*/
-    public static final String USERS_RESOURCE_MAP = "users_resource_map" ;
+    /**
+     * 一分钟的毫秒数
+     */
+    public static final int MINUTE_TIME = 60 * 1000 ;
 
     /**
-     * TAOBAO账号系统全局常量
+     * 一天的毫秒数
      */
-    public static final String LOGIN_APPNAME = "alidm";
-    public static final String	LOGIN_TAOBAO_TICKET = "login_taobao_ticket";
-    public static final String	LOGIN_TAOBAO_NAME = "login_taobao_name";
+    public static final int OND_DAY_TIME = 24 * 60 * MINUTE_TIME ;
 
-    public static final String	DM_SESSION_ID = "dm_session_id";
-//    public static final String	APP_KEY = "ab39e90fa86e5f3f089b1cb9b7a50386";
-//    public static final String	APP_SEC	= "885795f6cf2f5a1bc4c83434e2b1acc9";
-//    public static final String  LOGIN_API_URL = "https://account.yunos.com/openapi";
-//    public static final Integer MAX_PAGE = 100;
-
+    /**
+     * 7天的毫秒数
+     */
+    public static final int SEVEN_DAY_TIME = OND_DAY_TIME * 7 ;
 
     /**
      * 合法的IMEI号的长度
@@ -86,8 +70,6 @@ public class SysConstants {
      *  用于放在tair中做前缀名
      */
     public static final String FILE_UPLOAD_PROGRESSED_ = "SUP_" ;
-
-
 
     /**
      *  上传进度

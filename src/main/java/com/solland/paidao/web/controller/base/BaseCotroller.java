@@ -208,6 +208,17 @@ public class BaseCotroller {
         return getCookie(request , SysConstants.CURRENT_LOGIN_ID) ;
     }
 
+    public void putPublicSession (String key , Object value) {
+        RedisUtil.set(value , key) ;
+    }
+
+    public Object getPublicSession(String key) {
+        return RedisUtil.get(key) ;
+    }
+
+    public void removePublicSession(String key) {
+        RedisUtil.del(key) ;
+    }
     /**
      * session赋值
      */

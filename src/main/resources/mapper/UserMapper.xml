@@ -55,6 +55,11 @@
     	UPDATE pd_user_profile SET password = #{password} WHERE phone_number = #{phoneNumber}
     </update>
 
+	<!-- 通过邮箱修改用户状态 -->
+	<update id="updateStatusByEmail" parameterType="com.solland.paidao.entity.UserDO">
+		UPDATE pd_user_profile SET status = #{status} WHERE email = #{email}
+	</update>
+
 	<!-- 修改用户头像 -->
 	<update id="updateUserHeadPortrait" >
 		UPDATE pd_user_profile SET head_portrait = #{headPortrait} WHERE id = #{id}
