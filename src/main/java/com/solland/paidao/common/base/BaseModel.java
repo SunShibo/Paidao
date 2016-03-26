@@ -1,4 +1,4 @@
-package com.solland.paidao.common;
+package com.solland.paidao.common.base;
 
 import java.io.Serializable;
 

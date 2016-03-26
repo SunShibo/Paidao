@@ -2,6 +2,9 @@ package com.solland.paidao.util.env;
 
 import java.io.IOException;
 import java.util.Properties;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
@@ -12,17 +15,23 @@ import org.springframework.stereotype.Service;
 @Service("env")
 public class Env {
 
+    static final Logger log = LoggerFactory.getLogger(Env.class);
     /**
      * 自动扫描路径
      */
     public static final Resource[] DEFAULT_ENV_RESOURCES = ResourceUtil.getResources(new String[]
             {"classpath:conf/locale/*.properties"}, true);
 
-    public String getProperty(String key) throws IOException {
+    public String getProperty(String key){
         for (Resource resource : DEFAULT_ENV_RESOURCES) {
             if (resource.exists()) {
                 Properties p = new Properties() ;
-                p.load(resource.getInputStream());
+                try {
+                    p.load(resource.getInputStream());
+                } catch (IOException e) {
+                    log.error("[Env - getProperty]  error:" + e);
+                    return null ;
+                }
                 if (p.getProperty(key) != null ) {
                     return p.getProperty(key) ;
                 }
@@ -32,12 +41,7 @@ public class Env {
     }
 
     public String getProperty(String key , String defaultValue) {
-        String value = null ;
-        try {
-            value = this.getProperty(key) ;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        String value = this.getProperty(key) ;
         return  value == null ? defaultValue : value ;
     }
 

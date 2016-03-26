@@ -73,4 +73,13 @@ public interface UserService {
 	 * @return
 	 */
 	public int updateUserStatus(String email , String status) ;
+
+	/**
+	 * 完成用户信息
+	 * @param userId
+	 * @param url
+	 * @param nickname
+	 * @return
+	 */
+	public boolean completeProfile (String userId , String url , String nickname) ;
 }

@@ -46,6 +46,15 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	public boolean completeProfile (String userId , String url , String nickname) {
+		UserDO user = new UserDO() ;
+		user.setId(Integer.parseInt(userId));
+		user.setHeadPortrait(url);
+		user.setNickname(nickname);
+		return userDAO.updateUserHeadPortrait(user) == 0 ? false : true ;
+	}
+
+	@Override
 	public boolean isExistsByUsername(String username) {
 		int count = userDAO.selectCountByUsername(username);
 		

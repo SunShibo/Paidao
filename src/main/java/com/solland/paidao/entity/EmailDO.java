@@ -1,6 +1,6 @@
 package com.solland.paidao.entity;
 
-import com.solland.paidao.common.BaseModel;
+import com.solland.paidao.common.base.BaseModel;
 
 import java.util.Date;
 

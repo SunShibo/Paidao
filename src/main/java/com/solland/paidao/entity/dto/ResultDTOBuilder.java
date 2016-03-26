@@ -1,5 +1,8 @@
 package com.solland.paidao.entity.dto;
 
+import com.solland.paidao.util.StringUtils;
+import com.solland.paidao.util.env.Env;
+
 /**
  * Created by sunshibo on 2016/3/16.
  */
@@ -17,6 +20,13 @@ public class ResultDTOBuilder {
         ResultDTO<String> instance = getInstance(errCode, errMsg, false, "");
         return instance;
     }
+
+    public static ResultDTO failure(String errCode) {
+        Env env = new Env() ;
+        ResultDTO<String> instance = getInstance(errCode, StringUtils.clearNull(env.getProperty(errCode)), false, "");
+        return instance;
+    }
+
 
     public static <T> ResultDTO<T> getInstance(String errCode, String errMsg, boolean success, T data) {
         ResultDTO<T> resultDTO = new ResultDTO<T>();

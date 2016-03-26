@@ -197,9 +197,7 @@ public class UserController extends BaseCotroller {
     }
 
 	/**
-	 * 查询【用户】列表
-	 * 2016年1月12日 下午4:54:16
-	 * @author zhaojiafu
+	 * 发送验证码
 	 */
 	@RequestMapping( value = "/sendVerificationCode" )
 	public void sendVerificationCode(HttpServletResponse response, String email ){
@@ -233,6 +231,12 @@ public class UserController extends BaseCotroller {
 		super.safeJsonPrint(response , json);
 	}
 
+	/**
+	 * 验证验证码
+	 * @param email
+	 * @param response
+	 * @param verificationCode
+	 */
 	@RequestMapping("/checkVeriCodeForSignUp")
 	public void checkVeriCodeForSignUp(@RequestParam("email") String email
 			, HttpServletResponse response, @RequestParam("verificationCode") String verificationCode) {
@@ -256,5 +260,39 @@ public class UserController extends BaseCotroller {
 		String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0010008" , "验证码验证失败!")) ;
 		super.safeJsonPrint(response , json);
 		return ;
+	}
+
+	@RequestMapping("/completeProfile")
+	public void completeProfile( @RequestParam("file") CommonsMultipartFile[] files,@RequestParam("nickname") String nickname ,
+								 HttpServletResponse response, @RequestParam("userId") String userId ) {
+		if (files == null || files.length != 1 || StringUtils.isBlank(userId)) {
+			String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0010004" , "参数异常!")) ;
+			super.safeJsonPrint(response , json);
+			return ;
+		}
+
+		if (!files[0].isEmpty()) {
+			try {
+				String fileName = files[0].getOriginalFilename();
+				String type = fileName.substring(fileName.lastIndexOf(".") + 1);
+				String key = userId + "_" + "HeadPortrait" + "_" + System.currentTimeMillis();
+				String url = ossManage.uploadFile(files[0].getInputStream(), key, type);
+
+				if (userService.completeProfile(userId , url, nickname)) {
+					String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(true)) ;
+					super.safeJsonPrint(response , json);
+				} else {
+					String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0010010" , "保存用户信息失败!")) ;
+					super.safeJsonPrint(response , json);
+				}
+
+				return ;
+			} catch (Exception e) {
+				e.printStackTrace();
+				String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0010010" , "保存用户信息失败!")) ;
+				super.safeJsonPrint(response , json);
+				return ;
+			}
+		}
 	}
 }

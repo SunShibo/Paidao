@@ -3,7 +3,7 @@ package com.solland.paidao.entity;
 import java.io.Serializable;
 import java.util.Date;
 
-import com.solland.paidao.common.BaseModel;
+import com.solland.paidao.common.base.BaseModel;
 
 /**
  * 用户
