@@ -1,8 +1,5 @@
 package com.solland.paidao.service;
 
-import javax.mail.MessagingException;
-import java.io.IOException;
-
 /**
  * 用户
  * @author Shibo-Sun
@@ -11,5 +8,7 @@ import java.io.IOException;
  */
 public interface MailService {
 
-	public boolean sendVerificationCodeForSignUp(String to , String verificationCode ) throws IOException, MessagingException;
+	public boolean sendVerificationCodeForSignUp(String to , String verificationCode );
+
+	public boolean sendVeriCodeForResetPwd(String to , String verificationCode) ;
 }

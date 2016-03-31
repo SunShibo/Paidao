@@ -75,10 +75,8 @@ public class LoginController extends BaseCotroller {
 		}
 
 		/* 4. 登录业务 */
-		String uuid = UUID.randomUUID().toString() ; //生成UUID
-		userBO.setUuid(uuid); // 保存到BO对象，返回给移动端
-		super.putLoginUser(uuid, userBO); // 保存到缓存
-		super.setCookie(response , SysConstants.CURRENT_LOGIN_ID , uuid , SysConstants.SEVEN_DAY_TIME) ;
+		super.putLoginUser(userBO.getUuid(), userBO); // 保存到缓存
+		super.setCookie(response , SysConstants.CURRENT_LOGIN_ID , userBO.getUuid() , SysConstants.SEVEN_DAY_TIME) ;
 
 		/* 5. 返回用户信息 */
 		String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(userBO) , JsonUtils.LONG_DATE_PATTERN) ;

@@ -13,9 +13,9 @@
     <appender name="file"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
         <Encoding>UTF-8</Encoding>
-        <File>/home/paidao.log</File>
+        <File>/home/tomcatLog/paidao.log</File>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <FileNamePattern>/home/paidao-%d{yyyy-MM-dd}.log
+            <FileNamePattern>/home/tomcatLog/paidao-%d{yyyy-MM-dd}.log
             </FileNamePattern>
             <MaxHistory>10</MaxHistory>
             <TimeBasedFileNamingAndTriggeringPolicy
@@ -33,7 +33,7 @@
     <root>
         <!-- 定义了ERROR和INFO级别的日志，分别在FILE文件和控制台输出 -->
         <level value="error" />
-        <level value="debug" />
+        <!--<level value="debug" />-->
         <appender-ref ref="file" />
         <appender-ref ref="console" />
     </root>

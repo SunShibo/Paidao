@@ -1,52 +1,24 @@
 package com.solland.paidao.util;
 
-import com.aliyun.oss.HttpMethod;
-import com.aliyun.oss.OSSClient;
-import com.aliyun.oss.common.utils.DateUtil;
-import com.aliyun.oss.model.*;
+import java.io.InputStream;
+
 import org.springframework.stereotype.Service;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import com.aliyun.oss.OSSClient;
+import com.aliyun.oss.model.AppendObjectRequest;
+import com.aliyun.oss.model.AppendObjectResult;
+import com.aliyun.oss.model.ObjectMetadata;
+import com.aliyun.oss.model.PutObjectResult;
 
 /**
  * Created by sunshibo on 2016/3/17.
  */
 @Service("ossManage")
 public class OssManage {
-    public static  String ACCESS_KEY_ID  = null;
-    public static  String  ACCESS_KEY_SECRET = null;
-    public static  String  ENDPOINT = null;
-    public static  String  BUCKETNAME = null;
-//    public static  String  BUCKETNAME_VIDEO = null;
-//    public static String OUT_OF_DATE = null;
-    private OSSClient client  = null;
-    private ObjectMetadata meta = null;
-    static{
-        try {
-            ACCESS_KEY_ID  = "2NcaNTwp5kZxxQ83";
-            ACCESS_KEY_SECRET = "VU2kscTuqh23vZaWnwcnC9Vpojf4s8";
-//            ENDPOINT = "oss-cn-beijing.aliyuncs.com";
-            ENDPOINT = "https://oss-cn-beijing.aliyuncs.com";
-            BUCKETNAME = "paidao"; // Bucket是OSS全局命名空间，相当于数据的容器，可以存储若干Object。
-//            BUCKETNAME_VIDEO = SysConst.getProperty("OSS_BUCKETNAME_VIDEO");
-//            OUT_OF_DATE = SysConst.getProperty("OSS_OUT_OF_DATE");
-        } catch (java.lang.Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void init(){
-        // 初始化一个OSSClient
-        client = new OSSClient(ENDPOINT,ACCESS_KEY_ID, ACCESS_KEY_SECRET);
-        meta = new ObjectMetadata();
-    }
+    public static final String ACCESS_KEY_ID  = "2NcaNTwp5kZxxQ83";
+    public static final String  ACCESS_KEY_SECRET = "VU2kscTuqh23vZaWnwcnC9Vpojf4s8";
+    public static final String  ENDPOINT = "https://oss-cn-beijing.aliyuncs.com";
+    public static final String  BUCKETNAME = "paidao";
 
     /**
      * @Description: 上传文件到OSS文件服务器
@@ -57,13 +29,15 @@ public class OssManage {
      * @ReturnType:String   图片的url
      */
     public String uploadFile(InputStream content,String key,String mimeType) throws Exception {
-        //进行初始化
-        init();
+
+        OSSClient client  = new OSSClient(ENDPOINT,ACCESS_KEY_ID, ACCESS_KEY_SECRET) ;
+        ObjectMetadata meta = new ObjectMetadata();
         // 必须设置ContentLength
         meta.setContentType(mimeType);
         // 上传Object.
         String url = "http://"+BUCKETNAME+".oss-cn-beijing.aliyuncs.com/" +  key;
-        PutObjectResult result = client.putObject(BUCKETNAME, key, content, meta);
+        client.putObject(BUCKETNAME, key, content, meta);
+        client.shutdown();
         return url;
 
     }
@@ -138,8 +112,9 @@ public class OssManage {
      * @ReturnType:void
      */
     public void deleteFile(String key){
-        init();
-        client.deleteObject(BUCKETNAME, key);
+        OSSClient ossClient = new OSSClient(ENDPOINT, ACCESS_KEY_ID, ACCESS_KEY_SECRET);
+        ossClient.deleteObject(BUCKETNAME, key);
+        ossClient.shutdown();
     }
 
 
@@ -151,7 +126,8 @@ public class OssManage {
      */
     public String  appendObjectFile(InputStream content,String key,int position,String mimeType) throws Exception{
         //进行初始化
-        init();
+        OSSClient client  = new OSSClient(ENDPOINT,ACCESS_KEY_ID, ACCESS_KEY_SECRET) ;
+        ObjectMetadata meta = new ObjectMetadata();
         // 必须设置ContentLength
         meta.setContentLength(position);
         meta.setContentType(mimeType);
@@ -163,6 +139,7 @@ public class OssManage {
         appendObjectRequest.setPosition(Long.valueOf(position));
         AppendObjectResult appendObjectResult =client.appendObject(appendObjectRequest);
         System.out.println("*****************断点上传图片到oss服务器结束*****************" + key);
+        client.shutdown();
         return appendObjectResult.getNextPosition().toString();
     }
 

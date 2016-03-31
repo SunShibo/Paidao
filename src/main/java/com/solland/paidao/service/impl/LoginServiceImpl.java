@@ -11,6 +11,8 @@ import com.solland.paidao.entity.bo.UserBO;
 import com.solland.paidao.entity.dto.param.LoginParam;
 import com.solland.paidao.service.LoginService;
 
+import java.util.UUID;
+
 /**
  * 登录
  * @author zhaojiafu
@@ -29,9 +31,16 @@ public class LoginServiceImpl implements LoginService {
 	 * @return 返回用户记录
 	 */
 	public UserBO login(LoginParam loginParam) {
-		return userDAO.login(loginParam.getAccount() , MD5Util.digest(loginParam.getPassword()));
+		UserBO login = userDAO.login(loginParam.getAccount(), MD5Util.digest(loginParam.getPassword()));
+		login.setUuid(UUID.randomUUID().toString());
+		return login ;
 	}
-	
+
+	public UserBO loginByIdNoPwd (int userId) {
+		UserBO login = userDAO.loginById(userId);
+		login.setUuid(UUID.randomUUID().toString());
+		return login ;
+	}
 	/*@Override
 	public UserBO isLogin(String loginId) {
 		return (UserBO) RedisUtil.get(loginId) ;

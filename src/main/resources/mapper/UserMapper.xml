@@ -16,7 +16,6 @@
         ]]>
     </insert>
     
-    <!-- 根据【用户名】查询【用户】 -->
     <select id="login" resultType="com.solland.paidao.entity.bo.UserBO">
     	SELECT
             id ,nickname ,gender ,username ,password ,birthday ,location ,
@@ -28,6 +27,17 @@
             ( username = #{account} or email = #{account} or phone_number = #{account} )
             AND password = #{password}
     </select>
+
+	<select id="loginById" resultType="com.solland.paidao.entity.bo.UserBO">
+		SELECT
+		id ,nickname ,gender ,username ,password ,birthday ,location ,
+		head_portrait ,phone_number ,email ,wechat ,sina_weibo ,
+		create_time ,modify_time ,twiter ,facebook ,linkedin ,status
+		FROM
+		pd_user_profile
+		WHERE
+		id = #{id} AND status = 'status_normal'
+	</select>
 
 	<!-- 通过邮箱查找用户 -->
 	<select id="selectUserByEmail" resultType="com.solland.paidao.entity.bo.UserBO">
@@ -49,11 +59,6 @@
     <select id="selectCountByMobileCode" parameterType="String" resultType="int">
     	SELECT count(1) FROM pd_user_profile WHERE phone_number = #{phoneNumber}
     </select>
-    
-    <!-- 根据【手机号】更新【密码】 -->
-    <update id="updatePasswordByMobileCode" parameterType="com.solland.paidao.entity.UserDO">
-    	UPDATE pd_user_profile SET password = #{password} WHERE phone_number = #{phoneNumber}
-    </update>
 
 	<!-- 通过邮箱修改用户状态 -->
 	<update id="updateStatusByEmail" parameterType="com.solland.paidao.entity.UserDO">
@@ -63,6 +68,14 @@
 	<!-- 修改用户头像 -->
 	<update id="updateUserHeadPortrait" >
 		UPDATE pd_user_profile SET head_portrait = #{headPortrait} WHERE id = #{id}
+	</update>
+
+	<update id="completeProfile" parameterType="com.solland.paidao.entity.UserDO">
+		UPDATE pd_user_profile SET head_portrait = #{headPortrait} , nickname = #{nickname} WHERE id = #{id}
+	</update>
+
+	<update id="updatePasswordByEmail" parameterType="com.solland.paidao.entity.UserDO">
+		UPDATE pd_user_profile SET password = #{password} WHERE email = #{email}
 	</update>
     
     <!-- 更加【手机号】更新【用户】信息 -->

@@ -1,17 +1,19 @@
 package com.solland.paidao.web.controller;
 
-import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
-import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.solland.paidao.common.constants.SysConstants;
+import com.solland.paidao.entity.bo.UserBO;
+import com.solland.paidao.service.impl.LoginServiceImpl;
+import com.solland.paidao.util.MD5Util;
+import net.sf.json.JSON;
+import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
+import com.solland.paidao.common.constants.SysConstants;
 import com.solland.paidao.entity.UserDO;
 import com.solland.paidao.entity.dto.ResultDTO;
 import com.solland.paidao.entity.dto.ResultDTOBuilder;
@@ -53,6 +56,9 @@ public class UserController extends BaseCotroller {
 	@Resource(name = "mailService")
 	MailService mailService ;
 
+	@Resource(name = "loginService")
+	LoginServiceImpl loginService ;
+
 	/**
 	 * 用户注册
 	 * @param request
@@ -83,13 +89,7 @@ public class UserController extends BaseCotroller {
 		registerService.register(userDO);
 		// 发送邮件
 		int code = (int)(Math.random() * 9000 + 1000) ;
-		try {
-			mailService.sendVerificationCodeForSignUp(userDO.getEmail() , code + "") ;
-		} catch (IOException e) {
-			log.error("[UserController - signUp] 发送邮件失败 To:" + userDO.getEmail() + ". error:" + e);
-		} catch (MessagingException e) {
-			log.error("[UserController - signUp] 发送邮件失败 To:" + userDO.getEmail() + ". error:" + e);
-		}
+		mailService.sendVerificationCodeForSignUp(userDO.getEmail() , code + "") ;
 
 		Object obj = super.getPublicSession(userDO.getEmail() + "registerSendVerificationCode") ;
 		if (obj != null && obj instanceof Map) {
@@ -101,7 +101,9 @@ public class UserController extends BaseCotroller {
 		}
 
 		// 注册成功返回用户id
-		String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(userDO.getId())) ;
+		JSONObject data = new JSONObject() ;
+		data.put("userId" , userDO.getId()) ;
+		String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(data.toString())) ;
 		super.safeJsonPrint(response , json);
 	}
 
@@ -141,60 +143,6 @@ public class UserController extends BaseCotroller {
 		}
 
 	}
-	/**
-     * 根据【手机号】更新【用户】信息
-     * 2016年1月7日 下午3:30:31
-     * @author zhaojiafu
-     * @param response
-     * @param userDO
-     */
-    @RequestMapping(value = "updateUserByMobileCode" )
-    public void updateUserByMobileCode(HttpServletRequest request, HttpServletResponse response, UserDO userDO){
-    	String json = null;
-    	
-    	/* 1. 验证参数是否完整  */
-    	if(null == userDO || StringUtils.isEmpty(userDO.getPhoneNumber())){
-    		json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001" , "参数异常!")) ;
-    		super.safeJsonPrint(response , json);
-
-    		return;
-    	}
-    	
-    	String projectRootPath = request.getSession().getServletContext().getRealPath("/");        // 项目目录
-    	MultipartRequest multipartRequest = null;
-    	
-    	/* 3. 执行更新【用户】*/
-    	userService.updateUserByMobileCode(multipartRequest, userDO, projectRootPath);
-    	
-    	/* 4. 返回提示信息到客户端 */
-    	json = JsonUtils.getJsonString4JavaPOJO(new ResultDTO("更新【用户】信息成功。")) ;
-		super.safeJsonPrint(response , json);
-
-    }
-
-    /**
-     * 查询【用户】列表
-     * 2016年1月12日 下午4:54:16
-     * @author zhaojiafu
-     */
-    @RequestMapping( value = "/selectUserList" )
-    public void selectUserList(HttpServletResponse response, UserDO userDO){
-    	String json = null;
-    	
-    	/* 1. 验证参数是否完整  */
-    	if(null == userDO){
-    		json = JsonUtils.getJsonString4JavaPOJO(new ResultDTO(false , "0" , "参数异常!")) ;
-    		super.safeJsonPrint(response , json);
-    		return;
-    	}
-
-    	/* 2. 执行查询【用户】列表 */
-    	List<UserDO> userList = userService.selectUserList(userDO);
-    	
-    	/* 3. 返回提示信息到客户端 */
-    	json = JsonUtils.getJsonString4JavaPOJO(new ResultDTO(userList)) ;
-		super.safeJsonPrint(response , json);
-    }
 
 	/**
 	 * 发送验证码
@@ -203,24 +151,13 @@ public class UserController extends BaseCotroller {
 	public void sendVerificationCode(HttpServletResponse response, String email ){
 		// 发送邮件
 		int code = (int)(Math.random() * 9000 + 1000) ;
-		try {
-			mailService.sendVerificationCodeForSignUp(email , code + "") ; // 发送验证码
-		} catch (IOException e) {
-			log.error("[UserController - signUp] 发送邮件失败 To:" + email + ". error:" + e);
-			String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0010009" , "验证码发送失败！")) ;
-			super.safeJsonPrint(response , json);
-			return ;
-		} catch (MessagingException e) {
-			log.error("[UserController - signUp] 发送邮件失败 To:" + email + ". error:" + e);
-			String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0010009" , "验证码发送失败！")) ;
-			super.safeJsonPrint(response , json);
-			return ;
-		}
+		mailService.sendVerificationCodeForSignUp(email , code + "") ; // 发送验证码
 
 		// 存入redis
 		Object obj = super.getPublicSession(email + "registerSendVerificationCode") ;
 		if (obj != null && obj instanceof Map) {
 			((Map) obj).put(code + "" , new Date()) ;
+			super.putPublicSession(email + "registerSendVerificationCode" , obj);
 		} else {
 			Map<String , Date> map = new HashMap<String, Date>() ;
 			map.put(code + "", new Date()) ;
@@ -232,7 +169,7 @@ public class UserController extends BaseCotroller {
 	}
 
 	/**
-	 * 验证验证码
+	 * 检查验证码
 	 * @param email
 	 * @param response
 	 * @param verificationCode
@@ -241,12 +178,13 @@ public class UserController extends BaseCotroller {
 	public void checkVeriCodeForSignUp(@RequestParam("email") String email
 			, HttpServletResponse response, @RequestParam("verificationCode") String verificationCode) {
 
+		/* 1.检查基本的参数*/
 		if(StringUtils.isBlank(email) || StringUtils.isBlank(verificationCode)){
 			String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0010004" , "参数异常!")) ;
 			super.safeJsonPrint(response , json);
 			return ;
 		}
-
+		/* 2.验证缓存中的验证码数据*/
 		Object obj = super.getPublicSession(email + "registerSendVerificationCode") ;
 		if (obj != null && obj instanceof Map) {
 			Date createTime = ((Map<String , Date>) obj).get(verificationCode + "") ;
@@ -257,9 +195,9 @@ public class UserController extends BaseCotroller {
 				return ;
 			}
 		}
+		/* 3.验证失败返回结果*/
 		String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0010008" , "验证码验证失败!")) ;
 		super.safeJsonPrint(response , json);
-		return ;
 	}
 
 	@RequestMapping("/completeProfile")
@@ -279,20 +217,117 @@ public class UserController extends BaseCotroller {
 				String url = ossManage.uploadFile(files[0].getInputStream(), key, type);
 
 				if (userService.completeProfile(userId , url, nickname)) {
-					String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(true)) ;
+					String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("")) ;
 					super.safeJsonPrint(response , json);
+
+					/*  登录业务 */
+					UserBO userBO = loginService.loginByIdNoPwd(Integer.parseInt(userId));
+					super.putLoginUser(userBO.getUuid(), userBO); // 保存到缓存
+					super.setCookie(response , SysConstants.CURRENT_LOGIN_ID , userBO.getUuid() , SysConstants.SEVEN_DAY_TIME) ;
 				} else {
-					String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0010010" , "保存用户信息失败!")) ;
+					String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0010010", "保存用户信息失败!")) ;
 					super.safeJsonPrint(response , json);
 				}
-
-				return ;
 			} catch (Exception e) {
 				e.printStackTrace();
 				String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0010010" , "保存用户信息失败!")) ;
 				super.safeJsonPrint(response , json);
+			}
+		}
+	}
+
+	/**
+	 * 重置密码发送有验证码
+	 * @param response
+	 * @param email
+	 */
+	@RequestMapping("/sendVeriCodeForResetPwd")
+	public void sendVeriCodeForResetPwd( HttpServletResponse response, @RequestParam("email") String email ) {
+		if (StringUtils.isBlank(email)) {
+			String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0010004" , "参数异常!")) ;
+			super.safeJsonPrint(response , json);
+			return ;
+		}
+
+		// 发送邮件
+		int code = (int)(Math.random() * 9000 + 1000) ;
+		mailService.sendVeriCodeForResetPwd(email, code + "");
+
+		Object obj = super.getPublicSession(email + "sendVeriCodeForResetPwd") ;
+		if (obj != null && obj instanceof Map) {
+			((Map) obj).put(code + "" , new Date()) ;
+			super.putPublicSession(email + "sendVeriCodeForResetPwd" , obj);
+		} else {
+			Map<String , Date> map = new HashMap<String, Date>() ;
+			map.put(code + "", new Date()) ;
+			super.putPublicSession(email + "sendVeriCodeForResetPwd" , map);
+		}
+
+		String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("")) ;
+		super.safeJsonPrint(response , json);
+
+	}
+
+	/**
+	 * 检查重置密码的验证码
+	 * @param email
+	 * @param response
+	 * @param verificationCode
+	 */
+	@RequestMapping("/checkVeriCodeForResetPwd")
+	public void checkVeriCodeForResetPwd(@RequestParam("email") String email
+			, HttpServletResponse response, @RequestParam("verificationCode") String verificationCode) {
+
+		/* 1.检查基本的参数*/
+		if(StringUtils.isBlank(email) || StringUtils.isBlank(verificationCode)){
+			String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0010004" , "参数异常!")) ;
+			super.safeJsonPrint(response , json);
+			return ;
+		}
+		/* 2.验证缓存中的验证码数据*/
+		Object obj = super.getPublicSession(email + "sendVeriCodeForResetPwd") ;
+		if (obj != null && obj instanceof Map) {
+			Date createTime = ((Map<String , Date>) obj).get(verificationCode + "") ;
+			if (createTime != null && (System.currentTimeMillis() - createTime.getTime()) < SysConstants.MINUTE_TIME * 30) {
+				String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("")) ;
+				super.safeJsonPrint(response , json);
 				return ;
 			}
 		}
+		/* 3.验证失败返回结果*/
+		String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0010008" , "验证码验证失败!")) ;
+		super.safeJsonPrint(response , json);
+	}
+
+	@RequestMapping("/updatePwd")
+	public void updatePwd(@RequestParam("email") String email, HttpServletResponse response,
+						  @RequestParam("verificationCode") String verificationCode ,
+						  @RequestParam("newPwd") String newPwd) {
+
+		/* 1.检查基本的参数*/
+		if(StringUtils.isBlank(email) || StringUtils.isBlank(verificationCode)){
+			String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0010004" , "参数异常!")) ;
+			super.safeJsonPrint(response , json);
+			return ;
+		}
+		/* 2.验证缓存中的验证码数据*/
+		Object obj = super.getPublicSession(email + "sendVeriCodeForResetPwd") ;
+		if (obj != null && obj instanceof Map) {
+			Date createTime = ((Map<String , Date>) obj).get(verificationCode + "") ;
+			if (createTime != null && (System.currentTimeMillis() - createTime.getTime()) < SysConstants.MINUTE_TIME * 30) {
+
+				if (userService.updatePwd(email , MD5Util.digest(newPwd))) {
+					String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("")) ;
+					super.safeJsonPrint(response , json);
+				}else {
+					String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0010011")) ;
+					super.safeJsonPrint(response , json);
+				}
+				return ;
+			}
+		}
+		/* 3.验证失败返回结果*/
+		String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0010008" , "验证码验证失败!")) ;
+		super.safeJsonPrint(response , json);
 	}
 }

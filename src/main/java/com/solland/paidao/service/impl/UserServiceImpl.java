@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
 		user.setId(Integer.parseInt(userId));
 		user.setHeadPortrait(url);
 		user.setNickname(nickname);
-		return userDAO.updateUserHeadPortrait(user) == 0 ? false : true ;
+		return userDAO.completeProfile(user) == 0 ? false : true ;
 	}
 
 	@Override
@@ -75,55 +75,7 @@ public class UserServiceImpl implements UserService {
 			return true;
 		}
 	}
-	
-	@Override
-	public void updateUserByMobileCode(MultipartRequest multipartRequest, UserDO userDO, String projectRootPath) {
-		if (null != multipartRequest) {
-			List<MultipartFile> multipartFileList = multipartRequest.getFiles("fileToUpload");
-			
-			if(null == multipartFileList || 0 == multipartFileList.size()){
-				return;
-			}
-			
-			CommonsMultipartFile commonsMultipartFile = (CommonsMultipartFile) multipartFileList.get(0);
 
-			if (null == commonsMultipartFile || 0 == commonsMultipartFile.getSize()) {
-				return;
-			}
-
-			String headPortraitFolderAbsolutePath = projectRootPath + "upload/user/headPortrait/"; // 存储头像的绝对路径
-
-			File headPortraitFolderFile = new File(headPortraitFolderAbsolutePath);
-			if (!headPortraitFolderFile.exists()) {
-				headPortraitFolderFile.mkdir(); // 创建【头像】文件夹
-			}
-
-			String originalFileName = commonsMultipartFile.getOriginalFilename();	// 获取【源文件名】
-			String extensionName = originalFileName.substring(originalFileName.lastIndexOf(".")); // 获取【扩展名】
-			String systemHeadPortraitName = StringUtils.UUIDGenerator(); // 生成【系统头像文件】的名字
-			String systemHeadPortraitAbsolutePath = projectRootPath + "upload/user/headPortrait/"
-					+ systemHeadPortraitName + extensionName;
-			File celebrityImageFile = new File(systemHeadPortraitAbsolutePath); //
-
-			try {
-				commonsMultipartFile.transferTo(celebrityImageFile);
-				// FileUtils.copyInputStreamToFile(commonsMultipartFile.getInputStream(),
-				// celebrityImageFile);
-			} catch (IllegalStateException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
-		}
-
-		userDAO.updateUserByMobileCode(userDO);
-	}
-	
-	@Override
-	public List<UserDO> selectUserList(UserDO userDO) {
-		return userDAO.selectUserList(userDO);
-	}
 
 	@Override
 	public int updateUserStatus(String email, String status) {
@@ -140,5 +92,12 @@ public class UserServiceImpl implements UserService {
 	 */
 	public boolean isExistsByEmail(String email) {
 		return CollectionUtils.isNotEmpty(userDAO.selectUserByEmail(email)) ;
+	}
+
+	public boolean updatePwd (String email , String newPwd) {
+		UserDO userDO = new UserDO() ;
+		userDO.setEmail(email);
+		userDO.setPassword(newPwd);
+		return userDAO.updatePasswordByEmail(userDO) == 0 ? false : true ;
 	}
 }

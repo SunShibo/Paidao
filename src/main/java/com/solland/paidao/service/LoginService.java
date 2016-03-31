@@ -16,6 +16,13 @@ public interface LoginService {
 	 * @return
 	 */
 	public UserBO login (LoginParam loginParam);
+
+	/**
+	 * 通过id获取登录对象
+	 * @param userId
+	 * @return
+	 */
+	public UserBO loginByIdNoPwd (int userId) ;
 	
 	/**
 	 * 是否已登录

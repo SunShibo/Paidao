@@ -24,6 +24,13 @@ public interface UserDAO {
     public UserBO login(@Param("account") String account , @Param("password") String password) ;
 
     /**
+     * 通过id登录
+     * @param id
+     * @return 返回该账户的用户信息
+     */
+    public UserBO loginById(@Param("id") int id) ;
+
+    /**
      * 修改用户头像
      * @param userDO
      * @return
@@ -93,4 +100,18 @@ public interface UserDAO {
      * @return
      */
     List<UserDO> selectUserByEmail(@Param("email")String email) ;
+
+    /**
+     * 完成用户信息
+     * @param user
+     * @return
+     */
+    public int completeProfile (UserDO user) ;
+
+    /**
+     * 通过邮箱修改用户密码
+     * @param user
+     * @return
+     */
+    public int updatePasswordByEmail (UserDO user) ;
 }

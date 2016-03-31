@@ -48,23 +48,7 @@ public interface UserService {
 	 * @return
 	 */
 	public boolean isExistsByEmail(String email) ;
-	
-	/**
-	 * 根据【手机号】更新【用户】
-	 * 2016年1月7日 下午3:00:56
-	 * @author zhaojiafu
-	 * @param userDO
-	 */
-	void updateUserByMobileCode(MultipartRequest multipartRequest, UserDO userDO, String projectRootPath);
-	
-	/**
-	 * 查询【用户】列表
-	 * 2016年1月12日 下午4:51:28
-	 * @author zhaojiafu
-	 * @param userDO
-	 * @return
-	 */
-	public List<UserDO> selectUserList(UserDO userDO);
+
 
 	/**
 	 * 修改用户状态
@@ -82,4 +66,12 @@ public interface UserService {
 	 * @return
 	 */
 	public boolean completeProfile (String userId , String url , String nickname) ;
+
+	/**
+	 * 通过邮箱修改用户密码
+	 * @param email
+	 * @param newPwd
+	 * @return
+	 */
+	public boolean updatePwd (String email , String newPwd) ;
 }

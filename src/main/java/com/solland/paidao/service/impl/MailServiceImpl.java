@@ -7,6 +7,8 @@ import java.util.regex.Pattern;
 import javax.annotation.Resource;
 import javax.mail.MessagingException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Service;
@@ -25,23 +27,47 @@ import com.solland.paidao.util.env.Env;
  */
 @Service("mailService")
 public class MailServiceImpl implements MailService {
+
+	static final Logger log = LoggerFactory.getLogger(MailServiceImpl.class);
+
 	@Resource
     private EmailDAO emailDAO;
 
 	@Override
-	public boolean sendVerificationCodeForSignUp(String to , String verificationCode ) throws IOException, MessagingException {
+	public boolean sendVerificationCodeForSignUp(String to , String verificationCode ){
+		try {
+			MailUtil mailUtil = new MailUtil() ;
+			Env env = new Env() ;
+			String html = env.getProperty("mail.sendCodeForSignUp") ;
+			String subject = env.getProperty("mail.register.sendVerificationCode") ;
 
-		MailUtil mailUtil = new MailUtil() ;
-		Env env = new Env() ;
+			String format = html.replace("{0}", verificationCode);
+			mailUtil.sendHTMLMail(subject ,format , to );
+			this.insertEmail(format , to , "success" , subject , verificationCode) ;
+			return true ;
+		} catch (MessagingException e) {
+			e.printStackTrace();
+			log.error("[MailServiceImpl - sendVerificationCodeForSignUp] 邮件发送失败.error:" + e.getStackTrace());
+		}
+		return false ;
+	}
 
-		String html = env.getProperty("mail.sendCode") ;
-		String subject = env.getProperty("mail.register.sendVerificationCode") ;
+	public boolean sendVeriCodeForResetPwd(String to , String verificationCode) {
+		try {
+			MailUtil mailUtil = new MailUtil() ;
+			Env env = new Env() ;
+			String html = env.getProperty("mail.sendCodeForResetPwdHTML") ;
+			String subject = env.getProperty("mail.sendCodeForResetPwd.subject") ;
 
-		String format = html.replace("{0}", verificationCode);
-		mailUtil.sendHTMLMail(subject ,format , to );
-
-		this.insertEmail(format , to , "success" , subject , "") ;
-		return true ;
+			String format = html.replace("{0}", verificationCode);
+			mailUtil.sendHTMLMail(subject ,format , to );
+			this.insertEmail(format , to , "success" , subject , verificationCode) ;
+			return true ;
+		} catch (MessagingException e) {
+			e.printStackTrace();
+			log.error("[MailServiceImpl - sendVerificationCodeForSignUp] 邮件发送失败.error:" + e.getStackTrace());
+		}
+		return false ;
 	}
 
 	private int insertEmail (String content , String to , String result , String subject , String description) {
@@ -52,15 +78,6 @@ public class MailServiceImpl implements MailService {
 		emailDO.setSubject(subject);
 		emailDO.setDescription(description);
 		return emailDAO.insert(emailDO) ;
-	}
-
-
-	public static void main(String[] args) throws IOException, MessagingException {
-		ApplicationContext ac = new ClassPathXmlApplicationContext("classpath:conf/spring/application-context.xml") ;
-		MailServiceImpl app = (MailServiceImpl) ac.getBean("mailService") ;
-		app.sendVerificationCodeForSignUp("395831708@qq.com" , "4654") ;
-
-
 	}
 
 	private static String fillStringByArgs(String str,String[] arr){
