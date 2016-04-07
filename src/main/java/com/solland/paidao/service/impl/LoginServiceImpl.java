@@ -32,6 +32,9 @@ public class LoginServiceImpl implements LoginService {
 	 */
 	public UserBO login(LoginParam loginParam) {
 		UserBO login = userDAO.login(loginParam.getAccount(), MD5Util.digest(loginParam.getPassword()));
+		if (login == null ) {
+			return null ;
+		}
 		login.setUuid(UUID.randomUUID().toString());
 		return login ;
 	}

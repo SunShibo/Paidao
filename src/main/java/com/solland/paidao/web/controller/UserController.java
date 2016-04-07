@@ -121,9 +121,9 @@ public class UserController extends BaseCotroller {
 			try {
 				String fileName = files[0].getOriginalFilename();
 				String type = fileName.substring(fileName.lastIndexOf(".") + 1);
-				String key = userId + "_" + "HeadPortrait" + "_" + System.currentTimeMillis();
+				String key = "sunshibo/" + userId + "_" + "HeadPortrait" + "_" + System.currentTimeMillis();
 				String url = ossManage.uploadFile(files[0].getInputStream(), key, type);
-
+				System.out.println(">>>>>>>>>>>>>>>>>>>>>>" + url);
 				if (userService.updateUserHeadPortrait(userId , url)) {
 					String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(true)) ;
 					super.safeJsonPrint(response , json);
@@ -213,7 +213,7 @@ public class UserController extends BaseCotroller {
 			try {
 				String fileName = files[0].getOriginalFilename();
 				String type = fileName.substring(fileName.lastIndexOf(".") + 1);
-				String key = userId + "_" + "HeadPortrait" + "_" + System.currentTimeMillis();
+				String key = userId + "/" + "HeadPortrait" + "/" + System.currentTimeMillis();
 				String url = ossManage.uploadFile(files[0].getInputStream(), key, type);
 
 				if (userService.completeProfile(userId , url, nickname)) {

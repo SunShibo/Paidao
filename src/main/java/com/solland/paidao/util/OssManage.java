@@ -28,7 +28,7 @@ public class OssManage {
      * @throws Exception
      * @ReturnType:String   图片的url
      */
-    public String uploadFile(InputStream content,String key,String mimeType) throws Exception {
+    public String uploadFile(InputStream content,String key,String mimeType){
 
         OSSClient client  = new OSSClient(ENDPOINT,ACCESS_KEY_ID, ACCESS_KEY_SECRET) ;
         ObjectMetadata meta = new ObjectMetadata();

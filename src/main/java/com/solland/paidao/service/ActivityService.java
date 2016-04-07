@@ -1,9 +1,12 @@
 package com.solland.paidao.service;
 
+import java.io.IOException;
 import java.util.List;
 
 import com.solland.paidao.entity.ActivityDO;
 import com.solland.paidao.entity.bo.ActivityBO;
+import com.solland.paidao.entity.dto.param.AddActivityParam;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 /**
  * 活动圈
@@ -16,9 +19,9 @@ public interface ActivityService {
 	 * 添加【活动圈】
 	 * 2016年1月8日 下午2:41:24
 	 * @author zhaojiafu
-	 * @param activityDO
+	 * @param addActivityParam
 	 */
-	void insertActivity(ActivityDO activityDO);
+	boolean insertActivity(AddActivityParam addActivityParam , CommonsMultipartFile[] files) throws IOException;
 	
 	/**
 	 * 根据【ID】更新【活动圈】

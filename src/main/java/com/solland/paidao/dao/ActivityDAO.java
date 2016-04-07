@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.solland.paidao.entity.ActivityDO;
 import com.solland.paidao.entity.bo.ActivityBO;
+import com.solland.paidao.entity.dto.param.AddActivityParam;
 
 /**
  * 活动圈
@@ -18,7 +19,7 @@ public interface ActivityDAO {
 	 * @author zhaojiafu
 	 * @param activityDO
 	 */
-	void insertActivity(ActivityDO activityDO);
+	int insertActivity(ActivityDO activityDO);
 	
 	/**
 	 * 根据【ID】更新【活动圈】
@@ -32,7 +33,7 @@ public interface ActivityDAO {
 	 * 根据【ID】查询【活动圈】
 	 * 2016年1月8日 下午2:44:14
 	 * @author zhaojiafu
-	 * @param activityDO
+	 * @param id
 	 */
 	ActivityDO selectActivityById(int id);
 

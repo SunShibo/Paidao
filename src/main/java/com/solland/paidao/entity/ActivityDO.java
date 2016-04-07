@@ -10,25 +10,20 @@ import java.io.Serializable;
  */
 @SuppressWarnings("serial")
 public class ActivityDO implements Serializable {
-	private int id;		// ID
-	private int issuerId;	// 发布人ID
+	private Integer id;		// ID
+	private Integer userId;	// 发布人ID
 	private String tags;	// 标签集
 	private String position;	// 位置
-//	private String shortMessage;	// 短消息
-//	private String imagePaths;		// 图片路径集
-//	private String videoPaths;		// 视频路径集
 	private String mediaType;		// 媒体类型（image-图片；video-视频）
 	private String mediaPaths;		// 媒体路径集
-//	private String voicePath;		// 音频路径
 	private String descriptionVoicePath;		// 音频路径
-	private String descriptionType;		// 描述类型：voice-语音、text-文本
-	private String descriptionText;		// 文本描述
-	private int likeNum;		// 被赞的数量
-	private int heatValue;		// 热度值
-	private int commentNum;	// 评论数
-	private int enshrineNum;	// 收藏数
-	private String longitude;	// 经度
-	private String latitude;	// 纬度
+	private String description;		// 文本描述
+	private Integer likeNum;		// 被赞的数量
+	private Integer heatValue;		// 热度值
+	private Integer commentNum;	// 评论数
+	private Integer enshrineNum;	// 收藏数
+	private Double longitude;	// 经度
+	private Double latitude;	// 纬度
 	private String geohash;		// Geohash值
 	private String status;	// 状态：illegal-违规、normal-正常
 	private String createTime;		// 创建时间
@@ -38,20 +33,20 @@ public class ActivityDO implements Serializable {
 		// TODO Auto-generated constructor stub
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
-	public int getIssuerId() {
-		return issuerId;
+	public Integer getUserId() {
+		return userId;
 	}
 
-	public void setIssuerId(int issuerId) {
-		this.issuerId = issuerId;
+	public void setUserId(Integer userId) {
+		this.userId = userId;
 	}
 
 	public String getTags() {
@@ -94,67 +89,59 @@ public class ActivityDO implements Serializable {
 		this.descriptionVoicePath = descriptionVoicePath;
 	}
 
-	public String getDescriptionText() {
-		return descriptionText;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setDescriptionText(String descriptionText) {
-		this.descriptionText = descriptionText;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
-	public String getDescriptionType() {
-		return descriptionType;
-	}
-
-	public void setDescriptionType(String descriptionType) {
-		this.descriptionType = descriptionType;
-	}
-
-	public int getLikeNum() {
+	public Integer getLikeNum() {
 		return likeNum;
 	}
 
-	public void setLikeNum(int likeNum) {
+	public void setLikeNum(Integer likeNum) {
 		this.likeNum = likeNum;
 	}
 
-	public int getHeatValue() {
+	public Integer getHeatValue() {
 		return heatValue;
 	}
 
-	public void setHeatValue(int heatValue) {
+	public void setHeatValue(Integer heatValue) {
 		this.heatValue = heatValue;
 	}
 
-	public int getCommentNum() {
+	public Integer getCommentNum() {
 		return commentNum;
 	}
 
-	public void setCommentNum(int commentNum) {
+	public void setCommentNum(Integer commentNum) {
 		this.commentNum = commentNum;
 	}
 
-	public int getEnshrineNum() {
+	public Integer getEnshrineNum() {
 		return enshrineNum;
 	}
 
-	public void setEnshrineNum(int enshrineNum) {
+	public void setEnshrineNum(Integer enshrineNum) {
 		this.enshrineNum = enshrineNum;
 	}
 
-	public String getLongitude() {
+	public Double getLongitude() {
 		return longitude;
 	}
 
-	public void setLongitude(String longitude) {
+	public void setLongitude(Double longitude) {
 		this.longitude = longitude;
 	}
 
-	public String getLatitude() {
+	public Double getLatitude() {
 		return latitude;
 	}
 
-	public void setLatitude(String latitude) {
+	public void setLatitude(Double latitude) {
 		this.latitude = latitude;
 	}
 
