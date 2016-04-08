@@ -10,6 +10,7 @@ import javax.annotation.Resource;
 
 import com.solland.paidao.entity.dto.param.QueryActivityParam;
 import com.solland.paidao.util.page.Page;
+import com.solland.paidao.util.page.PageBuilder;
 import com.solland.paidao.util.page.QueryObj;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -53,13 +54,14 @@ public class ActivityServiceImpl implements ActivityService {
 		return activityDAO.insertActivity(activityDO) > 0 ? true : false ;
 	}
 
-	public Page<ActivityDO> getActivity (QueryActivityParam queryActivityParam , QueryObj queryObj) {
+	public Page<ActivityDO> getActivityPage (QueryActivityParam queryActivityParam , QueryObj queryObj) {
 		Map map = new HashMap() ;
 		map.put("offset" , queryObj.getPageOffset()) ;
 		map.put("itemId" , queryObj.getItemId()) ;
 		map.put("pageNum" , queryObj.getPageNum()) ;
 		map.put("search" , queryObj.getSearch()) ;
-		return null ;
+		List<ActivityBO> activityList = activityDAO.selectActivityListPage(map);
+		return PageBuilder.savePage(activityList , queryObj) ;
 	}
 
 

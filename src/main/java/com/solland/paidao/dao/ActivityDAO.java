@@ -69,6 +69,6 @@ public interface ActivityDAO {
 	 * @param map
 	 * @return
 	 */
-	List<ActivityBO> selectActivityListByMap (Map<String , Object> map) ;
+	List<ActivityBO> selectActivityListPage (Map<String , Object> map) ;
 
 }

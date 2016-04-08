@@ -9,6 +9,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.solland.paidao.entity.bo.UserBO;
 import com.solland.paidao.entity.dto.param.QueryActivityParam;
+import com.solland.paidao.util.StringUtils;
+import com.solland.paidao.util.page.Page;
+import com.solland.paidao.util.page.QueryObj;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -53,7 +56,7 @@ public class ActivityController extends BaseCotroller {
 							@RequestParam("file") CommonsMultipartFile[] files) {
 
 		if (files == null || files.length != 1 || addActivityParam == null ) {
-			String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0010004")) ;
+			String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001")) ;
 			super.safeJsonPrint(response , json);
 			return ;
 		}
@@ -76,8 +79,16 @@ public class ActivityController extends BaseCotroller {
 	}
 
 	@RequestMapping( value = "/queryActivity" )
-	public void queryActivity (HttpServletRequest request , HttpServletResponse response, QueryActivityParam queryActivityParam ){
+	public void queryActivity (HttpServletRequest request , HttpServletResponse response,QueryActivityParam queryActivityParam , QueryObj queryObj){
 
-
+		if (queryActivityParam == null || queryObj == null || StringUtils.isBlank(queryActivityParam.getLatitude())
+				|| StringUtils.isBlank(queryActivityParam.getLongitude())) {
+			String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001")) ;
+			super.safeJsonPrint(response , json);
+			return ;
+		}
+		Page<ActivityDO> activityPage = activityService.getActivityPage(queryActivityParam, queryObj);
+		String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(activityPage)) ;
+		super.safeJsonPrint(response , json);
 	}
 }

@@ -44,7 +44,7 @@ public class QueryObj {
     }
 
     public int getPageOffset() {
-        return pageOffset;
+        return pageNum * pageSize - 1 ;
     }
 
     public void setPageOffset(int pageOffset) {

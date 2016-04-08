@@ -5,13 +5,11 @@ import com.solland.paidao.common.base.BaseModel;
 /**
  * Created by sunshibo on 2016/4/8.
  */
-public class QueryActivityParam extends BaseModel{
+public class QueryActivityParam extends BaseModel {
 
-    private Integer pageNum ;
-
-    private Integer beginActivityId ;
-
-    private String search ;
+    private Integer pageNum;
+    private String longitude;	// 经度
+    private String latitude;	// 纬度
 
     public Integer getPageNum() {
         return pageNum;
@@ -21,19 +19,19 @@ public class QueryActivityParam extends BaseModel{
         this.pageNum = pageNum;
     }
 
-    public Integer getBeginActivityId() {
-        return beginActivityId;
+    public String getLongitude() {
+        return longitude;
     }
 
-    public void setBeginActivityId(Integer beginActivityId) {
-        this.beginActivityId = beginActivityId;
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
     }
 
-    public String getSearch() {
-        return search;
+    public String getLatitude() {
+        return latitude;
     }
 
-    public void setSearch(String search) {
-        this.search = search;
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
     }
 }

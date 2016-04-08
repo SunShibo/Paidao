@@ -6,6 +6,9 @@ import java.util.List;
 import com.solland.paidao.entity.ActivityDO;
 import com.solland.paidao.entity.bo.ActivityBO;
 import com.solland.paidao.entity.dto.param.AddActivityParam;
+import com.solland.paidao.entity.dto.param.QueryActivityParam;
+import com.solland.paidao.util.page.Page;
+import com.solland.paidao.util.page.QueryObj;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 /**
@@ -46,5 +49,13 @@ public interface ActivityService {
 	 * @param id
 	 */
 	void deleteActivityById(int id);
+
+	/**
+	 * 获取动态圈分页列表
+	 * @param queryActivityParam
+	 * @param queryObj
+	 * @return
+	 */
+	public Page<ActivityDO> getActivityPage (QueryActivityParam queryActivityParam , QueryObj queryObj) ;
 
 }
