@@ -2,10 +2,15 @@ package com.solland.paidao.service.impl;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
+import com.solland.paidao.entity.dto.param.QueryActivityParam;
+import com.solland.paidao.util.page.Page;
+import com.solland.paidao.util.page.QueryObj;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
@@ -48,6 +53,16 @@ public class ActivityServiceImpl implements ActivityService {
 		return activityDAO.insertActivity(activityDO) > 0 ? true : false ;
 	}
 
+	public Page<ActivityDO> getActivity (QueryActivityParam queryActivityParam , QueryObj queryObj) {
+		Map map = new HashMap() ;
+		map.put("offset" , queryObj.getPageOffset()) ;
+		map.put("itemId" , queryObj.getItemId()) ;
+		map.put("pageNum" , queryObj.getPageNum()) ;
+		map.put("search" , queryObj.getSearch()) ;
+		return null ;
+	}
+
+
 	@Override
 	public void updateActivityById(ActivityDO activityDO) {
 		activityDAO.updateActivityById(activityDO);
@@ -63,14 +78,5 @@ public class ActivityServiceImpl implements ActivityService {
 		activityDAO.deleteActivityById(id);
 	}
 
-	@Override
-	public int selectActivityTotalCount(ActivityDO activityDO) {
-		return activityDAO.selectActivityTotalCount(activityDO);
-	}
-
-	@Override
-	public List<ActivityBO> selectActivityList(ActivityBO activityBO) {
-		return activityDAO.selectActivityList(activityBO);
-	}
 
 }

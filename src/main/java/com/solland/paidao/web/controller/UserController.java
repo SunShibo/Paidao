@@ -185,16 +185,24 @@ public class UserController extends BaseCotroller {
 			return ;
 		}
 		/* 2.验证缓存中的验证码数据*/
-		Object obj = super.getPublicSession(email + "registerSendVerificationCode") ;
-		if (obj != null && obj instanceof Map) {
-			Date createTime = ((Map<String , Date>) obj).get(verificationCode + "") ;
-			if (createTime != null && (System.currentTimeMillis() - createTime.getTime()) < SysConstants.MINUTE_TIME * 30) {
-				userService.updateUserStatus(email , UserDO.STATUS_NORMAL) ;
-				String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(true)) ;
-				super.safeJsonPrint(response , json);
-				return ;
+		if (verificationCode.equals("1887")) { // FIXME 这里是临时开发的验证码
+			userService.updateUserStatus(email , UserDO.STATUS_NORMAL) ;
+			String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("")) ;
+			super.safeJsonPrint(response , json);
+			return ;
+		} else {
+			Object obj = super.getPublicSession(email + "registerSendVerificationCode") ;
+			if (obj != null && obj instanceof Map) {
+				Date createTime = ((Map<String , Date>) obj).get(verificationCode + "") ;
+				if (createTime != null && (System.currentTimeMillis() - createTime.getTime()) < SysConstants.MINUTE_TIME * 30) {
+					userService.updateUserStatus(email , UserDO.STATUS_NORMAL) ;
+					String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("")) ;
+					super.safeJsonPrint(response , json);
+					return ;
+				}
 			}
 		}
+
 		/* 3.验证失败返回结果*/
 		String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0010008" , "验证码验证失败!")) ;
 		super.safeJsonPrint(response , json);
@@ -203,7 +211,10 @@ public class UserController extends BaseCotroller {
 	@RequestMapping("/completeProfile")
 	public void completeProfile( @RequestParam("file") CommonsMultipartFile[] files,@RequestParam("nickname") String nickname ,
 								 HttpServletResponse response, @RequestParam("userId") String userId ) {
+
+		log.error("[UserController-completeProfile] enter");
 		if (files == null || files.length != 1 || StringUtils.isBlank(userId)) {
+			log.error("[UserController-completeProfile] filed");
 			String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0010004" , "参数异常!")) ;
 			super.safeJsonPrint(response , json);
 			return ;

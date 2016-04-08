@@ -50,7 +50,7 @@ public class ActivityController extends BaseCotroller {
 	 */
 	@RequestMapping( value = "/addActivity" )
 	public void addActivity(HttpServletRequest request , HttpServletResponse response, AddActivityParam addActivityParam ,
-							@RequestParam("file") CommonsMultipartFile[] files){
+							@RequestParam("file") CommonsMultipartFile[] files) {
 
 		if (files == null || files.length != 1 || addActivityParam == null ) {
 			String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0010004")) ;
@@ -78,6 +78,6 @@ public class ActivityController extends BaseCotroller {
 	@RequestMapping( value = "/queryActivity" )
 	public void queryActivity (HttpServletRequest request , HttpServletResponse response, QueryActivityParam queryActivityParam ){
 
-		
+
 	}
 }

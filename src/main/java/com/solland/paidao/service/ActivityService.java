@@ -35,7 +35,7 @@ public interface ActivityService {
 	 * 根据【ID】查询【活动圈】
 	 * 2016年1月8日 下午2:44:14
 	 * @author zhaojiafu
-	 * @param activityDO
+	 * @param id
 	 */
 	ActivityDO selectActivityById(int id);
 
@@ -47,21 +47,4 @@ public interface ActivityService {
 	 */
 	void deleteActivityById(int id);
 
-	/**
-	 * 查询【活动圈】的总记录数
-	 * 2016年1月8日 下午2:46:01
-	 * @author zhaojiafu
-	 * @param activityDO
-	 * @return
-	 */
-	int selectActivityTotalCount(ActivityDO activityDO);
-	
-	/**
-	 * 查询【活动圈】列表
-	 * 2016年1月8日 下午2:46:22
-	 * @author zhaojiafu
-	 * @param activityDO
-	 * @return
-	 */
-	List<ActivityBO> selectActivityList(ActivityBO activityBO);
 }

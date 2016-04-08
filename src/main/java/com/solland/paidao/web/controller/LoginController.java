@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.solland.paidao.common.constants.SysConstants;
+import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,7 +70,9 @@ public class LoginController extends BaseCotroller {
 			return ;
 		}
 		if (StringUtils.isBlank(userBO.getStatus()) || userBO.getStatus().equals(UserDO.STATUS_INACTIVE)) {
-			String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0010006" , "该账户没有被激活!")) ;
+			JSONObject json = new JSONObject() ;
+			json.put("userId" , userBO.getId()) ;
+			String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0010006" , "该账户没有被激活!", json.toString())) ;
 			super.safeJsonPrint(response , result);
 			return ;
 		}
@@ -105,7 +108,9 @@ public class LoginController extends BaseCotroller {
 			return ;
 		}
 		if (StringUtils.isBlank(userBO.getStatus()) || userBO.getStatus().equals(UserDO.STATUS_INACTIVE)) {
-			String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0010006" , "该账户没有被激活!")) ;
+			JSONObject json = new JSONObject() ;
+			json.put("userId" , userBO.getId()) ;
+			String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0010006" , "该账户没有被激活!", json.toString())) ;
 			super.safeJsonPrint(response , result);
 			return ;
 		}

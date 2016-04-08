@@ -1,6 +1,7 @@
 package com.solland.paidao.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.solland.paidao.entity.ActivityDO;
 import com.solland.paidao.entity.bo.ActivityBO;
@@ -62,5 +63,12 @@ public interface ActivityDAO {
 	 * @return
 	 */
 	List<ActivityBO> selectActivityList(ActivityBO activityBO);
+
+	/**
+	 * 通过map查找动态圈列表
+	 * @param map
+	 * @return
+	 */
+	List<ActivityBO> selectActivityListByMap (Map<String , Object> map) ;
 
 }

@@ -21,6 +21,11 @@ public class ResultDTOBuilder {
         return instance;
     }
 
+    public static ResultDTO failure(String errCode, String errMsg, String data ) {
+        ResultDTO<String> instance = getInstance(errCode, errMsg, false, data);
+        return instance;
+    }
+
     public static ResultDTO failure(String errCode) {
         Env env = new Env() ;
         ResultDTO<String> instance = getInstance(errCode, StringUtils.clearNull(env.getProperty(errCode)), false, "");
