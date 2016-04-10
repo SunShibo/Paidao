@@ -117,7 +117,7 @@
 
 	<!-- 分页 -->
 	<select id="selectActivityListPage" parameterType="map" resultType="com.solland.paidao.entity.ActivityDO">
-		SELECT * FROM pd_activity_profile act LIMIT #{offset} , #{pageSize}
+		SELECT * FROM pd_activity_profile act LIMIT #{pageSize} OFFSET #{offset}
 	</select>
     
 </mapper>

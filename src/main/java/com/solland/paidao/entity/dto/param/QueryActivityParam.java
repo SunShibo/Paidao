@@ -7,17 +7,9 @@ import com.solland.paidao.common.base.BaseModel;
  */
 public class QueryActivityParam extends BaseModel {
 
-    private Integer pageNum;
     private String longitude;	// 经度
     private String latitude;	// 纬度
 
-    public Integer getPageNum() {
-        return pageNum;
-    }
-
-    public void setPageNum(Integer pageNum) {
-        this.pageNum = pageNum;
-    }
 
     public String getLongitude() {
         return longitude;

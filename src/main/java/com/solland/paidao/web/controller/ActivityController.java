@@ -79,7 +79,8 @@ public class ActivityController extends BaseCotroller {
 	}
 
 	@RequestMapping( value = "/queryActivity" )
-	public void queryActivity (HttpServletRequest request , HttpServletResponse response,QueryActivityParam queryActivityParam , QueryObj queryObj){
+	public void queryActivity (HttpServletRequest request , HttpServletResponse response, QueryActivityParam queryActivityParam ,
+							   QueryObj queryObj){
 
 		if (queryActivityParam == null || queryObj == null || StringUtils.isBlank(queryActivityParam.getLatitude())
 				|| StringUtils.isBlank(queryActivityParam.getLongitude())) {

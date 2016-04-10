@@ -58,7 +58,7 @@ public class ActivityServiceImpl implements ActivityService {
 		Map map = new HashMap() ;
 		map.put("offset" , queryObj.getPageOffset()) ;
 		map.put("itemId" , queryObj.getItemId()) ;
-		map.put("pageNum" , queryObj.getPageNum()) ;
+		map.put("pageSize" , queryObj.getPageSize()) ;
 		map.put("search" , queryObj.getSearch()) ;
 		List<ActivityBO> activityList = activityDAO.selectActivityListPage(map);
 		return PageBuilder.savePage(activityList , queryObj) ;

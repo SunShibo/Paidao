@@ -212,7 +212,7 @@ public class UserController extends BaseCotroller {
 	public void completeProfile( @RequestParam("file") CommonsMultipartFile[] files,@RequestParam("nickname") String nickname ,
 								 HttpServletResponse response, @RequestParam("userId") String userId ) {
 
-		log.error("[UserController-completeProfile] enter");
+		log.error("[UserController-completeProfile] enter nickname:" + nickname + ".userId:" + userId);
 		if (files == null || files.length != 1 || StringUtils.isBlank(userId)) {
 			log.error("[UserController-completeProfile] filed");
 			String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0010004" , "参数异常!")) ;

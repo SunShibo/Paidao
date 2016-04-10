@@ -5,11 +5,43 @@ package com.solland.paidao.util.page;
  */
 public class QueryObj {
 
-    private int pageNum ;
-    private int pageSize ;
-    private int itemId ;
-    private int pageOffset ;
+    private Integer pageNum ;
+    private Integer pageSize ;
+    private Integer itemId ;
+    private Integer pageOffset ;
     private String search ;
+
+    public Integer getPageNum() {
+        return pageNum;
+    }
+
+    public void setPageNum(Integer pageNum) {
+        this.pageNum = pageNum;
+    }
+
+    public Integer getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(Integer pageSize) {
+        this.pageSize = pageSize;
+    }
+
+    public Integer getItemId() {
+        return itemId;
+    }
+
+    public void setItemId(Integer itemId) {
+        this.itemId = itemId;
+    }
+
+    public Integer getPageOffset() {
+        return (pageNum - 1) * pageSize;
+    }
+
+    public void setPageOffset(Integer pageOffset) {
+        this.pageOffset = pageOffset;
+    }
 
     public String getSearch() {
         return search;
@@ -17,37 +49,5 @@ public class QueryObj {
 
     public void setSearch(String search) {
         this.search = search;
-    }
-
-    public int getPageNum() {
-        return pageNum;
-    }
-
-    public void setPageNum(int pageNum) {
-        this.pageNum = pageNum;
-    }
-
-    public int getPageSize() {
-        return pageSize;
-    }
-
-    public void setPageSize(int pageSize) {
-        this.pageSize = pageSize;
-    }
-
-    public int getItemId() {
-        return itemId;
-    }
-
-    public void setItemId(int itemId) {
-        this.itemId = itemId;
-    }
-
-    public int getPageOffset() {
-        return pageNum * pageSize - 1 ;
-    }
-
-    public void setPageOffset(int pageOffset) {
-        this.pageOffset = pageOffset;
     }
 }
