@@ -45,8 +45,6 @@
         <url-pattern>/</url-pattern>
     </servlet-mapping>-->
 
-
-
     <!-- spring mvc -->
     <servlet>
         <servlet-name>paidao</servlet-name>
@@ -62,4 +60,12 @@
         <url-pattern>/</url-pattern>
     </servlet-mapping>
 
+    <filter>
+        <filter-name>defaultFilter</filter-name>
+        <filter-class>com.solland.paidao.web.support.filter.DefaultFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>defaultFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 </web-app>

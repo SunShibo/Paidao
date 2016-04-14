@@ -79,6 +79,15 @@ public class UserController extends BaseCotroller {
 			super.safeJsonPrint(response , json);
 			return;
 		}
+
+		if (userDO.getEmail().equals("123456@qq.com")) { // FIXME 临时的注册邮箱
+			// 注册成功返回用户id
+			JSONObject data = new JSONObject() ;
+			data.put("userId" , 29) ;
+			String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(data.toString())) ;
+			super.safeJsonPrint(response , json);
+			return ;
+		}
 		// 判断【邮箱号】是否存在
 		if(userService.isExistsByEmail(userDO.getEmail())) {
 			String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0010002" , "邮箱已存在!")) ;
@@ -149,23 +158,42 @@ public class UserController extends BaseCotroller {
 	 */
 	@RequestMapping( value = "/sendVerificationCode" )
 	public void sendVerificationCode(HttpServletResponse response, String email ){
-		// 发送邮件
-		int code = (int)(Math.random() * 9000 + 1000) ;
-		mailService.sendVerificationCodeForSignUp(email , code + "") ; // 发送验证码
 
-		// 存入redis
-		Object obj = super.getPublicSession(email + "registerSendVerificationCode") ;
-		if (obj != null && obj instanceof Map) {
-			((Map) obj).put(code + "" , new Date()) ;
-			super.putPublicSession(email + "registerSendVerificationCode" , obj);
-		} else {
-			Map<String , Date> map = new HashMap<String, Date>() ;
-			map.put(code + "", new Date()) ;
-			super.putPublicSession(email + "registerSendVerificationCode" , map);
+		if(StringUtils.isBlank(email)){
+			String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001" , "参数异常!")) ;
+			super.safeJsonPrint(response , json);
+			return;
 		}
 
-		String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(true)) ;
-		super.safeJsonPrint(response , json);
+		if(email.equals("123456@qq.com")){ // FIXME 测试临时邮箱
+			String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("")) ;
+			super.safeJsonPrint(response , json);
+			return;
+		}
+
+		try {
+			// 发送邮件
+			int code = (int)(Math.random() * 9000 + 1000) ;
+			mailService.sendVerificationCodeForSignUp(email , code + "") ; // 发送验证码
+
+			// 存入redis
+			Object obj = super.getPublicSession(email + "registerSendVerificationCode") ;
+			if (obj != null && obj instanceof Map) {
+                ((Map) obj).put(code + "" , new Date()) ;
+                super.putPublicSession(email + "registerSendVerificationCode" , obj);
+            } else {
+                Map<String , Date> map = new HashMap<String, Date>() ;
+                map.put(code + "", new Date()) ;
+                super.putPublicSession(email + "registerSendVerificationCode" , map);
+            }
+
+			String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(true)) ;
+			super.safeJsonPrint(response , json);
+		} catch (Exception e) {
+			e.printStackTrace();
+			String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0010013" , "验证码发送失败!")) ;
+			super.safeJsonPrint(response , json);
+		}
 	}
 
 	/**
@@ -228,11 +256,11 @@ public class UserController extends BaseCotroller {
 				String url = ossManage.uploadFile(files[0].getInputStream(), key, type);
 
 				if (userService.completeProfile(userId , url, nickname)) {
-					String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("")) ;
-					super.safeJsonPrint(response , json);
-
 					/*  登录业务 */
 					UserBO userBO = loginService.loginByIdNoPwd(Integer.parseInt(userId));
+					String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(userBO)) ;
+
+					super.safeJsonPrint(response , json);
 					super.putLoginUser(userBO.getUuid(), userBO); // 保存到缓存
 					super.setCookie(response , SysConstants.CURRENT_LOGIN_ID , userBO.getUuid() , SysConstants.SEVEN_DAY_TIME) ;
 				} else {

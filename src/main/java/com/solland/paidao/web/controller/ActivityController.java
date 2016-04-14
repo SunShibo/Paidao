@@ -83,7 +83,8 @@ public class ActivityController extends BaseCotroller {
 							   QueryObj queryObj){
 
 		if (queryActivityParam == null || queryObj == null || StringUtils.isBlank(queryActivityParam.getLatitude())
-				|| StringUtils.isBlank(queryActivityParam.getLongitude())) {
+				|| StringUtils.isBlank(queryActivityParam.getLongitude()) || StringUtils.isBlank(queryActivityParam.getLongitude())
+				|| StringUtils.isBlank(queryActivityParam.getLatitude())) {
 			String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001")) ;
 			super.safeJsonPrint(response , json);
 			return ;

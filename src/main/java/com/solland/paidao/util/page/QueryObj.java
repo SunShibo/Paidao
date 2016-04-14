@@ -6,7 +6,7 @@ package com.solland.paidao.util.page;
 public class QueryObj {
 
     private Integer pageNum ;
-    private Integer pageSize ;
+    private Integer pageSize = 20;
     private Integer itemId ;
     private Integer pageOffset ;
     private String search ;

@@ -1,19 +1,18 @@
 package com.solland.paidao.web.controller;
 
-import java.util.UUID;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.solland.paidao.common.constants.SysConstants;
 import net.sf.json.JSONObject;
+
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.solland.paidao.common.constants.SysConstants;
 import com.solland.paidao.entity.UserDO;
 import com.solland.paidao.entity.bo.UserBO;
 import com.solland.paidao.entity.dto.ResultDTOBuilder;
@@ -22,7 +21,6 @@ import com.solland.paidao.service.UserService;
 import com.solland.paidao.service.impl.LoginServiceImpl;
 import com.solland.paidao.util.JsonUtils;
 import com.solland.paidao.web.controller.base.BaseCotroller;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  * @author Shibo Sun
@@ -48,7 +46,6 @@ public class LoginController extends BaseCotroller {
     @RequestMapping( value = "/signIn" )
     public void signIn(HttpServletResponse response, LoginParam loginParam){
 
-		log.error("[LoginController] enter, account{}, password{}", loginParam.getAccount() , loginParam.getPassword() );
 		/* 1. 验证参数是否完整 */
 
 		if(null == loginParam || StringUtils.isEmpty(loginParam.getPassword()) || StringUtils.isEmpty(loginParam.getAccount())){

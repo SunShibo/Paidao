@@ -55,11 +55,13 @@ public class ActivityServiceImpl implements ActivityService {
 	}
 
 	public Page<ActivityDO> getActivityPage (QueryActivityParam queryActivityParam , QueryObj queryObj) {
-		Map map = new HashMap() ;
+		Map<String , Object> map = new HashMap() ;
 		map.put("offset" , queryObj.getPageOffset()) ;
 		map.put("itemId" , queryObj.getItemId()) ;
 		map.put("pageSize" , queryObj.getPageSize()) ;
 		map.put("search" , queryObj.getSearch()) ;
+		map.put("latitude" , queryActivityParam.getLatitude()) ;
+		map.put("longitude" , queryActivityParam.getLongitude()) ;
 		List<ActivityBO> activityList = activityDAO.selectActivityListPage(map);
 		return PageBuilder.savePage(activityList , queryObj) ;
 	}
