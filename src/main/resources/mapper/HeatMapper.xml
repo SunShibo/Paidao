@@ -14,22 +14,12 @@
     <insert id="insert" parameterType="com.solland.paidao.entity.HeatDO" useGeneratedKeys="true" keyProperty="id">
 			INSERT INTO 
 			pd_heat_info (
-      			create_time
-      			<if test="0 &lt; triggerUserId">, trigger_user_id </if>
-      			<if test="0 &lt; increaseHeatValue">, increase_heat_value </if>
-      			<if test="null != increaseType and '' != increaseType">, increase_type </if>
-      			<if test="0 &lt; lastTimeHeatValue">, last_time_heat_value </if>
-      			<if test="0 &lt; activityId">, activity_id </if>
-      			<if test="0 &lt; authorId">, author_id </if>
+      			create_time , user_id , heat_value , increase_type , last_time_heat_value
+      			, activity_id , author_id
       		) 
             VALUES(
-           		CURRENT_TIMESTAMP
-           		<if test="0 &lt; triggerUserId">, #{triggerUserId} </if>
-           		<if test="0 &lt; increaseHeatValue">, #{increaseHeatValue} </if>
-           		<if test="null != increaseType and '' != increaseType">, #{increaseType} </if>
-           		<if test="0 &lt; lastTimeHeatValue">, #{lastTimeHeatValue} </if>
-           		<if test="0 &lt; activityId">, #{activityId} </if>
-           		<if test="0 &lt; authorId">, #{authorId} </if>
+           		NOW() , #{userId} , #{heatValue} , #{increaseType} , #{lastTimeHeatValue}
+           		, #{activityId} , #{authorId}
             )
     </insert>
     

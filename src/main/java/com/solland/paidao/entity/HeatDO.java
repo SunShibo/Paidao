@@ -11,15 +11,20 @@ import java.util.Date;
  */
 @SuppressWarnings("serial")
 public class HeatDO implements Serializable {
+
+	public static final String TYPE_USER_ADD = "user_add" ;
+	public static final String TYPE_SYSTEM_ADD = "system_add" ;
+	public static final String TYPE_SYSTEM_SUBTRACTION = "system_subtractio" ;
+
 	private int id;		// ID
-	private int triggerUserId;		// 触发用户，（是谁增加的）
-	private int increaseHeatValue;	// 增加的热度值
+	private int userId;		// 触发用户，（是谁增加的）
+	private int heatValue;	// 增加的热度值
 	private String increaseType;		// 加热的类型，（UA-用户加热、SA系统加热、SS-系统减热、）
 	private Date createTime;		// 创建时间
 	private Date modifyTime;		// 修改时间
 	private int lastTimeHeatValue;	// 最后一次的热度值
 	private int activityId;		// 活动ID
-	private int authorId;		// 作者id(发布动态圈的用户ID);
+
 	
 	public HeatDO() {
 		// TODO Auto-generated constructor stub
@@ -33,20 +38,20 @@ public class HeatDO implements Serializable {
 		this.id = id;
 	}
 
-	public int getTriggerUserId() {
-		return triggerUserId;
+	public int getUserId() {
+		return userId;
 	}
 
-	public void setTriggerUserId(int triggerUserId) {
-		this.triggerUserId = triggerUserId;
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
 
-	public int getIncreaseHeatValue() {
-		return increaseHeatValue;
+	public int getHeatValue() {
+		return heatValue;
 	}
 
-	public void setIncreaseHeatValue(int increaseHeatValue) {
-		this.increaseHeatValue = increaseHeatValue;
+	public void setHeatValue(int heatValue) {
+		this.heatValue = heatValue;
 	}
 
 	public String getIncreaseType() {
@@ -87,13 +92,5 @@ public class HeatDO implements Serializable {
 
 	public void setActivityId(int activityId) {
 		this.activityId = activityId;
-	}
-
-	public int getAuthorId() {
-		return authorId;
-	}
-
-	public void setAuthorId(int authorId) {
-		this.authorId = authorId;
 	}
 }

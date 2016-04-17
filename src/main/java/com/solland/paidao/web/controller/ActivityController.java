@@ -1,6 +1,7 @@
 package com.solland.paidao.web.controller;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -45,14 +46,14 @@ public class ActivityController extends BaseCotroller {
 
 	
 	/**
-	 * 添加【活动】
+	 * 发布动态圈
 	 * 2016年1月8日 下午3:16:48
 	 * @author zhaojiafu
 	 * @param response
 	 * @param addActivityParam
 	 */
-	@RequestMapping( value = "/addActivity" )
-	public void addActivity(HttpServletRequest request , HttpServletResponse response, AddActivityParam addActivityParam ,
+	@RequestMapping( value = "/issueActivity" )
+	public void issueActivity(HttpServletRequest request , HttpServletResponse response, AddActivityParam addActivityParam ,
 							@RequestParam("file") CommonsMultipartFile[] files) {
 
 		if (files == null || files.length != 1 || addActivityParam == null ) {
@@ -83,13 +84,18 @@ public class ActivityController extends BaseCotroller {
 							   QueryObj queryObj){
 
 		if (queryActivityParam == null || queryObj == null || StringUtils.isBlank(queryActivityParam.getLatitude())
-				|| StringUtils.isBlank(queryActivityParam.getLongitude()) || StringUtils.isBlank(queryActivityParam.getLongitude())
-				|| StringUtils.isBlank(queryActivityParam.getLatitude())) {
+				|| StringUtils.isBlank(queryActivityParam.getLongitude()) || StringUtils.isBlank(queryActivityParam.getLatitude())) {
 			String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001")) ;
 			super.safeJsonPrint(response , json);
 			return ;
 		}
-		Page<ActivityDO> activityPage = activityService.getActivityPage(queryActivityParam, queryObj);
+		Page<ActivityBO> activityPage = activityService.getActivityPage(queryActivityParam, queryObj);
+		if (activityPage.getDatas() == null || activityPage.getDatas().size() == 0) {
+			ResultDTO resultDTO = queryObj.getLastItemId() == null ? ResultDTOBuilder.failure("0020003") : ResultDTOBuilder.failure("0020002");
+			String json = JsonUtils.getJsonString4JavaPOJO(resultDTO) ;
+			super.safeJsonPrint(response , json);
+			return ;
+		}
 		String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(activityPage)) ;
 		super.safeJsonPrint(response , json);
 	}

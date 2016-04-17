@@ -26,7 +26,9 @@ public class AddActivityParam extends BaseModel implements Serializable {
 	private String status;	// 状态：illegal-违规、normal-正常
 	private Date createTime;		// 创建时间
 	private Date modifyTime;		// 修改时间
-	
+	private String areaCode;		// 区域码
+	private String title ;
+
 	public AddActivityParam() {
 		// TODO Auto-generated constructor stub
 	}
@@ -125,5 +127,21 @@ public class AddActivityParam extends BaseModel implements Serializable {
 
 	public void setModifyTime(Date modifyTime) {
 		this.modifyTime = modifyTime;
+	}
+
+	public String getAreaCode() {
+		return areaCode;
+	}
+
+	public void setAreaCode(String areaCode) {
+		this.areaCode = areaCode;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
 	}
 }

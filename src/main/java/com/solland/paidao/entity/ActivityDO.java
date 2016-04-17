@@ -28,6 +28,8 @@ public class ActivityDO implements Serializable {
 	private String status;	// 状态：illegal-违规、normal-正常
 	private String createTime;		// 创建时间
 	private String modifyTime;		// 修改时间
+	private String title ;
+	private String areaCode ;
 	
 	public ActivityDO() {
 		// TODO Auto-generated constructor stub
@@ -175,5 +177,21 @@ public class ActivityDO implements Serializable {
 
 	public void setModifyTime(String modifyTime) {
 		this.modifyTime = modifyTime;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getAreaCode() {
+		return areaCode;
+	}
+
+	public void setAreaCode(String areaCode) {
+		this.areaCode = areaCode;
 	}
 }

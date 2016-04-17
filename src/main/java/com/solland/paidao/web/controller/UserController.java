@@ -1,5 +1,8 @@
 package com.solland.paidao.web.controller;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -33,6 +36,7 @@ import com.solland.paidao.util.JsonUtils;
 import com.solland.paidao.util.OssManage;
 import com.solland.paidao.util.StringUtils;
 import com.solland.paidao.web.controller.base.BaseCotroller;
+import sun.misc.BASE64Decoder;
 
 /**
  * @author Shibo Sun
@@ -240,7 +244,6 @@ public class UserController extends BaseCotroller {
 	public void completeProfile( @RequestParam("file") CommonsMultipartFile[] files,@RequestParam("nickname") String nickname ,
 								 HttpServletResponse response, @RequestParam("userId") String userId ) {
 
-		log.error("[UserController-completeProfile] enter nickname:" + nickname + ".userId:" + userId);
 		if (files == null || files.length != 1 || StringUtils.isBlank(userId)) {
 			log.error("[UserController-completeProfile] filed");
 			String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0010004" , "参数异常!")) ;
@@ -368,5 +371,38 @@ public class UserController extends BaseCotroller {
 		/* 3.验证失败返回结果*/
 		String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0010008" , "验证码验证失败!")) ;
 		super.safeJsonPrint(response , json);
+	}
+
+	@RequestMapping("/completeProfileForIOS")
+	public void completeProfileForIOS( @RequestParam("file") String files,@RequestParam("nickname") String nickname ,
+								 HttpServletResponse response, @RequestParam("userId") String userId, @RequestParam("suffix") String suffix ) {
+
+		if (StringUtils.isBlank(files) || StringUtils.isBlank(userId)) {
+			log.error("[UserController-completeProfile] filed");
+			String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0010004" , "参数异常!")) ;
+			super.safeJsonPrint(response , json);
+			return ;
+		}
+		try {
+			byte[] buffer = new BASE64Decoder().decodeBuffer(files);
+			InputStream is = new ByteArrayInputStream(buffer);
+			String key = userId + "/" + "HeadPortrait" + "/" + System.currentTimeMillis();
+			String url = ossManage.uploadFile(is, key, suffix);
+
+			if (userService.completeProfile(userId , url, nickname)) {
+					/*  登录业务 */
+				UserBO userBO = loginService.loginByIdNoPwd(Integer.parseInt(userId));
+				String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(userBO)) ;
+
+				super.safeJsonPrint(response , json);
+				super.putLoginUser(userBO.getUuid(), userBO); // 保存到缓存
+				super.setCookie(response , SysConstants.CURRENT_LOGIN_ID , userBO.getUuid() , SysConstants.SEVEN_DAY_TIME) ;
+			} else {
+				String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0010010", "保存用户信息失败!")) ;
+				super.safeJsonPrint(response , json);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

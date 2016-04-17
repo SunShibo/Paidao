@@ -56,6 +56,21 @@ public interface ActivityService {
 	 * @param queryObj
 	 * @return
 	 */
-	public Page<ActivityDO> getActivityPage (QueryActivityParam queryActivityParam , QueryObj queryObj) ;
+	public Page<ActivityBO> getActivityPage (QueryActivityParam queryActivityParam , QueryObj queryObj) ;
+
+	/**
+	 * 获取动态信息通过id
+	 * @param activityId
+	 * @return
+	 */
+	public ActivityDO getActivityById (int activityId) ;
+
+	/**
+	 * 修改事件的热度值
+	 * @param activityId
+	 * @param heatValue
+	 * @return
+	 */
+	public int updateHeatValue (int activityId , int heatValue) ;
 
 }

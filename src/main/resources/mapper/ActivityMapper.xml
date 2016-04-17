@@ -24,14 +24,23 @@
         INSERT INTO pd_activity_profile(
 			user_id,tags,position,media_paths,media_type,longitude,latitude,
 			geohash,status,like_num,heat_value,comment_num,	enshrine_num,description,
-			create_time,modify_time
+			create_time,modify_time,area_code,title
 		)
         VALUES(
        		#{userId} , #{tags} , #{position} , #{mediaPaths} , #{mediaType} , #{longitude} , #{latitude} , #{geohash} , 'normal' , 0 , 1 ,
-       		#{commentNum} , #{enshrineNum} , #{description} , NOW() , NOW()
+       		#{commentNum} , #{enshrineNum} , #{description} , NOW() , NOW(), #{areaCode}, #{title}
         )
     </insert>
-    
+
+	<!-- 更新热度-->
+	<update id="updateHeatValue" parameterType="int">
+		UPDATE
+		pd_activity_profile
+		SET
+		modify_time = now() , heat_value = #{heatValue} where id = #{activityId}
+
+	</update>
+
     <!-- 根据【ID】更新【活动圈】 -->
     <update id="updateActivityById" parameterType="com.solland.paidao.entity.ActivityDO">
     	UPDATE 
@@ -76,7 +85,7 @@
     
     <!-- 根据【ID】查询【活动圈】 -->
     <select id="selectActivityById" parameterType="int" resultType="com.solland.paidao.entity.ActivityDO">
-    	<include refid="selectAll" />
+    	select * from pd_activity_profile
     	WHERE id = #{id}
     </select>
     
@@ -116,14 +125,23 @@
     </select>
 
 	<!-- 分页 -->
-	<select id="selectActivityListPage" parameterType="map" resultType="com.solland.paidao.entity.ActivityDO">
-		SELECT * FROM pd_activity_profile
+	<select id="selectActivityListPage" parameterType="map" resultType="com.solland.paidao.entity.bo.ActivityBO">
+		SELECT ap.* , up.head_portrait , CASE WHEN heat.id > 0 THEN 1 ELSE 0 END  heated FROM pd_activity_profile ap
+		LEFT JOIN pd_user_profile up ON up.id = ap.user_id
+		LEFT JOIN (select * from pd_heat_info phi where phi.user_id = #{userId} ) heat on heat.activity_id = ap.id
 		WHERE
 		earth_box(ll_to_earth(cast(#{latitude} as float4),cast(#{longitude} as float4)),1000)
 		@>
-		ll_to_earth(pd_activity_profile.latitude, pd_activity_profile.longitude)
-		LIMIT #{pageSize} OFFSET #{offset};
+		ll_to_earth(ap.latitude, ap.longitude)
+		<if test="lastItemId != null and lastItemId > 0">AND ap.id > #{lastItemId}</if>
+		LIMIT #{pageSize} OFFSET 0;
 
+	</select>
+
+	<!-- 根据【ID】查询【活动圈】 -->
+	<select id="selectHeatByUidAndAid" parameterType="int" resultType="com.solland.paidao.entity.ActivityDO">
+		select * from pd_heat_info
+		WHERE id = #{id} and activity_id #{activityId}
 	</select>
     
 </mapper>

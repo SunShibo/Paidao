@@ -10,6 +10,8 @@ import com.solland.paidao.entity.ActivityDO;
 import com.solland.paidao.entity.HeatDO;
 import com.solland.paidao.service.HeatService;
 
+import java.util.List;
+
 /**
  * 加热（点赞）
  * @author zhaojiafu
@@ -35,5 +37,11 @@ public class HeatServiceImpl implements HeatService {
 		
 		activityDAO.updateActivityById(activityDO);
 	}
+
+	@Override
+	public List<HeatDO> getHeatInfoByUidAndActivifyId(int userId, int activityId) {
+		return activityDAO.selectHeatByUidAndAid(userId , activityId) ;
+	}
+
 
 }

@@ -10,50 +10,46 @@ import java.io.Serializable;
  */
 @SuppressWarnings("serial")
 public class ActivityBO implements Serializable {
-	private int id;		// ID
-	private int issuerId;	// 发布人ID
+
+	private int heated = 0; // 是否加热过
+	private Integer id;		// ID
+	private Integer userId;	// 发布人ID
 	private String tags;	// 标签集
 	private String position;	// 位置
 	private String mediaType;		// 媒体类型（image-图片；video-视频）
 	private String mediaPaths;		// 媒体路径集
-	private String descriptionVoicePath;		// 音频路径
-	private String descriptionType;		// 描述类型：voice-语音、text-文本
-	private String descriptionText;		// 文本描述
-	private int likeNum;		// 被赞的数量
-	private int heatValue;		// 热度值
-	private int commentNum;	// 评论数
-	private int enshrineNum;	// 收藏数
-	private String longitude;	// 经度
-	private String latitude;	// 纬度
-	private int range;	// 范围
+	private String description;		// 文本描述
+	private Integer likeNum;		// 被赞的数量
+	private Integer heatValue;		// 热度值
+	private Integer commentNum;	// 评论数
+	private Integer enshrineNum;	// 收藏数
+	private Double longitude;	// 经度
+	private Double latitude;	// 纬度
 	private String geohash;		// Geohash值
 	private String status;	// 状态：illegal-违规、normal-正常
-	private short isHeat;	// 是否已加热
-	private short isEnshrine;	// 是否已收藏
-	private int loginedUserId;	// 当前登录用户ID
-	private int followerCount;	// 所关注的用户数
-	private int beFollowerCount;	// 被关注的用户数
 	private String createTime;		// 创建时间
 	private String modifyTime;		// 修改时间
-	
+	private String title ;
+	private String areaCode ;
+
 	public ActivityBO() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
-	public int getIssuerId() {
-		return issuerId;
+	public Integer getUserId() {
+		return userId;
 	}
 
-	public void setIssuerId(int issuerId) {
-		this.issuerId = issuerId;
+	public void setUserId(Integer userId) {
+		this.userId = userId;
 	}
 
 	public String getTags() {
@@ -88,84 +84,60 @@ public class ActivityBO implements Serializable {
 		this.mediaPaths = mediaPaths;
 	}
 
-	public String getDescriptionVoicePath() {
-		return descriptionVoicePath;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setDescriptionVoicePath(String descriptionVoicePath) {
-		this.descriptionVoicePath = descriptionVoicePath;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
-	public String getDescriptionText() {
-		return descriptionText;
-	}
-
-	public void setDescriptionText(String descriptionText) {
-		this.descriptionText = descriptionText;
-	}
-
-	public String getDescriptionType() {
-		return descriptionType;
-	}
-
-	public void setDescriptionType(String descriptionType) {
-		this.descriptionType = descriptionType;
-	}
-
-	public int getLikeNum() {
+	public Integer getLikeNum() {
 		return likeNum;
 	}
 
-	public void setLikeNum(int likeNum) {
+	public void setLikeNum(Integer likeNum) {
 		this.likeNum = likeNum;
 	}
 
-	public int getHeatValue() {
+	public Integer getHeatValue() {
 		return heatValue;
 	}
 
-	public void setHeatValue(int heatValue) {
+	public void setHeatValue(Integer heatValue) {
 		this.heatValue = heatValue;
 	}
 
-	public int getCommentNum() {
+	public Integer getCommentNum() {
 		return commentNum;
 	}
 
-	public void setCommentNum(int commentNum) {
+	public void setCommentNum(Integer commentNum) {
 		this.commentNum = commentNum;
 	}
 
-	public int getEnshrineNum() {
+	public Integer getEnshrineNum() {
 		return enshrineNum;
 	}
 
-	public void setEnshrineNum(int enshrineNum) {
+	public void setEnshrineNum(Integer enshrineNum) {
 		this.enshrineNum = enshrineNum;
 	}
 
-	public String getLongitude() {
+	public Double getLongitude() {
 		return longitude;
 	}
 
-	public void setLongitude(String longitude) {
+	public void setLongitude(Double longitude) {
 		this.longitude = longitude;
 	}
 
-	public String getLatitude() {
+	public Double getLatitude() {
 		return latitude;
 	}
 
-	public void setLatitude(String latitude) {
+	public void setLatitude(Double latitude) {
 		this.latitude = latitude;
-	}
-
-	public int getRange() {
-		return range;
-	}
-
-	public void setRange(int range) {
-		this.range = range;
 	}
 
 	public String getGeohash() {
@@ -200,43 +172,27 @@ public class ActivityBO implements Serializable {
 		this.modifyTime = modifyTime;
 	}
 
-	public short getIsHeat() {
-		return isHeat;
+	public String getTitle() {
+		return title;
 	}
 
-	public void setIsHeat(short isHeat) {
-		this.isHeat = isHeat;
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
-	public short getIsEnshrine() {
-		return isEnshrine;
+	public String getAreaCode() {
+		return areaCode;
 	}
 
-	public void setIsEnshrine(short isEnshrine) {
-		this.isEnshrine = isEnshrine;
+	public void setAreaCode(String areaCode) {
+		this.areaCode = areaCode;
 	}
 
-	public int getLoginedUserId() {
-		return loginedUserId;
+	public int getHeated() {
+		return heated;
 	}
 
-	public void setLoginedUserId(int loginedUserId) {
-		this.loginedUserId = loginedUserId;
-	}
-
-	public int getFollowerCount() {
-		return followerCount;
-	}
-
-	public void setFollowerCount(int followerCount) {
-		this.followerCount = followerCount;
-	}
-
-	public int getBeFollowerCount() {
-		return beFollowerCount;
-	}
-
-	public void setBeFollowerCount(int beFollowerCount) {
-		this.beFollowerCount = beFollowerCount;
+	public void setHeated(int heated) {
+		this.heated = heated;
 	}
 }

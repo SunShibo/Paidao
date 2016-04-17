@@ -54,16 +54,30 @@ public class ActivityServiceImpl implements ActivityService {
 		return activityDAO.insertActivity(activityDO) > 0 ? true : false ;
 	}
 
-	public Page<ActivityDO> getActivityPage (QueryActivityParam queryActivityParam , QueryObj queryObj) {
+	public Page<ActivityBO> getActivityPage (QueryActivityParam queryActivityParam , QueryObj queryObj) {
 		Map<String , Object> map = new HashMap() ;
 		map.put("offset" , queryObj.getPageOffset()) ;
-		map.put("itemId" , queryObj.getItemId()) ;
+		map.put("itemId" , queryObj.getLastItemId()) ;
 		map.put("pageSize" , queryObj.getPageSize()) ;
 		map.put("search" , queryObj.getSearch()) ;
 		map.put("latitude" , queryActivityParam.getLatitude()) ;
 		map.put("longitude" , queryActivityParam.getLongitude()) ;
 		List<ActivityBO> activityList = activityDAO.selectActivityListPage(map);
 		return PageBuilder.savePage(activityList , queryObj) ;
+	}
+
+	/**
+	 * 修改事件的热度值
+	 * @param activityId
+	 * @param heatValue
+	 * @return
+	 */
+	public int updateHeatValue (int activityId , int heatValue) {
+		return activityDAO.updateHeatValue(activityId , heatValue);
+	}
+
+	public ActivityDO getActivityById (int userId) {
+		return activityDAO.selectActivityById(userId) ;
 	}
 
 

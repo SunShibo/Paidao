@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.solland.paidao.entity.ActivityDO;
+import com.solland.paidao.entity.HeatDO;
 import com.solland.paidao.entity.bo.ActivityBO;
 import com.solland.paidao.entity.dto.param.AddActivityParam;
 
@@ -70,5 +71,21 @@ public interface ActivityDAO {
 	 * @return
 	 */
 	List<ActivityBO> selectActivityListPage (Map<String , Object> map) ;
+
+	/**
+	 *  获取热度信息 通过事件id + 用户id
+	 * @param userId
+	 * @param activityId
+	 * @return
+	 */
+	List<HeatDO> selectHeatByUidAndAid (int userId , int activityId) ;
+
+	/**
+	 * 修改事件热度值
+	 * @param activityId
+	 * @param heatValue
+	 * @return
+	 */
+	int updateHeatValue (int activityId , int heatValue) ;
 
 }

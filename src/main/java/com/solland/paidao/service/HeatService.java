@@ -2,6 +2,8 @@ package com.solland.paidao.service;
 
 import com.solland.paidao.entity.HeatDO;
 
+import java.util.List;
+
 /**
  * 加热（点赞）
  * @author zhaojiafu
@@ -16,4 +18,12 @@ public interface HeatService {
 	 * @param heatDO
 	 */
 	void insert(HeatDO heatDO);
+
+	/**
+	 * 获取热度信息 通过事件id + 用户id
+	 * @param userId
+	 * @param activityId
+	 * @return
+	 */
+	List<HeatDO> getHeatInfoByUidAndActivifyId(int userId , int activityId) ;
 }
