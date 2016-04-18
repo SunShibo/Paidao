@@ -76,7 +76,7 @@ public class ActivityServiceImpl implements ActivityService {
 		return activityDAO.updateHeatValue(activityId , heatValue);
 	}
 
-	public ActivityDO getActivityById (int userId) {
+	public ActivityBO getActivityById (int userId) {
 		return activityDAO.selectActivityById(userId) ;
 	}
 
@@ -84,11 +84,6 @@ public class ActivityServiceImpl implements ActivityService {
 	@Override
 	public void updateActivityById(ActivityDO activityDO) {
 		activityDAO.updateActivityById(activityDO);
-	}
-
-	@Override
-	public ActivityDO selectActivityById(int id) {
-		return activityDAO.selectActivityById(id);
 	}
 
 	@Override

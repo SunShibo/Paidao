@@ -28,14 +28,6 @@ public class HeatServiceImpl implements HeatService {
 	@Override
 	public void insert(HeatDO heatDO) {
 		heatDAO.insert(heatDO);
-		
-		int count = heatDAO.selectHeatCountByActivityId(heatDO.getActivityId());
-		
-		ActivityDO activityDO = new ActivityDO();
-		activityDO.setId(heatDO.getActivityId());
-		activityDO.setHeatValue(count);
-		
-		activityDAO.updateActivityById(activityDO);
 	}
 
 	@Override

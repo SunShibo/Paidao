@@ -99,4 +99,22 @@ public class ActivityController extends BaseCotroller {
 		String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(activityPage)) ;
 		super.safeJsonPrint(response , json);
 	}
+
+	@RequestMapping( value = "/queryActivityInfo" )
+	public void queryActivityInfo (HttpServletRequest request , HttpServletResponse response, Integer activityId){
+
+		if ( activityId == null || activityId == 0) {
+			String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001")) ;
+			super.safeJsonPrint(response , json);
+			return ;
+		}
+		ActivityBO activity = activityService.getActivityById(activityId);
+		if (activity == null ) { // 没有找到该事件
+			String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0020005")) ;
+			super.safeJsonPrint(response , json);
+			return ;
+		}
+		String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(activity)) ;
+		super.safeJsonPrint(response , json);
+	}
 }

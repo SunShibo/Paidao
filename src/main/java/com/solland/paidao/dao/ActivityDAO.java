@@ -7,6 +7,7 @@ import com.solland.paidao.entity.ActivityDO;
 import com.solland.paidao.entity.HeatDO;
 import com.solland.paidao.entity.bo.ActivityBO;
 import com.solland.paidao.entity.dto.param.AddActivityParam;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 活动圈
@@ -37,7 +38,7 @@ public interface ActivityDAO {
 	 * @author zhaojiafu
 	 * @param id
 	 */
-	ActivityDO selectActivityById(int id);
+	ActivityBO selectActivityById(int id);
 
 	/**
 	 * 更加【ID】删除【活动圈】
@@ -78,7 +79,7 @@ public interface ActivityDAO {
 	 * @param activityId
 	 * @return
 	 */
-	List<HeatDO> selectHeatByUidAndAid (int userId , int activityId) ;
+	List<HeatDO> selectHeatByUidAndAid (@Param("userId")int userId , @Param("activityId")int activityId) ;
 
 	/**
 	 * 修改事件热度值
@@ -86,6 +87,6 @@ public interface ActivityDAO {
 	 * @param heatValue
 	 * @return
 	 */
-	int updateHeatValue (int activityId , int heatValue) ;
+	int updateHeatValue (@Param("activityId")int activityId , @Param("heatValue")int heatValue) ;
 
 }

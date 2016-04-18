@@ -84,9 +84,9 @@
     </delete>
     
     <!-- 根据【ID】查询【活动圈】 -->
-    <select id="selectActivityById" parameterType="int" resultType="com.solland.paidao.entity.ActivityDO">
-    	select * from pd_activity_profile
-    	WHERE id = #{id}
+    <select id="selectActivityById" parameterType="int" resultType="com.solland.paidao.entity.bo.ActivityBO">
+		select ap.* , up.head_portrait headPortrait from pd_activity_profile ap LEFT JOIN pd_user_profile up on up.id = ap.user_id
+		WHERE ap.id = #{id}
     </select>
     
     <!-- 查询【活动圈】的总记录数 -->
@@ -141,7 +141,7 @@
 	<!-- 根据【ID】查询【活动圈】 -->
 	<select id="selectHeatByUidAndAid" parameterType="int" resultType="com.solland.paidao.entity.ActivityDO">
 		select * from pd_heat_info
-		WHERE id = #{id} and activity_id #{activityId}
+		WHERE user_id = #{userId} and activity_id = #{activityId}
 	</select>
     
 </mapper>

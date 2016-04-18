@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.solland.paidao.entity.ActivityDO;
+import com.solland.paidao.entity.bo.ActivityBO;
 import com.solland.paidao.entity.bo.UserBO;
 import com.solland.paidao.entity.dto.ResultDTOBuilder;
 import com.solland.paidao.service.ActivityService;
@@ -48,6 +49,12 @@ public class HeatController extends BaseCotroller {
 			return ;
 		}
 
+		ActivityBO activityDO = activityService.getActivityById(activityId); // 获取动态圈信息
+		if (activityDO == null ) {
+			String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001")) ;
+			super.safeJsonPrint(response , json);
+			return ;
+		}
 		HeatDO heatDO = new HeatDO() ;
 		heatDO.setActivityId(activityId);
 		heatDO.setCreateTime(new Date());
@@ -55,14 +62,10 @@ public class HeatController extends BaseCotroller {
 		heatDO.setIncreaseType(HeatDO.TYPE_USER_ADD);
 		heatDO.setModifyTime(new Date());
 		heatDO.setUserId(loginUser.getId());
+		heatDO.setLastTimeHeatValue(activityDO.getHeatValue());
+		heatDO.setAuthorId(activityDO.getUserId());
 		heatService.insert(heatDO);
 
-		ActivityDO activityDO = activityService.getActivityById(activityId); // 获取动态圈信息
-		if (activityDO == null ) {
-			String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001")) ;
-			super.safeJsonPrint(response , json);
-			return ;
-		}
 		activityService.updateHeatValue(activityId , activityDO.getHeatValue() + heatDO.getHeatValue()) ; // 修改热度值
 
 		JSONObject jsonObject = new JSONObject() ;

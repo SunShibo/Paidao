@@ -265,7 +265,7 @@ public class UserController extends BaseCotroller {
 
 					super.safeJsonPrint(response , json);
 					super.putLoginUser(userBO.getUuid(), userBO); // 保存到缓存
-					super.setCookie(response , SysConstants.CURRENT_LOGIN_ID , userBO.getUuid() , SysConstants.SEVEN_DAY_TIME) ;
+					super.setCookie(response , SysConstants .CURRENT_LOGIN_ID , userBO.getUuid() , SysConstants.SEVEN_DAY_TIME) ;
 				} else {
 					String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0010010", "保存用户信息失败!")) ;
 					super.safeJsonPrint(response , json);

@@ -33,14 +33,6 @@ public interface ActivityService {
 	 * @param activityDO
 	 */
 	void updateActivityById(ActivityDO activityDO);
-	
-	/**
-	 * 根据【ID】查询【活动圈】
-	 * 2016年1月8日 下午2:44:14
-	 * @author zhaojiafu
-	 * @param id
-	 */
-	ActivityDO selectActivityById(int id);
 
 	/**
 	 * 更加【ID】删除【活动圈】
@@ -63,7 +55,7 @@ public interface ActivityService {
 	 * @param activityId
 	 * @return
 	 */
-	public ActivityDO getActivityById (int activityId) ;
+	public ActivityBO getActivityById (int activityId) ;
 
 	/**
 	 * 修改事件的热度值

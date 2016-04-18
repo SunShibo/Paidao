@@ -24,10 +24,18 @@ public class HeatDO implements Serializable {
 	private Date modifyTime;		// 修改时间
 	private int lastTimeHeatValue;	// 最后一次的热度值
 	private int activityId;		// 活动ID
-
+	private int authorId ;
 	
 	public HeatDO() {
 		// TODO Auto-generated constructor stub
+	}
+
+	public int getAuthorId() {
+		return authorId;
+	}
+
+	public void setAuthorId(int authorId) {
+		this.authorId = authorId;
 	}
 
 	public int getId() {

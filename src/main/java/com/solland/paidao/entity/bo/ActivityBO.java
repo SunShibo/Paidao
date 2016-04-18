@@ -31,6 +31,7 @@ public class ActivityBO implements Serializable {
 	private String modifyTime;		// 修改时间
 	private String title ;
 	private String areaCode ;
+	private String headPortrait ;// 上传用户的头像
 
 	public ActivityBO() {
 		// TODO Auto-generated constructor stub
@@ -194,5 +195,13 @@ public class ActivityBO implements Serializable {
 
 	public void setHeated(int heated) {
 		this.heated = heated;
+	}
+
+	public String getHeadPortrait() {
+		return headPortrait;
+	}
+
+	public void setHeadPortrait(String headPortrait) {
+		this.headPortrait = headPortrait;
 	}
 }
