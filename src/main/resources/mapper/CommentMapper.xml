@@ -29,9 +29,13 @@
     </insert>
     
     <!-- 根据【活动ID】查询【评论】的数量 -->
-    <select id="selectCommentCountByActivityId" parameterType="int" resultType="int">
-    	<include refid="selectCount" />
-    	where activity_id = #{activityId}
+    <select id="selectCommentByActivityId" parameterType="int" resultType="com.solland.paidao.entity.CommentDO">
+    	select * from pd_comment_profile where activity_id = #{activityId}
     </select>
+
+	<!-- 根据【活动ID】查询【评论】的数量 -->
+	<select id="selectCommentCount" parameterType="int" resultType="int">
+		select count(id) from pd_comment_profile where activity_id = #{activityId}
+	</select>
     
 </mapper>

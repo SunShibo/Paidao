@@ -2,6 +2,8 @@ package com.solland.paidao.service;
 
 import com.solland.paidao.entity.CommentDO;
 
+import java.util.List;
+
 /**
  * 评论
  * @author zhaojiafu
@@ -16,4 +18,6 @@ public interface CommentService {
 	 * @param commentDO
 	 */
 	void insertComment(CommentDO commentDO);
+
+	List<CommentDO> getCommentlist (int activityId) ;
 }

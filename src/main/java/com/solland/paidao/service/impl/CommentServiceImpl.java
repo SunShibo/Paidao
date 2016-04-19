@@ -10,6 +10,8 @@ import com.solland.paidao.entity.ActivityDO;
 import com.solland.paidao.entity.CommentDO;
 import com.solland.paidao.service.CommentService;
 
+import java.util.List;
+
 /**
  * 评论
  * @author zhaojiafu
@@ -26,14 +28,19 @@ public class CommentServiceImpl implements CommentService {
 	@Override
 	public void insertComment(CommentDO commentDO) {
 		commentDAO.insertComment(commentDO);
-		
-		int count = commentDAO.selectCommentCountByActivityId(commentDO.getActivityId());
-		
+
+		int count = commentDAO.selectCommentCount(commentDO.getActivityId());
+
 		ActivityDO activityDO = new ActivityDO();
 		activityDO.setId(commentDO.getActivityId());
-		activityDO.setCommentNum(count);
+		activityDO.setCommentNum(count + 1);
 		
 		activityDAO.updateActivityById(activityDO);
+	}
+
+	@Override
+	public List<CommentDO> getCommentlist(int activityId) {
+		return commentDAO.selectCommentByActivityId(activityId);
 	}
 
 }
