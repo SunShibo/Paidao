@@ -9,6 +9,7 @@ public class QueryActivityParam extends BaseModel {
 
     private String longitude;	// 经度
     private String latitude;	// 纬度
+    private int userId;
 
 
     public String getLongitude() {
@@ -25,5 +26,13 @@ public class QueryActivityParam extends BaseModel {
 
     public void setLatitude(String latitude) {
         this.latitude = latitude;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 }

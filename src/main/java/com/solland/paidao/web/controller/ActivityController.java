@@ -8,12 +8,14 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.solland.paidao.entity.RemoveActivityDO;
 import com.solland.paidao.entity.bo.UserBO;
 import com.solland.paidao.entity.dto.param.QueryActivityParam;
 import com.solland.paidao.util.StringUtils;
 import com.solland.paidao.util.TranCharset;
 import com.solland.paidao.util.page.Page;
 import com.solland.paidao.util.page.QueryObj;
+import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -92,6 +94,9 @@ public class ActivityController extends BaseCotroller {
 			super.safeJsonPrint(response , json);
 			return ;
 		}
+		UserBO loginUser = super.getLoginUser(request);
+		queryActivityParam.setUserId(loginUser.getId());
+
 		Page<ActivityBO> activityPage = activityService.getActivityPage(queryActivityParam, queryObj);
 		if (activityPage.getDatas() == null || activityPage.getDatas().size() == 0) {
 			ResultDTO resultDTO = queryObj.getLastItemId() == null ? ResultDTOBuilder.failure("0020003") : ResultDTOBuilder.failure("0020002");
@@ -131,13 +136,14 @@ public class ActivityController extends BaseCotroller {
 		}
 		UserBO loginUser = super.getLoginUser(request);
 
-		ActivityBO activity = activityService.getActivityById(activityId);
-		if (activity == null ) { // 没有找到该事件
-			String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0020005")) ;
-			super.safeJsonPrint(response , json);
-			return ;
-		}
-		String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(activity)) ;
+		RemoveActivityDO removeActivityDO = new RemoveActivityDO() ;
+		removeActivityDO.setActivityId(activityId);
+		removeActivityDO.setUserId(loginUser.getId());
+
+		int id = activityService.removeActivity(removeActivityDO) ;
+		JSONObject jsonObject = new JSONObject() ;
+		jsonObject.put("activityId" , activityId) ;
+		String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(jsonObject)) ;
 		super.safeJsonPrint(response , json);
 	}
 }

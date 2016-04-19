@@ -134,6 +134,12 @@
 		@>
 		ll_to_earth(ap.latitude, ap.longitude)
 		<if test="lastItemId != null and lastItemId > 0">AND ap.id > #{lastItemId}</if>
+		<if test="removeList != null and removeList.size() > 0">
+			and
+			<foreach collection="removeList" item="item" index="index" open="(" separator="and" close=")">
+				ap.id != #{item.activityId}
+			</foreach>
+		</if>
 		LIMIT #{pageSize} OFFSET 0;
 
 	</select>

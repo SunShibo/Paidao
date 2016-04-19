@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import com.solland.paidao.entity.ActivityDO;
+import com.solland.paidao.entity.RemoveActivityDO;
 import com.solland.paidao.entity.bo.ActivityBO;
 import com.solland.paidao.entity.dto.param.AddActivityParam;
 import com.solland.paidao.entity.dto.param.QueryActivityParam;
@@ -67,9 +68,8 @@ public interface ActivityService {
 
 	/**
 	 * 移除动态圈
-	 * @param userId
-	 * @param activityId
+	 * @param removeActivityDO
 	 */
-	public void removeActivity(int userId , int activityId) ;
+	public int removeActivity (RemoveActivityDO removeActivityDO) ;
 
 }

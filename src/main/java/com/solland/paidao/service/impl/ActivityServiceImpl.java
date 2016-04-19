@@ -8,6 +8,8 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import com.solland.paidao.dao.RemoveActivityDAO;
+import com.solland.paidao.entity.RemoveActivityDO;
 import com.solland.paidao.entity.dto.param.QueryActivityParam;
 import com.solland.paidao.util.page.Page;
 import com.solland.paidao.util.page.PageBuilder;
@@ -36,6 +38,8 @@ public class ActivityServiceImpl implements ActivityService {
 	@Resource
 	ActivityDAO activityDAO;
 
+	@Resource
+	RemoveActivityDAO removeActivityDAO;
 
 	@Resource(name = "ossManage")
 	OssManage ossManage ;
@@ -74,6 +78,7 @@ public class ActivityServiceImpl implements ActivityService {
 		map.put("search" , queryObj.getSearch()) ;
 		map.put("latitude" , queryActivityParam.getLatitude()) ;
 		map.put("longitude" , queryActivityParam.getLongitude()) ;
+		map.put("removeList" , removeActivityDAO.selectRemoveListByUserId(queryActivityParam.getUserId())) ;
 		List<ActivityBO> activityList = activityDAO.selectActivityListPage(map);
 		return PageBuilder.savePage(activityList , queryObj) ;
 	}
@@ -88,13 +93,9 @@ public class ActivityServiceImpl implements ActivityService {
 		return activityDAO.updateHeatValue(activityId , heatValue);
 	}
 
-	/**
-	 * 移除动态圈
-	 * @param userId
-	 * @param activityId
-	 */
-	public void removeActivity(int userId , int activityId) {
-
+	public int removeActivity (RemoveActivityDO removeActivityDO){
+		removeActivityDAO.addRemoveItem(removeActivityDO) ;
+		return removeActivityDO.getId() ;
 	}
 
 	public ActivityBO getActivityById (int userId) {

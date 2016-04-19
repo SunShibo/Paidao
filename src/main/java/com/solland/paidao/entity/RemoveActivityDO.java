@@ -10,9 +10,9 @@ import java.util.Date;
 public class RemoveActivityDO extends BaseModel{
 
     private int id ;
-    private Integer user_id;
-    private Integer activity_id;
-    private Date create_time;
+    private Integer userId;
+    private Integer activityId;
+    private Date createTime;
 
     public int getId() {
         return id;
@@ -22,27 +22,27 @@ public class RemoveActivityDO extends BaseModel{
         this.id = id;
     }
 
-    public Integer getUser_id() {
-        return user_id;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setUser_id(Integer user_id) {
-        this.user_id = user_id;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
-    public Integer getActivity_id() {
-        return activity_id;
+    public Integer getActivityId() {
+        return activityId;
     }
 
-    public void setActivity_id(Integer activity_id) {
-        this.activity_id = activity_id;
+    public void setActivityId(Integer activityId) {
+        this.activityId = activityId;
     }
 
-    public Date getCreate_time() {
-        return create_time;
+    public Date getCreateTime() {
+        return createTime;
     }
 
-    public void setCreate_time(Date create_time) {
-        this.create_time = create_time;
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 }
