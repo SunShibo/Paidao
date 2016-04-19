@@ -30,7 +30,8 @@ public class ActivityDO implements Serializable {
 	private String modifyTime;		// 修改时间
 	private String title ;
 	private String areaCode ;
-	
+	private String thumbnailUrl ; // 缩略图url
+
 	public ActivityDO() {
 		// TODO Auto-generated constructor stub
 	}
@@ -69,6 +70,14 @@ public class ActivityDO implements Serializable {
 
 	public String getMediaType() {
 		return mediaType;
+	}
+
+	public String getThumbnailUrl() {
+		return thumbnailUrl;
+	}
+
+	public void setThumbnailUrl(String thumbnailUrl) {
+		this.thumbnailUrl = thumbnailUrl;
 	}
 
 	public void setMediaType(String mediaType) {

@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.solland.paidao.entity.bo.UserBO;
 import com.solland.paidao.entity.dto.param.QueryActivityParam;
 import com.solland.paidao.util.StringUtils;
+import com.solland.paidao.util.TranCharset;
 import com.solland.paidao.util.page.Page;
 import com.solland.paidao.util.page.QueryObj;
 import org.slf4j.Logger;
@@ -54,18 +55,20 @@ public class ActivityController extends BaseCotroller {
 	 */
 	@RequestMapping( value = "/issueActivity" )
 	public void issueActivity(HttpServletRequest request , HttpServletResponse response, AddActivityParam addActivityParam ,
-							@RequestParam("file") CommonsMultipartFile[] files) {
+							@RequestParam("file") CommonsMultipartFile[] files , @RequestParam(value="thumbnail", required=false) CommonsMultipartFile[] thumbnail) {
+
 
 		if (files == null || files.length != 1 || addActivityParam == null ) {
 			String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001")) ;
 			super.safeJsonPrint(response , json);
 			return ;
 		}
+		System.out.println(TranCharset.getEncoding(addActivityParam.getPosition()));
 
 		UserBO loginUser = super.getLoginUser(request);
 		try {
 			addActivityParam.setUserId(loginUser.getId());
-			if (activityService.insertActivity(addActivityParam , files)) {
+			if (activityService.insertActivity(addActivityParam , files , thumbnail)) {
 				String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("")) ;
 				super.safeJsonPrint(response , json);
 				return ;
@@ -108,6 +111,26 @@ public class ActivityController extends BaseCotroller {
 			super.safeJsonPrint(response , json);
 			return ;
 		}
+		ActivityBO activity = activityService.getActivityById(activityId);
+		if (activity == null ) { // 没有找到该事件
+			String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0020005")) ;
+			super.safeJsonPrint(response , json);
+			return ;
+		}
+		String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(activity)) ;
+		super.safeJsonPrint(response , json);
+	}
+
+	@RequestMapping( value = "/removeActivity")
+	public void removeActivity (HttpServletRequest request , HttpServletResponse response, Integer activityId){
+
+		if ( activityId == null || activityId == 0) {
+			String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001")) ;
+			super.safeJsonPrint(response , json);
+			return ;
+		}
+		UserBO loginUser = super.getLoginUser(request);
+
 		ActivityBO activity = activityService.getActivityById(activityId);
 		if (activity == null ) { // 没有找到该事件
 			String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0020005")) ;

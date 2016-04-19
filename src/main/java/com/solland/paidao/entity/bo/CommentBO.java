@@ -16,7 +16,10 @@ public class CommentBO implements Serializable {
 	private int criticId;		// 评论人ID
 	private int replyerId;		// 被回复人ID
 	private String content;		// 内容
-	private Date createTime;	// 创建时间
+	private String criticHeadPortrait ;
+	private String criticName ;
+	private String replyerName ;
+
 
 	public CommentBO() {
 		// TODO Auto-generated constructor stub
@@ -56,11 +59,36 @@ public class CommentBO implements Serializable {
 		this.content = content;
 	}
 
-	public Date getCreateTime() {
-		return createTime;
+
+	public int getReplyerId() {
+		return replyerId;
 	}
 
-	public void setCreateTime(Date createTime) {
-		this.createTime = createTime;
+	public void setReplyerId(int replyerId) {
+		this.replyerId = replyerId;
+	}
+
+	public String getCriticHeadPortrait() {
+		return criticHeadPortrait;
+	}
+
+	public String getReplyerName() {
+		return replyerName;
+	}
+
+	public void setReplyerName(String replyerName) {
+		this.replyerName = replyerName;
+	}
+
+	public void setCriticHeadPortrait(String criticHeadPortrait) {
+		this.criticHeadPortrait = criticHeadPortrait;
+	}
+
+	public String getCriticName() {
+		return criticName;
+	}
+
+	public void setCriticName(String criticName) {
+		this.criticName = criticName;
 	}
 }

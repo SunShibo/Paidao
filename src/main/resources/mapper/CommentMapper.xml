@@ -29,8 +29,13 @@
     </insert>
     
     <!-- 根据【活动ID】查询【评论】的数量 -->
-    <select id="selectCommentByActivityId" parameterType="int" resultType="com.solland.paidao.entity.CommentDO">
-    	select * from pd_comment_profile where activity_id = #{activityId}
+    <select id="selectCommentByActivityId" parameterType="int" resultType="com.solland.paidao.entity.bo.CommentBO">
+
+		select cp.* , up.head_portrait criticHeadPortrait ,up.nickname criticName , ups.nickname replyerName
+		from pd_comment_profile cp
+		left join pd_user_profile up on up.id = cp.critic_id
+		left join pd_user_profile ups on up.id = cp.replyer_id
+		where cp.activity_id =  #{activityId}
     </select>
 
 	<!-- 根据【活动ID】查询【评论】的数量 -->

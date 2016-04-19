@@ -41,15 +41,27 @@ public class ActivityServiceImpl implements ActivityService {
 	OssManage ossManage ;
 
 	@Override
-	public boolean insertActivity(AddActivityParam addActivityParam, CommonsMultipartFile[] files) throws IOException {
+	public boolean insertActivity(AddActivityParam addActivityParam, CommonsMultipartFile[] files ,CommonsMultipartFile[] thumbnail) throws IOException {
+		long time = System.currentTimeMillis() ;
 		String fileName = files[0].getOriginalFilename();
 		String type = fileName.substring(fileName.lastIndexOf(".") + 1);
-		String key = addActivityParam.getUserId() + "/" + "Activity" + "/" + DateUtils.formatDate(DateUtils.DATE_PATTERN_PLAIN , new Date()) + "/" +System.currentTimeMillis() ;
+		String key = addActivityParam.getUserId() + "/" + "Activity" + "/" + DateUtils.formatDate(DateUtils.DATE_PATTERN_PLAIN , new Date()) + "/" + time ;
 		String url = ossManage.uploadFile(files[0].getInputStream(), key, type) ;
+		String thumbnailUrl = "" ;
+		// 上传缩略图
+		if (addActivityParam.getMediaType().equals("video")) {
+			if (thumbnail != null && thumbnail.length > 0) {
+				String thumbnailName = thumbnail[0].getOriginalFilename();
+				String thumbnailType = thumbnailName.substring(fileName.lastIndexOf(".") + 1);
+				String thumbnailKey = addActivityParam.getUserId() + "/Activity/"
+						+ DateUtils.formatDate(DateUtils.DATE_PATTERN_PLAIN , new Date()) + "/thumbnail" + time ;
+				thumbnailUrl = ossManage.uploadFile(thumbnail[0].getInputStream(), thumbnailKey, thumbnailType) ;
+			}
+		}
 
 		addActivityParam.setMediaPaths(url);
 		ActivityDO activityDO = new ActivityDO() ;
-
+		activityDO.setThumbnailUrl(thumbnailUrl);
 		BeanUtils.copyProperties(addActivityParam, activityDO) ;
 		return activityDAO.insertActivity(activityDO) > 0 ? true : false ;
 	}
@@ -74,6 +86,15 @@ public class ActivityServiceImpl implements ActivityService {
 	 */
 	public int updateHeatValue (int activityId , int heatValue) {
 		return activityDAO.updateHeatValue(activityId , heatValue);
+	}
+
+	/**
+	 * 移除动态圈
+	 * @param userId
+	 * @param activityId
+	 */
+	public void removeActivity(int userId , int activityId) {
+
 	}
 
 	public ActivityBO getActivityById (int userId) {

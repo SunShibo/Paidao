@@ -24,11 +24,11 @@
         INSERT INTO pd_activity_profile(
 			user_id,tags,position,media_paths,media_type,longitude,latitude,
 			geohash,status,like_num,heat_value,comment_num,	enshrine_num,description,
-			create_time,modify_time,area_code,title
+			create_time,modify_time,area_code,title , thumbnail_url
 		)
         VALUES(
        		#{userId} , #{tags} , #{position} , #{mediaPaths} , #{mediaType} , #{longitude} , #{latitude} , #{geohash} , 'normal' , 0 , 1 ,
-       		#{commentNum} , #{enshrineNum} , #{description} , NOW() , NOW(), #{areaCode}, #{title}
+       		#{commentNum} , #{enshrineNum} , #{description} , NOW() , NOW(), #{areaCode}, #{title}, #{thumbnailUrl}
         )
     </insert>
 

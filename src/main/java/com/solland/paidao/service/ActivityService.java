@@ -24,7 +24,7 @@ public interface ActivityService {
 	 * @author zhaojiafu
 	 * @param addActivityParam
 	 */
-	boolean insertActivity(AddActivityParam addActivityParam , CommonsMultipartFile[] files) throws IOException;
+	boolean insertActivity(AddActivityParam addActivityParam , CommonsMultipartFile[] files , CommonsMultipartFile[] thumbnail) throws IOException;
 	
 	/**
 	 * 根据【ID】更新【活动圈】
@@ -64,5 +64,12 @@ public interface ActivityService {
 	 * @return
 	 */
 	public int updateHeatValue (int activityId , int heatValue) ;
+
+	/**
+	 * 移除动态圈
+	 * @param userId
+	 * @param activityId
+	 */
+	public void removeActivity(int userId , int activityId) ;
 
 }

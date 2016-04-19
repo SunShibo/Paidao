@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 【活动】 -->
+<mapper namespace="com.solland.paidao.dao.ActivityDAO">
+
+	<!-- 查询全部【活动】 -->
+	<sql id="selectAll">
+		SELECT 
+			*, (SELECT count(1) FROM pd_heat_info WHERE trigger_user_id = 10 AND activity_id = a.id) heat_count, 
+			CASE (SELECT count(1) FROM pd_heat_info WHERE trigger_user_id = 10 AND activity_id = a.id) WHEN 0 THEN 0 ELSE 1 END AS is_heat 
+		FROM 
+			pd_activity_profile a
+	</sql>
+	
+	<!-- 查询【活动】的记录数 -->
+	<sql id="selectCount">
+		SELECT count(1) FROM pd_activity_profile
+	</sql>
+
+	<!-- 添加【活动】 -->
+    <insert id="insertActivity" parameterType="com.solland.paidao.entity.ActivityDO" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO pd_activity_profile(
+			user_id,tags,position,media_paths,media_type,longitude,latitude,
+			geohash,status,like_num,heat_value,comment_num,	enshrine_num,description,
+			create_time,modify_time,area_code,title , thumbnail_url
+		)
+        VALUES(
+       		#{userId} , #{tags} , #{position} , #{mediaPaths} , #{mediaType} , #{longitude} , #{latitude} , #{geohash} , 'normal' , 0 , 1 ,
+       		#{commentNum} , #{enshrineNum} , #{description} , NOW() , NOW(), #{areaCode}, #{title}, #{thumbnailUrl}
+        )
+    </insert>
+
+	<!-- 更新热度-->
+	<update id="updateHeatValue" parameterType="int">
+		UPDATE
+		pd_activity_profile
+		SET
+		modify_time = now() , heat_value = #{heatValue} where id = #{activityId}
+
+	</update>
+
+    <!-- 根据【ID】更新【活动圈】 -->
+    <update id="updateActivityById" parameterType="com.solland.paidao.entity.ActivityDO">
+    	UPDATE 
+    		pd_activity_profile
+    	SET
+    		modify_time = now() 
+    		<if test="0 &lt; issuerId">, issuer_id = #{issuerId} </if>
+   			<if test="null != tags and '' != tags">, tags = #{tags} </if>
+   			<if test="null != position and '' != position">, position = #{position} </if>
+   			<!-- 
+   			<if test="null != shortMessage and '' != shortMessage">, short_message = #{shortMessage} </if>
+   			<if test="null != imagePaths and '' != imagePaths">, image_paths = #{imagePaths} </if>
+   			<if test="null != videoPaths and '' != videoPaths">, video_paths = #{videoPaths} </if>
+   			<if test="null != voicePath and '' != voicePath">, voice_path = #{voicePath} </if>
+   			 -->
+   			<if test="null != mediaType and '' != mediaType">, media_type = #{mediaType} </if>
+   			<if test="null != mediaPaths and '' != mediaPaths">, media_paths = #{mediaPaths} </if>
+   			<if test="null != descriptionVoicePath and '' != descriptionVoicePath">, description_voice_path = #{descriptionVoicePath} </if>
+   			<if test="null != descriptionType and '' != descriptionType">, description_type = #{descriptionType} </if>
+   			<if test="null != descriptionText and '' != descriptionText">, description_text = #{descriptionText} </if>
+       		<if test="0 &lt; likeNum">, like_num = #{likeNum} </if>
+       		<if test="0 &lt; heatValue">, heat_value = #{heatValue} </if>
+       		<if test="0 &lt; commentNum">, comment_num = #{commentNum} </if>
+       		<if test="0 &lt; enshrineNum">, enshrine_num = #{enshrineNum} </if>
+   			<if test="null != longitude and '' != longitude">, longitude = #{longitude} </if>
+   			<if test="null != latitude and '' != latitude">, latitude = #{latitude} </if>
+   			<if test="null != geohash and '' != geohash">, geohash = #{geohash} </if>
+   			<if test="null != status and '' != status">, status = #{status} </if>
+   		WHERE
+   			id = #{id}
+    </update>
+    
+    <!-- 根据【ID】删除【活动圈】 -->
+    <delete id="deleteActivityById" parameterType="int">
+    	UPDATE 
+    		pd_activity_profile
+    	SET
+    		modify_time = now(), is_valid = 2
+    	WHERE
+   			id = #{id}
+    </delete>
+    
+    <!-- 根据【ID】查询【活动圈】 -->
+    <select id="selectActivityById" parameterType="int" resultType="com.solland.paidao.entity.bo.ActivityBO">
+		select ap.* , up.head_portrait headPortrait from pd_activity_profile ap LEFT JOIN pd_user_profile up on up.id = ap.user_id
+		WHERE ap.id = #{id}
+    </select>
+    
+    <!-- 查询【活动圈】的总记录数 -->
+    <select id="selectActivityTotalCount" parameterType="com.solland.paidao.entity.ActivityDO" resultType="int">
+    	<include refid="selectCount" />
+    	<where>
+    		1 = 1
+	    	<if test="0 &lt; issuerId">AND issuer_id = #{issuerId} </if>
+   			<if test="null != position and '' != position">AND position LIKE ('%' || #{position, jdbcType=VARCHAR} || '%') </if>
+   			<if test="null != descriptionText and '' != descriptionText">AND short_message LIKE ('%' || #{descriptionText, jdbcType=VARCHAR} || '%') </if>
+   			<if test="0 &lt; range and 0 &lt; longitude and 0 &lt; latitude">
+   				earth_box(ll_to_earth(#{longitude}, #{latitude}), #{range}) @> ll_to_earth(pd_activity_profile.latitude, pd_activity_profile.longitude); 
+   			</if>
+    	</where>
+    </select>
+
+    <!-- 查询【活动圈】列表 -->
+    <select id="selectActivityList" parameterType="com.solland.paidao.entity.bo.ActivityBO" resultType="com.solland.paidao.entity.bo.ActivityBO">
+		SELECT 
+			*
+			, CASE (SELECT count(1) FROM pd_heat_info WHERE trigger_user_id = #{loginedUserId} AND activity_id = a.id) WHEN 0 THEN 2 ELSE 1 END AS is_heat
+			, CASE (SELECT count(1) FROM pd_enshrine_info WHERE collector_id = #{loginedUserId} AND activity_id = a.id) WHEN 0 THEN 2 ELSE 1 END AS is_enshrine
+			, (SELECT count(1) FROM pd_follow_link WHERE follower_id = #{loginedUserId}) follower_count
+			, (SELECT count(1) FROM pd_follow_link WHERE be_follower_id = #{loginedUserId}) be_follower_count
+		FROM 
+			pd_activity_profile a
+    	<where>
+    		1 = 1
+	    	<if test="0 &lt; issuerId">AND issuer_id = #{issuerId} </if>
+   			<if test="null != position and '' != position">AND position LIKE ('%' || #{position, jdbcType=VARCHAR} || '%') </if>
+   			<if test="null != descriptionText and '' != descriptionText">AND short_message LIKE ('%' || #{descriptionText, jdbcType=VARCHAR} || '%') </if>
+   			<if test="0 &lt; range and 0 &lt; longitude and 0 &lt; latitude">
+   				earth_box(ll_to_earth(#{longitude}, #{latitude}), #{range}) @> ll_to_earth(pd_activity_profile.latitude, pd_activity_profile.longitude); 
+   			</if>
+    	</where>
+    </select>
+
+	<!-- 分页 -->
+	<select id="selectActivityListPage" parameterType="map" resultType="com.solland.paidao.entity.bo.ActivityBO">
+		SELECT ap.* , up.head_portrait , CASE WHEN heat.id > 0 THEN 1 ELSE 0 END  heated FROM pd_activity_profile ap
+		LEFT JOIN pd_user_profile up ON up.id = ap.user_id
+		LEFT JOIN (select * from pd_heat_info phi where phi.user_id = #{userId} ) heat on heat.activity_id = ap.id
+		WHERE
+		earth_box(ll_to_earth(cast(#{latitude} as float4),cast(#{longitude} as float4)),1000)
+		@>
+		ll_to_earth(ap.latitude, ap.longitude)
+		<if test="lastItemId != null and lastItemId > 0">AND ap.id > #{lastItemId}</if>
+		LIMIT #{pageSize} OFFSET 0;
+
+	</select>
+
+	<!-- 根据【ID】查询【活动圈】 -->
+	<select id="selectHeatByUidAndAid" parameterType="int" resultType="com.solland.paidao.entity.ActivityDO">
+		select * from pd_heat_info
+		WHERE user_id = #{userId} and activity_id = #{activityId}
+	</select>
+    
+</mapper>

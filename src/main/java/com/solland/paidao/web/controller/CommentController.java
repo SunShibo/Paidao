@@ -3,6 +3,7 @@ package com.solland.paidao.web.controller;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 
+import com.solland.paidao.entity.bo.CommentBO;
 import com.solland.paidao.entity.dto.ResultDTOBuilder;
 import com.solland.paidao.util.StringUtils;
 import org.springframework.stereotype.Controller;
@@ -65,7 +66,7 @@ public class CommentController extends BaseCotroller {
 		}
 
 		/* 2. 执行添加【评论】*/
-		List<CommentDO> commentlist = commentService.getCommentlist(activityId);
+		List<CommentBO> commentlist = commentService.getCommentlist(activityId);
 
 		/* 3. 发送消息到客户端 */
 		String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(commentlist)) ;

@@ -1,6 +1,7 @@
 package com.solland.paidao.service;
 
 import com.solland.paidao.entity.CommentDO;
+import com.solland.paidao.entity.bo.CommentBO;
 
 import java.util.List;
 
@@ -19,5 +20,5 @@ public interface CommentService {
 	 */
 	void insertComment(CommentDO commentDO);
 
-	List<CommentDO> getCommentlist (int activityId) ;
+	List<CommentBO> getCommentlist (int activityId) ;
 }

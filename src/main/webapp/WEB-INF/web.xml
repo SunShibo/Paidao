@@ -61,6 +61,19 @@
     </servlet-mapping>
 
     <filter>
+        <filter-name>Character Encoding</filter-name>
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>Character Encoding</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter>
         <filter-name>defaultFilter</filter-name>
         <filter-class>com.solland.paidao.web.support.filter.DefaultFilter</filter-class>
     </filter>

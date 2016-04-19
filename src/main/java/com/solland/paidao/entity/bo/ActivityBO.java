@@ -32,6 +32,7 @@ public class ActivityBO implements Serializable {
 	private String title ;
 	private String areaCode ;
 	private String headPortrait ;// 上传用户的头像
+	private String thumbnailUrl ;
 
 	public ActivityBO() {
 		// TODO Auto-generated constructor stub
@@ -203,5 +204,13 @@ public class ActivityBO implements Serializable {
 
 	public void setHeadPortrait(String headPortrait) {
 		this.headPortrait = headPortrait;
+	}
+
+	public String getThumbnailUrl() {
+		return thumbnailUrl;
+	}
+
+	public void setThumbnailUrl(String thumbnailUrl) {
+		this.thumbnailUrl = thumbnailUrl;
 	}
 }

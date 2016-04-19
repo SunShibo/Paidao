@@ -1,6 +1,7 @@
 package com.solland.paidao.dao;
 
 import com.solland.paidao.entity.CommentDO;
+import com.solland.paidao.entity.bo.CommentBO;
 
 import java.util.List;
 
@@ -26,7 +27,7 @@ public interface CommentDAO {
 	 * @param activityId
 	 * @return
 	 */
-	List<CommentDO> selectCommentByActivityId(int activityId);
+	List<CommentBO> selectCommentByActivityId(int activityId);
 
 	int selectCommentCount (int activityId) ;
 }

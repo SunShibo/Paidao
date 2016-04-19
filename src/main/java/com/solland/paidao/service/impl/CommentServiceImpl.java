@@ -2,6 +2,7 @@ package com.solland.paidao.service.impl;
 
 import javax.annotation.Resource;
 
+import com.solland.paidao.entity.bo.CommentBO;
 import org.springframework.stereotype.Service;
 
 import com.solland.paidao.dao.ActivityDAO;
@@ -39,7 +40,7 @@ public class CommentServiceImpl implements CommentService {
 	}
 
 	@Override
-	public List<CommentDO> getCommentlist(int activityId) {
+	public List<CommentBO> getCommentlist(int activityId) {
 		return commentDAO.selectCommentByActivityId(activityId);
 	}
 
