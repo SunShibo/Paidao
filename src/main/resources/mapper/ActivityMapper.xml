@@ -126,13 +126,12 @@
 
 	<!-- 分页 -->
 	<select id="selectActivityListPage" parameterType="map" resultType="com.solland.paidao.entity.bo.ActivityBO">
-		SELECT ap.* , up.head_portrait , CASE WHEN heat.id > 0 THEN 1 ELSE 0 END  heated FROM pd_activity_profile ap
+		SELECT ap.* , up.head_portrait ,
+			CASE WHEN heat.id > 0 THEN 1 ELSE 0 END  heated
+		FROM pd_activity_profile ap
 		LEFT JOIN pd_user_profile up ON up.id = ap.user_id
 		LEFT JOIN (select * from pd_heat_info phi where phi.user_id = #{userId} ) heat on heat.activity_id = ap.id
-		WHERE
-		earth_box(ll_to_earth(cast(#{latitude} as float4),cast(#{longitude} as float4)),1000)
-		@>
-		ll_to_earth(ap.latitude, ap.longitude)
+		WHERE 1 = 1
 		<if test="lastItemId != null and lastItemId > 0">AND ap.id > #{lastItemId}</if>
 		<if test="removeList != null and removeList.size() > 0">
 			and
@@ -140,6 +139,7 @@
 				ap.id != #{item.activityId}
 			</foreach>
 		</if>
+		ORDER BY heat_value DESC
 		LIMIT #{pageSize} OFFSET 0;
 
 	</select>
@@ -148,6 +148,26 @@
 	<select id="selectHeatByUidAndAid" parameterType="int" resultType="com.solland.paidao.entity.ActivityDO">
 		select * from pd_heat_info
 		WHERE user_id = #{userId} and activity_id = #{activityId}
+	</select>
+
+	<select id="selectActivityListForMap" parameterType="map" resultType="com.solland.paidao.entity.bo.ActivityBO">
+		SELECT ap.* , up.head_portrait ,
+			CASE WHEN heat.id > 0 THEN 1 ELSE 0 END  heated
+		FROM pd_activity_profile ap
+		LEFT JOIN pd_user_profile up ON up.id = ap.user_id
+		LEFT JOIN (select * from pd_heat_info phi where phi.user_id = #{userId} ) heat on heat.activity_id = ap.id
+		WHERE
+		earth_box(ll_to_earth(cast(#{latitude} as float4),cast(#{longitude} as float4)),1000)
+		@>
+		ll_to_earth(ap.latitude, ap.longitude)
+		<if test="removeList != null and removeList.size() > 0">
+			and
+			<foreach collection="removeList" item="item" index="index" open="(" separator="and" close=")">
+				ap.id != #{item.activityId}
+			</foreach>
+		</if>
+		LIMIT 20 OFFSET 0;
+
 	</select>
     
 </mapper>

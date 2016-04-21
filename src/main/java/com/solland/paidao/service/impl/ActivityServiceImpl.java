@@ -75,12 +75,26 @@ public class ActivityServiceImpl implements ActivityService {
 		map.put("offset" , queryObj.getPageOffset()) ;
 		map.put("itemId" , queryObj.getLastItemId()) ;
 		map.put("pageSize" , queryObj.getPageSize()) ;
-		map.put("search" , queryObj.getSearch()) ;
+		map.put("search", queryObj.getSearch()) ;
 		map.put("latitude" , queryActivityParam.getLatitude()) ;
-		map.put("longitude" , queryActivityParam.getLongitude()) ;
+		map.put("longitude", queryActivityParam.getLongitude()) ;
 		map.put("removeList" , removeActivityDAO.selectRemoveListByUserId(queryActivityParam.getUserId())) ;
 		List<ActivityBO> activityList = activityDAO.selectActivityListPage(map);
 		return PageBuilder.savePage(activityList , queryObj) ;
+	}
+
+	/**
+	 * 地图模式查看动态圈
+	 * @param queryActivityParam
+	 * @return
+	 */
+	public List<ActivityBO> getActivityListForMap (QueryActivityParam queryActivityParam) {
+		Map<String , Object> map = new HashMap() ;
+		map.put("latitude" , queryActivityParam.getLatitude()) ;
+		map.put("longitude", queryActivityParam.getLongitude()) ;
+		map.put("removeList" , removeActivityDAO.selectRemoveListByUserId(queryActivityParam.getUserId())) ;
+		List<ActivityBO> activityList = activityDAO.selectActivityListPage(map);
+		return activityList ;
 	}
 
 	/**
@@ -90,7 +104,7 @@ public class ActivityServiceImpl implements ActivityService {
 	 * @return
 	 */
 	public int updateHeatValue (int activityId , int heatValue) {
-		return activityDAO.updateHeatValue(activityId , heatValue);
+		return activityDAO.updateHeatValue(activityId, heatValue);
 	}
 
 	public int removeActivity (RemoveActivityDO removeActivityDO){

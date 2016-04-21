@@ -72,4 +72,11 @@ public interface ActivityService {
 	 */
 	public int removeActivity (RemoveActivityDO removeActivityDO) ;
 
+	/**
+	 * 地图模式查看动态圈
+	 * @param queryActivityParam
+	 * @return
+	 */
+	public List<ActivityBO> getActivityListForMap (QueryActivityParam queryActivityParam) ;
+
 }

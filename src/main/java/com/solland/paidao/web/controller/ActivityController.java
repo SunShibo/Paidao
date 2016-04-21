@@ -88,8 +88,7 @@ public class ActivityController extends BaseCotroller {
 	public void queryActivity (HttpServletRequest request , HttpServletResponse response, QueryActivityParam queryActivityParam ,
 							   QueryObj queryObj){
 
-		if (queryActivityParam == null || queryObj == null || StringUtils.isBlank(queryActivityParam.getLatitude())
-				|| StringUtils.isBlank(queryActivityParam.getLongitude()) || StringUtils.isBlank(queryActivityParam.getLatitude())) {
+		if (queryActivityParam == null || queryObj == null) {
 			String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001")) ;
 			super.safeJsonPrint(response , json);
 			return ;
@@ -107,6 +106,35 @@ public class ActivityController extends BaseCotroller {
 		String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(activityPage)) ;
 		super.safeJsonPrint(response , json);
 	}
+
+	/**
+	 * 地图模式查看动态圈
+	 * @param request
+	 * @param response
+	 * @param queryActivityParam
+	 */
+	@RequestMapping( value = "/queryActivityForMap" )
+	public void queryActivityForMap (HttpServletRequest request , HttpServletResponse response
+			, QueryActivityParam queryActivityParam ){
+		if (queryActivityParam == null || StringUtils.isBlank(queryActivityParam.getLatitude()) ||
+				StringUtils.isBlank(queryActivityParam.getLongitude())) {
+			String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001")) ;
+			super.safeJsonPrint(response , json);
+			return ;
+		}
+		UserBO loginUser = super.getLoginUser(request);
+		queryActivityParam.setUserId(loginUser.getId());
+
+		List<ActivityBO> activityList = activityService.getActivityListForMap(queryActivityParam);
+		if (activityList == null || activityList.isEmpty()) {
+			String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0020003")) ;
+			super.safeJsonPrint(response , json);
+			return ;
+		}
+		String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(activityList)) ;
+		super.safeJsonPrint(response , json);
+	}
+
 
 	@RequestMapping( value = "/queryActivityInfo" )
 	public void queryActivityInfo (HttpServletRequest request , HttpServletResponse response, Integer activityId){
@@ -140,7 +168,7 @@ public class ActivityController extends BaseCotroller {
 		removeActivityDO.setActivityId(activityId);
 		removeActivityDO.setUserId(loginUser.getId());
 
-		int id = activityService.removeActivity(removeActivityDO) ;
+		activityService.removeActivity(removeActivityDO) ;
 		JSONObject jsonObject = new JSONObject() ;
 		jsonObject.put("activityId" , activityId) ;
 		String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(jsonObject)) ;

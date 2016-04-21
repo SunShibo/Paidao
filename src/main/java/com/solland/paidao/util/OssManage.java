@@ -36,7 +36,7 @@ public class OssManage {
         meta.setContentType(mimeType);
         // 上传Object.
         String url = "http://"+BUCKETNAME+".oss-cn-beijing.aliyuncs.com/" +  key + "." + mimeType;
-        client.putObject(BUCKETNAME, key, content, meta);
+        client.putObject(BUCKETNAME, key + "." + mimeType , content, meta);
         client.shutdown();
         return url;
 

@@ -89,4 +89,11 @@ public interface ActivityDAO {
 	 */
 	int updateHeatValue (@Param("activityId")int activityId , @Param("heatValue")int heatValue) ;
 
+	/**
+	 * 地图模式查找动态圈列表
+	 * @param map
+	 * @return
+	 */
+	List<ActivityBO> selectActivityListForMap (Map<String , Object> map) ;
+
 }
