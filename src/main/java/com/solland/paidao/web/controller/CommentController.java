@@ -1,9 +1,11 @@
 package com.solland.paidao.web.controller;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.solland.paidao.entity.bo.CommentBO;
+import com.solland.paidao.entity.bo.UserBO;
 import com.solland.paidao.entity.dto.ResultDTOBuilder;
 import com.solland.paidao.util.StringUtils;
 import org.springframework.stereotype.Controller;
@@ -36,23 +38,23 @@ public class CommentController extends BaseCotroller {
 	 * @param response
 	 * @param commentDO
 	 */
-	@RequestMapping( value = "/insertComment" )
-	public void insertComment(HttpServletResponse response, CommentDO commentDO) {
+	@RequestMapping( value = "/issueComment" )
+	public void issueComment(HttpServletRequest request , HttpServletResponse response, CommentDO commentDO) {
 		String result = null; 
 		
 		/* 1. 验证参数是否完整 */
 		if(null == commentDO){
-			result = JsonUtils.getJsonString4JavaPOJO(new ResultDTO(false, "0", "参数异常")) ;
+			result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001")) ;
 			super.safeJsonPrint(response , result);
-			
 			return ;
 		}
-		
+		UserBO loginUser = super.getLoginUser(request);
+		commentDO.setCriticId(loginUser.getId());
 		/* 2. 执行添加【评论】*/
 		commentService.insertComment(commentDO);
 		
 		/* 3. 发送消息到客户端 */
-		result = JsonUtils.getJsonString4JavaPOJO(new ResultDTO("添加【评论】成功。")) ;
+		result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("")) ;
 		super.safeJsonPrint(response , result);
 	}
 
@@ -69,7 +71,7 @@ public class CommentController extends BaseCotroller {
 		List<CommentBO> commentlist = commentService.getCommentlist(activityId);
 
 		/* 3. 发送消息到客户端 */
-		String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(commentlist)) ;
+		String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(commentlist)  , "yyyy-MM-dd HH:mm:ss") ;
 		super.safeJsonPrint(response , result);
 	}
 }

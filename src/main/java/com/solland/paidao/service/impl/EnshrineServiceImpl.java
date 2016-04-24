@@ -33,6 +33,6 @@ public class EnshrineServiceImpl implements EnshrineService {
 		activityDO.setId(enshrineDO.getActivityId());
 		activityDO.setEnshrineNum(count);
 		
-		activityDAO.updateActivityById(activityDO);
+//		activityDAO.updateActivityById(activityDO);
 	}
 }

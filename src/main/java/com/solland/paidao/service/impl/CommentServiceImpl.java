@@ -29,14 +29,8 @@ public class CommentServiceImpl implements CommentService {
 	@Override
 	public void insertComment(CommentDO commentDO) {
 		commentDAO.insertComment(commentDO);
-
 		int count = commentDAO.selectCommentCount(commentDO.getActivityId());
-
-		ActivityDO activityDO = new ActivityDO();
-		activityDO.setId(commentDO.getActivityId());
-		activityDO.setCommentNum(count + 1);
-		
-		activityDAO.updateActivityById(activityDO);
+		activityDAO.updateHeatValue(commentDO.getActivityId() , count + 1);
 	}
 
 	@Override

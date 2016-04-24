@@ -46,11 +46,11 @@
     	UPDATE 
     		pd_activity_profile
     	SET
-    		modify_time = now() 
+    		modify_time = now()
     		<if test="0 &lt; issuerId">, issuer_id = #{issuerId} </if>
    			<if test="null != tags and '' != tags">, tags = #{tags} </if>
    			<if test="null != position and '' != position">, position = #{position} </if>
-   			<!-- 
+   			<!--
    			<if test="null != shortMessage and '' != shortMessage">, short_message = #{shortMessage} </if>
    			<if test="null != imagePaths and '' != imagePaths">, image_paths = #{imagePaths} </if>
    			<if test="null != videoPaths and '' != videoPaths">, video_paths = #{videoPaths} </if>

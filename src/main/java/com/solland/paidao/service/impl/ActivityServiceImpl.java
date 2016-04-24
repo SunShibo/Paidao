@@ -118,11 +118,6 @@ public class ActivityServiceImpl implements ActivityService {
 
 
 	@Override
-	public void updateActivityById(ActivityDO activityDO) {
-		activityDAO.updateActivityById(activityDO);
-	}
-
-	@Override
 	public void deleteActivityById(int id) {
 		activityDAO.deleteActivityById(id);
 	}

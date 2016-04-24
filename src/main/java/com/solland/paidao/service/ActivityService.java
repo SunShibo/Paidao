@@ -26,14 +26,7 @@ public interface ActivityService {
 	 * @param addActivityParam
 	 */
 	boolean insertActivity(AddActivityParam addActivityParam , CommonsMultipartFile[] files , CommonsMultipartFile[] thumbnail) throws IOException;
-	
-	/**
-	 * 根据【ID】更新【活动圈】
-	 * 2016年1月8日 下午2:41:43
-	 * @author zhaojiafu
-	 * @param activityDO
-	 */
-	void updateActivityById(ActivityDO activityDO);
+
 
 	/**
 	 * 更加【ID】删除【活动圈】

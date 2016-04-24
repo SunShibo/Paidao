@@ -13,18 +13,10 @@
 	<!-- 添加【评论】 -->
     <insert id="insertComment" parameterType="com.solland.paidao.entity.CommentDO" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO pd_comment_profile (
-   			create_time
-   			<if test="0 &lt; activityId">, activity_id </if>
-   			<if test="0 &lt; criticId">, critic_id </if>
-   			<if test="0 &lt; beReplyerId">, be_replyer_id </if>
-   			<if test="null != content and '' != content">, content </if>
+   			create_time, activity_id , critic_id , replyer_id , content
        	) 
         VALUES(
-        	now()
-       		<if test="0 &lt; activityId">, #{activityId} </if>
-       		<if test="0 &lt; criticId">, #{criticId} </if>
-       		<if test="0 &lt; beReplyerId">, #{beReplyerId} </if>
-   			<if test="null != content and '' != content">, #{content} </if>
+        	now(), #{activityId} , #{criticId} , #{replyerId} , #{content}
         )
     </insert>
     
@@ -34,7 +26,7 @@
 		select cp.* , up.head_portrait criticHeadPortrait ,up.nickname criticName , ups.nickname replyerName
 		from pd_comment_profile cp
 		left join pd_user_profile up on up.id = cp.critic_id
-		left join pd_user_profile ups on up.id = cp.replyer_id
+		left join pd_user_profile ups on ups.id = cp.replyer_id
 		where cp.activity_id =  #{activityId}
     </select>
 

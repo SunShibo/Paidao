@@ -19,6 +19,7 @@ public class CommentBO implements Serializable {
 	private String criticHeadPortrait ;
 	private String criticName ;
 	private String replyerName ;
+	private Date createTime ;
 
 
 	public CommentBO() {
@@ -49,7 +50,13 @@ public class CommentBO implements Serializable {
 		this.criticId = criticId;
 	}
 
+	public Date getCreateTime() {
+		return createTime;
+	}
 
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
 
 	public String getContent() {
 		return content;

@@ -25,14 +25,6 @@ public interface ActivityDAO {
 	int insertActivity(ActivityDO activityDO);
 	
 	/**
-	 * 根据【ID】更新【活动圈】
-	 * 2016年1月8日 下午2:41:43
-	 * @author zhaojiafu
-	 * @param activityDO
-	 */
-	void updateActivityById(ActivityDO activityDO);
-	
-	/**
 	 * 根据【ID】查询【活动圈】
 	 * 2016年1月8日 下午2:44:14
 	 * @author zhaojiafu
