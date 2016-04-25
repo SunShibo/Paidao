@@ -28,7 +28,7 @@
 		)
         VALUES(
        		#{userId} , #{tags} , #{position} , #{mediaPaths} , #{mediaType} , #{longitude} , #{latitude} , #{geohash} , 'normal' , 0 , 1 ,
-       		#{commentNum} , #{enshrineNum} , #{description} , NOW() , NOW(), #{areaCode}, #{title}, #{thumbnailUrl}
+       		0 , #{enshrineNum} , #{description} , NOW() , NOW(), #{areaCode}, #{title}, #{thumbnailUrl}
         )
     </insert>
 
@@ -38,6 +38,15 @@
 		pd_activity_profile
 		SET
 		modify_time = now() , heat_value = #{heatValue} where id = #{activityId}
+
+	</update>
+
+	<update id="updateHeatValueAndCommentNumAdd1" parameterType="int">
+		UPDATE
+		pd_activity_profile
+		SET
+		modify_time = now() , heat_value = heat_value + 1 ,
+		comment_num = comment_num + 1 where id = #{activityId}
 
 	</update>
 

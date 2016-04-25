@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 【举报】 -->
+<mapper namespace="com.solland.paidao.dao.ReportDAO">
+
+	<!-- 查询【举报】的记录数 -->
+	<sql id="selectCount">
+		SELECT count(1) FROM pd_inform_info
+	</sql>
+
+	<!-- 添加【举报】 -->
+    <insert id="insert" parameterType="com.solland.paidao.entity.ReportDO" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO 
+		pd_report_info (
+     			create_time , activity_id , user_id, content , comments_id , report_type
+     		) 
+           VALUES (
+          		NOW(), #{activityId} , #{userId} , #{content}, #{commentsId}, #{reportType}
+           )
+    </insert>
+    
+    <!-- 根据【活动ID】查询【举报】的数量 -->
+    <select id="selectInformDOCountByActivityId" parameterType="int" resultType="int">
+    	<include refid="selectCount" />
+    	where activity_id = #{activityId}
+    </select>
+    
+</mapper>

@@ -82,6 +82,13 @@ public interface ActivityDAO {
 	int updateHeatValue (@Param("activityId")int activityId , @Param("heatValue")int heatValue) ;
 
 	/**
+	 * 热度值和评论数加1
+	 * @param activityId
+	 * @return
+	 */
+	int updateHeatValueAndCommentNumAdd1 (@Param("activityId")int activityId ) ;
+
+	/**
 	 * 地图模式查找动态圈列表
 	 * @param map
 	 * @return
