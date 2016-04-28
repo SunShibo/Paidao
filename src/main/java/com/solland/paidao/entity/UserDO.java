@@ -46,9 +46,18 @@ public class UserDO extends BaseModel implements Serializable {
 	private Date modifyTime;		// 修改时间
 	private String status ; // 用户状态
 	private String headPortrait;		// 头像路径
+	private String country ; //国家
 	
 	public UserDO() {
 		// TODO Auto-generated constructor stub
+	}
+
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
 	}
 
 	public int getId() {

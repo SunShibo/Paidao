@@ -38,9 +38,9 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public boolean updateUserHeadPortrait (String userId , String url ) {
+	public boolean updateUserHeadPortrait (int userId , String url ) {
 		UserDO user = new UserDO() ;
-		user.setId(Integer.parseInt(userId));
+		user.setId(userId);
 		user.setHeadPortrait(url);
 		return userDAO.updateUserHeadPortrait(user) == 0 ? false : true ;
 	}
@@ -99,5 +99,23 @@ public class UserServiceImpl implements UserService {
 		userDO.setEmail(email);
 		userDO.setPassword(newPwd);
 		return userDAO.updatePasswordByEmail(userDO) == 0 ? false : true ;
+	}
+
+	public int updateUserInfoByObj (UserDO userDO) {
+		if (userDO == null || userDO.getId() == 0) {
+			return 0 ;
+		}
+		return userDAO.updateUserInfo(userDO) ;
+	}
+
+	/**
+	 * 通过旧密码修改新密码
+	 * @param userId
+	 * @param oldPwd
+	 * @param newPwd
+	 * @return
+	 */
+	public int updatePwdByOldPwd (int userId , String oldPwd , String newPwd) {
+		return userDAO.updatePwdByOldPwd(userId , oldPwd , newPwd);
 	}
 }

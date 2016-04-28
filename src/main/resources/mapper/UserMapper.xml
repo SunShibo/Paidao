@@ -79,11 +79,11 @@
 	</update>
     
     <!-- 更加【手机号】更新【用户】信息 -->
-    <update id="updateUserByMobileCode" parameterType="com.solland.paidao.entity.UserDO">
+    <update id="updateUserInfo" parameterType="com.solland.paidao.entity.UserDO">
     	UPDATE 
     		pd_user_profile
     	SET
-    		modify_time = CURRENT_TIMESTAMP
+    		modify_time = NOW()
     		<if test="null != username and '' != username">, username = #{username} </if>
     		<if test="null != name and '' != name">, name = #{name} </if>
     		<if test="null != nickname and '' != nickname">, nickname = #{nickname} </if>
@@ -96,9 +96,11 @@
     		<if test="null != twiter and '' != twiter">, twiter = #{twiter} </if>
     		<if test="null != facebook and '' != facebook">, facebook = #{facebook} </if>
     		<if test="null != linkedin and '' != linkedin">, linkedin = #{linkedin} </if>
-    		<if test="null != headPortrait and '' != headPortrait">, headPortrait = #{headPortrait} </if>
+    		<if test="null != headPortrait and '' != headPortrait">, head_portrait = #{headPortrait} </if>
+    		<if test="null != country and '' != country">, country = #{country} </if>
+    		<if test="null != birthday">, birthday = #{birthday} </if>
     	WHERE
-    		phone_number = #{phoneNumber}
+    		id = #{id}
     </update>
     
     <!-- 查询【用户】列表 -->
@@ -125,5 +127,15 @@
     		<if test="null != linkedin and '' != linkedin">AND linkedin = #{linkedin} </if>
 		</where>
     </select>
+
+	<update id="updatePwdByOldPwd" parameterType="com.solland.paidao.entity.UserDO">
+		UPDATE
+		pd_user_profile
+		SET
+		modify_time = NOW()
+		, password = #{newPassword}
+		WHERE
+		id = #{id} and password = #{oldPassword}
+	</update>
 
 </mapper>

@@ -3,6 +3,8 @@ package com.solland.paidao.web.controller.base;
 import com.google.common.collect.Lists;
 import com.solland.paidao.common.constants.SysConstants;
 import com.solland.paidao.entity.bo.UserBO;
+import com.solland.paidao.service.LoginService;
+import com.solland.paidao.service.UserService;
 import com.solland.paidao.util.RedisUtil;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemFactory;
@@ -10,6 +12,7 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
+import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,6 +24,9 @@ import java.util.List;
  * @author Shibo Sun
  */
 public class BaseCotroller {
+
+    @Resource( name = "loginService" )
+    LoginService loginService;
 
     /**
      * 异步返回结果
@@ -263,6 +269,17 @@ public class BaseCotroller {
         cookie.setMaxAge(expiry); //365 * 24 * 60 * 60
         cookie.setPath("/");
         response.addCookie(cookie);
+    }
+
+    /**
+     * 更新登录用户在缓存中的信息
+     * @param request
+     */
+    public void updateLoginUserProfile(HttpServletRequest request ) {
+        UserBO loginUser = this.getLoginUser(request);
+        UserBO newLoginUser = loginService.loginByIdNoPwd(loginUser.getId());
+        newLoginUser.setUuid(loginUser.getUuid());
+        this.putLoginUser(loginUser.getUuid() , newLoginUser);
     }
 
 

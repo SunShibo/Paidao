@@ -74,25 +74,9 @@ public interface UserDAO {
      * @param userDO
      */
     void updatePasswordByMobileCode(UserDO userDO);
-    
-    /**
-     * 根据【手机号】更新【用户】信息
-     * 2016年1月7日 下午2:58:23
-     * @author zhaojiafu
-     * @param userDO
-     */
-    void updateUserByMobileCode(UserDO userDO);
+
 
     int updateStatusByEmail(UserDO userDO);
-    
-    /**
-     * 查询【用户】列表
-     * 2016年1月12日 下午4:49:54
-     * @author zhaojiafu
-     * @param userDO
-     * @return
-     */
-    List<UserDO> selectUserList(UserDO userDO);
 
     /**
      * 通过邮箱查找用户
@@ -114,4 +98,20 @@ public interface UserDAO {
      * @return
      */
     public int updatePasswordByEmail (UserDO user) ;
+
+    /**
+     * 通过用户id修改用户信息
+     * @param userDO
+     * @return
+     */
+    int updateUserInfo (UserDO userDO) ;
+
+    /**
+     * 通过旧密码修改新密码
+     * @param id
+     * @param oldPassword
+     * @param newPassword
+     * @return
+     */
+    int updatePwdByOldPwd(@Param("id")int id , @Param("oldPassword")String oldPassword , @Param("newPassword")String newPassword) ;
 }

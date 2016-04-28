@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.solland.paidao.entity.bo.UserBO;
 import com.solland.paidao.service.impl.LoginServiceImpl;
-import com.solland.paidao.util.MD5Util;
+import com.solland.paidao.util.*;
 import net.sf.json.JSON;
 import net.sf.json.JSONObject;
 import org.slf4j.Logger;
@@ -32,9 +32,6 @@ import com.solland.paidao.entity.dto.ResultDTOBuilder;
 import com.solland.paidao.service.MailService;
 import com.solland.paidao.service.UserService;
 import com.solland.paidao.service.impl.RegisterServiceImpl;
-import com.solland.paidao.util.JsonUtils;
-import com.solland.paidao.util.OssManage;
-import com.solland.paidao.util.StringUtils;
 import com.solland.paidao.web.controller.base.BaseCotroller;
 import sun.misc.BASE64Decoder;
 
@@ -122,23 +119,26 @@ public class UserController extends BaseCotroller {
 
 	@RequestMapping("/uploadHeadPortrait")
 	public void uploadHeadPortrait(@RequestParam("file") CommonsMultipartFile[] files,HttpServletRequest request
-			, HttpServletResponse response, @RequestParam("userId") String userId) {
+			, HttpServletResponse response) {
 
-		if (files == null || files.length != 1 || StringUtils.isBlank(userId)) {
-			String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0010004" , "参数异常!")) ;
+		if (files == null || files.length != 1 ) {
+			String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001")) ;
 			super.safeJsonPrint(response , json);
 			return ;
 		}
+
+		UserBO loginUser = super.getLoginUser(request);
 
 		if (!files[0].isEmpty()) {
 			try {
 				String fileName = files[0].getOriginalFilename();
 				String type = fileName.substring(fileName.lastIndexOf(".") + 1);
-				String key = "sunshibo/" + userId + "_" + "HeadPortrait" + "_" + System.currentTimeMillis();
+				String key = loginUser.getId() + "/" + "HeadPortrait" + "/" + System.currentTimeMillis();
 				String url = ossManage.uploadFile(files[0].getInputStream(), key, type);
-				System.out.println(">>>>>>>>>>>>>>>>>>>>>>" + url);
-				if (userService.updateUserHeadPortrait(userId , url)) {
-					String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(true)) ;
+				if (userService.updateUserHeadPortrait(loginUser.getId() , url)) {
+					JSONObject data = new JSONObject() ;
+					data.put("url" , url) ;
+					String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(data)) ;
 					super.safeJsonPrint(response , json);
 				} else {
 					String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0010003" , "上传失败！")) ;
@@ -212,7 +212,7 @@ public class UserController extends BaseCotroller {
 
 		/* 1.检查基本的参数*/
 		if(StringUtils.isBlank(email) || StringUtils.isBlank(verificationCode)){
-			String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0010004" , "参数异常!")) ;
+			String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001")) ;
 			super.safeJsonPrint(response , json);
 			return ;
 		}
@@ -246,7 +246,7 @@ public class UserController extends BaseCotroller {
 
 		if (files == null || files.length != 1 || StringUtils.isBlank(userId)) {
 			log.error("[UserController-completeProfile] filed");
-			String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0010004" , "参数异常!")) ;
+			String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001")) ;
 			super.safeJsonPrint(response , json);
 			return ;
 		}
@@ -286,7 +286,7 @@ public class UserController extends BaseCotroller {
 	@RequestMapping("/sendVeriCodeForResetPwd")
 	public void sendVeriCodeForResetPwd( HttpServletResponse response, @RequestParam("email") String email ) {
 		if (StringUtils.isBlank(email)) {
-			String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0010004" , "参数异常!")) ;
+			String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001")) ;
 			super.safeJsonPrint(response , json);
 			return ;
 		}
@@ -322,7 +322,7 @@ public class UserController extends BaseCotroller {
 
 		/* 1.检查基本的参数*/
 		if(StringUtils.isBlank(email) || StringUtils.isBlank(verificationCode)){
-			String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0010004" , "参数异常!")) ;
+			String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001")) ;
 			super.safeJsonPrint(response , json);
 			return ;
 		}
@@ -348,7 +348,7 @@ public class UserController extends BaseCotroller {
 
 		/* 1.检查基本的参数*/
 		if(StringUtils.isBlank(email) || StringUtils.isBlank(verificationCode)){
-			String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0010004" , "参数异常!")) ;
+			String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001")) ;
 			super.safeJsonPrint(response , json);
 			return ;
 		}
@@ -375,11 +375,12 @@ public class UserController extends BaseCotroller {
 
 	@RequestMapping("/completeProfileForIOS")
 	public void completeProfileForIOS( @RequestParam("file") String files,@RequestParam("nickname") String nickname ,
-								 HttpServletResponse response, @RequestParam("userId") String userId, @RequestParam("suffix") String suffix ) {
+								 HttpServletResponse response, @RequestParam("userId") String userId,
+									   @RequestParam("suffix") String suffix ) {
 
 		if (StringUtils.isBlank(files) || StringUtils.isBlank(userId)) {
 			log.error("[UserController-completeProfile] filed");
-			String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0010004" , "参数异常!")) ;
+			String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001")) ;
 			super.safeJsonPrint(response , json);
 			return ;
 		}
@@ -405,4 +406,139 @@ public class UserController extends BaseCotroller {
 			e.printStackTrace();
 		}
 	}
+
+		@RequestMapping("/updateNickName")
+		public void updateNickName(HttpServletRequest request, HttpServletResponse response, String nickName ) {
+			if (StringUtils.isBlank(nickName)) {
+				String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001")) ;
+				super.safeJsonPrint(response , json);
+				return ;
+			}
+			UserBO loginUser = super.getLoginUser(request);
+			UserDO updateObj = new UserDO() ;
+			updateObj.setNickname(nickName);
+			updateObj.setId(loginUser.getId());
+
+			int result = userService.updateUserInfoByObj(updateObj) ;
+			if (result > 0 ) {
+				String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("")) ;
+				super.safeJsonPrint(response , json);
+				super.updateLoginUserProfile(request);
+				return ;
+			}
+			String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0010014")) ;
+			super.safeJsonPrint(response , json);
+		}
+
+	@RequestMapping("/updateGender")
+	public void updateGender(HttpServletRequest request, HttpServletResponse response, String gender ) {
+		if (StringUtils.isBlank(gender)) {
+			String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001")) ;
+			super.safeJsonPrint(response , json);
+			return ;
+		}
+		if (!UserDO.GENDER_FEMALE.equals(gender) && !UserDO.GENDER_MALE.equals(gender)) { //检查参数有效性
+			String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000003")) ;
+			super.safeJsonPrint(response , json);
+			return ;
+		}
+		UserBO loginUser = super.getLoginUser(request);
+		UserDO updateObj = new UserDO() ;
+		updateObj.setGender(gender);
+		updateObj.setId(loginUser.getId());
+
+		int result = userService.updateUserInfoByObj(updateObj) ;
+		if (result > 0 ) {
+			String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("")) ;
+			super.updateLoginUserProfile(request);
+			super.safeJsonPrint(response , json);
+			return ;
+		}
+		String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0010014")) ;
+		super.safeJsonPrint(response , json);
+	}
+
+	/**
+	 * 用户修改密码
+	 * @param request
+	 * @param response
+	 * @param oldPassword
+	 * @param newPassword
+     */
+	@RequestMapping("/updatePasswordForSetting")
+	public void updatePasswordForSetting (HttpServletRequest request, HttpServletResponse response, String oldPassword , String newPassword) {
+
+		if (StringUtils.isBlank(oldPassword) || StringUtils.isBlank(newPassword))  {
+			String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001")) ;
+			super.safeJsonPrint(response , json);
+			return ;
+		}
+		UserBO loginUser = super.getLoginUser(request);
+		int rowNum = userService.updatePwdByOldPwd(loginUser.getId(), MD5Util.digest(oldPassword), MD5Util.digest(newPassword));
+		if (rowNum > 0 ) {
+			String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("")) ;
+			super.safeJsonPrint(response , json);
+			return ;
+		}
+		String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0010015")) ;
+		super.safeJsonPrint(response , json);
+	}
+
+	@RequestMapping("/updateBirthday")
+	public void updateBirthday (HttpServletRequest request, HttpServletResponse response, String birthday) {
+		if (StringUtils.isBlank(birthday) )  {
+			String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001")) ;
+			super.safeJsonPrint(response , json);
+			return ;
+		}
+		UserBO loginUser = super.getLoginUser(request);
+		UserDO userDO = new UserDO() ;
+		userDO.setId(loginUser.getId());
+
+		Date birDate ;
+		try {
+			birDate = DateUtils.parseDate(birthday , DateUtils.DATE_PATTERN) ;
+		} catch (Exception e) {
+			String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0010016")) ;
+			super.safeJsonPrint(response , json);
+			return ;
+		}
+
+		userDO.setBirthday(birDate);
+		int rowNum = userService.updateUserInfoByObj(userDO) ;
+		if (rowNum > 0 ) {
+			super.updateLoginUserProfile(request);
+			String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("")) ;
+			super.safeJsonPrint(response , json);
+			return ;
+		}
+		String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0010014")) ;
+		super.safeJsonPrint(response , json);
+	}
+
+
+	@RequestMapping("/updateCountry")
+	public void updateCountry(HttpServletRequest request, HttpServletResponse response, String country) {
+		if (StringUtils.isBlank(country) )  {
+			String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001")) ;
+			super.safeJsonPrint(response , json);
+			return ;
+		}
+
+		UserBO loginUser = super.getLoginUser(request);
+		UserDO userDO = new UserDO() ;
+		userDO.setId(loginUser.getId());
+		userDO.setCountry(country);
+		int rowNum = userService.updateUserInfoByObj(userDO) ;
+		if (rowNum > 0 ) {
+			String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("")) ;
+			super.safeJsonPrint(response , json);
+			super.updateLoginUserProfile(request) ;
+			return ;
+		}
+		String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0010014")) ;
+		super.safeJsonPrint(response , json);
+	}
+
+
 }

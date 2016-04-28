@@ -4,6 +4,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.solland.paidao.util.DateUtils;
 import net.sf.json.JSONObject;
 
 import org.apache.commons.lang.StringUtils;
@@ -34,7 +35,7 @@ public class LoginController extends BaseCotroller {
 
 	@Resource(name = "loginService")
 	LoginServiceImpl loginService ;
-	
+
 	@Resource(name = "userService")
 	UserService userService ;
 
@@ -81,7 +82,7 @@ public class LoginController extends BaseCotroller {
 		super.setCookie(response , SysConstants.CURRENT_LOGIN_ID , userBO.getUuid() , SysConstants.SEVEN_DAY_TIME) ;
 
 		/* 5. 返回用户信息 */
-		String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(userBO) , JsonUtils.LONG_DATE_PATTERN) ;
+		String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(userBO) , DateUtils.DATE_PATTERN) ;
 		super.safeJsonPrint(response , result);
 	}
 
@@ -94,7 +95,7 @@ public class LoginController extends BaseCotroller {
 
 		/* 1. 找到对应的账户记录 */
 		UserBO userBO = super.getLoginUser(request) ;
-		
+
 		/* 2. 验证账户状态 */
 		if (userBO == null ) {
 			String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0010007" , "用户未登录！")) ;
@@ -106,16 +107,16 @@ public class LoginController extends BaseCotroller {
 			super.safeJsonPrint(response , result);
 			return ;
 		}
-		if (StringUtils.isBlank(userBO.getStatus()) || userBO.getStatus().equals(UserDO.STATUS_INACTIVE)) {
+		if (userBO.getStatus().equals(UserDO.STATUS_INACTIVE) || StringUtils.isBlank(userBO.getStatus())) {
 			JSONObject json = new JSONObject() ;
-			json.put("userId" , userBO.getId()) ;
 			String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0010006" , "该账户没有被激活!", json.toString())) ;
+			json.put("userId" , userBO.getId()) ;
 			super.safeJsonPrint(response , result);
 			return ;
 		}
-		
+
 		/* 3. 返回用户信息 */
-		String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(userBO) , JsonUtils.LONG_DATE_PATTERN) ;
+		String result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(userBO) , DateUtils.DATE_PATTERN) ;
 		super.safeJsonPrint(response , result);
 	}
 

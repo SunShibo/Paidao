@@ -31,7 +31,7 @@ public interface UserService {
 	 * @param url
 	 * @return
 	 */
-	public boolean updateUserHeadPortrait (String userId , String url ) ;
+	public boolean updateUserHeadPortrait (int userId , String url ) ;
 	
 	/**
 	 * 验证【手机号】是否已存在
@@ -74,4 +74,20 @@ public interface UserService {
 	 * @return
 	 */
 	public boolean updatePwd (String email , String newPwd) ;
+
+	/**
+	 * 修改用户信息
+	 * @param userDO
+	 * @return
+     */
+	public int updateUserInfoByObj (UserDO userDO) ;
+
+	/**
+	 * 通过旧密码修改新密码
+	 * @param userId
+	 * @param oldPwd
+	 * @param newPwd
+     * @return
+     */
+	int updatePwdByOldPwd (int userId , String oldPwd , String newPwd) ;
 }

@@ -30,9 +30,18 @@ public class UserBO extends BaseModel implements Serializable {
 	private String status ; // 用户状态
 	private String headPortrait;		// 头像路径
 	private String uuid ; // 用户登录的UUID
+	private String country ;//国家
 
 	public UserBO() {
 		// TODO Auto-generated constructor stub
+	}
+
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
 	}
 
 	public int getId() {
