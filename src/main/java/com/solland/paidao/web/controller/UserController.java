@@ -97,9 +97,14 @@ public class UserController extends BaseCotroller {
 		}
 
 		registerService.register(userDO);
+
 		// 发送邮件
 		int code = (int)(Math.random() * 9000 + 1000) ;
-		mailService.sendVerificationCodeForSignUp(userDO.getEmail() , code + "") ;
+		try {
+			mailService.sendVerificationCodeForSignUp(userDO.getEmail() , code + "") ;
+		} catch (Exception e) {
+			log.error("[UserController signUp ]-邮件发送失败.验证码是{}" , code);
+		}
 
 		Object obj = super.getPublicSession(userDO.getEmail() + "registerSendVerificationCode") ;
 		if (obj != null && obj instanceof Map) {
@@ -140,6 +145,7 @@ public class UserController extends BaseCotroller {
 					data.put("url" , url) ;
 					String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(data)) ;
 					super.safeJsonPrint(response , json);
+					super.updateLoginUserProfile(request);
 				} else {
 					String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0010003" , "上传失败！")) ;
 					super.safeJsonPrint(response , json);

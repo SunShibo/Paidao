@@ -95,7 +95,9 @@ public class ActivityController extends BaseCotroller {
 		}
 		UserBO loginUser = super.getLoginUser(request);
 		queryActivityParam.setUserId(loginUser.getId());
-
+		if (queryObj.getLastItemId() != null && queryObj.getLastItemId() == -1) {
+			queryObj.setLastItemId(null);
+		}
 		Page<ActivityBO> activityPage = activityService.getActivityPage(queryActivityParam, queryObj);
 		if (activityPage.getDatas() == null || activityPage.getDatas().size() == 0) {
 			ResultDTO resultDTO = queryObj.getLastItemId() == null ? ResultDTOBuilder.failure("0020003") : ResultDTOBuilder.failure("0020002");

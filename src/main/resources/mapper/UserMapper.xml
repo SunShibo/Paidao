@@ -20,7 +20,7 @@
     	SELECT
             id ,nickname ,gender ,username ,password ,birthday ,location ,
             head_portrait ,phone_number ,email ,wechat ,sina_weibo ,
-            create_time ,modify_time ,twiter ,facebook ,linkedin ,status
+            create_time ,modify_time ,twiter ,facebook ,linkedin ,status , country
         FROM
             pd_user_profile
         WHERE
@@ -32,7 +32,7 @@
 		SELECT
 		id ,nickname ,gender ,username ,password ,birthday ,location ,
 		head_portrait ,phone_number ,email ,wechat ,sina_weibo ,
-		create_time ,modify_time ,twiter ,facebook ,linkedin ,status
+		create_time ,modify_time ,twiter ,facebook ,linkedin ,status , country
 		FROM
 		pd_user_profile
 		WHERE

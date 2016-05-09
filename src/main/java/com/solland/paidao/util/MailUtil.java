@@ -123,7 +123,7 @@ public class MailUtil {
         senderImpl.setHost("smtp.qq.com");
         senderImpl.setPort(465);
         senderImpl.setUsername("service@sollandtech.com"); // 根据自己的情况,设置username
-        senderImpl.setPassword("Ser123"); // 根据自己的情况, 设置password
+        senderImpl.setPassword("Pai123456"); // 根据自己的情况, 设置password
 //        senderImpl.setDefaultEncoding(ENCODING);
         Properties prop = new Properties();
         prop.put("mail.smtp.auth", "true"); // 将这个参数设为true，让服务器进行认证,认证用户名和密码是否正确
