@@ -4,9 +4,11 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.solland.paidao.entity.NotificationDO;
 import com.solland.paidao.entity.bo.CommentBO;
 import com.solland.paidao.entity.bo.UserBO;
 import com.solland.paidao.entity.dto.ResultDTOBuilder;
+import com.solland.paidao.service.NotificationService;
 import com.solland.paidao.util.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,6 +32,9 @@ import java.util.List;
 public class CommentController extends BaseCotroller {
 	@Resource( name = "commentService" )
 	private CommentService commentService;
+
+	@Resource( name = "notificationService" )
+	private NotificationService notificationService;
 	
 	/**
 	 * 添加【评论】
@@ -56,6 +61,14 @@ public class CommentController extends BaseCotroller {
 		/* 3. 发送消息到客户端 */
 		result = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("")) ;
 		super.safeJsonPrint(response , result);
+
+		if (commentDO.getReplyerId() != null && commentDO.getReplyerId() != 0) { // 插入通知记录
+			notificationService.addNotificationForReplyComment(commentDO.getActivityId() , NotificationDO.NOTICE_TYPE_COMMENT
+					,loginUser.getId() , commentDO.getContent() , commentDO.getReplyerId());
+		} else {
+			notificationService.addNotificationForAllUser(commentDO.getActivityId() , NotificationDO.NOTICE_TYPE_COMMENT
+					,loginUser.getId() , commentDO.getContent());
+		}
 	}
 
 	@RequestMapping( value = "/queryCommentList" )

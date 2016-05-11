@@ -5,10 +5,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.solland.paidao.entity.ActivityDO;
+import com.solland.paidao.entity.NotificationDO;
 import com.solland.paidao.entity.bo.ActivityBO;
 import com.solland.paidao.entity.bo.UserBO;
 import com.solland.paidao.entity.dto.ResultDTOBuilder;
 import com.solland.paidao.service.ActivityService;
+import com.solland.paidao.service.NotificationService;
 import net.sf.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,6 +39,9 @@ public class HeatController extends BaseCotroller {
 
 	@Resource( name = "activityService" )
 	private ActivityService activityService;
+
+	@Resource( name = "notificationService" )
+	private NotificationService notificationService;
 
 	@RequestMapping( value = "/eventsHeatup" )
 	public void eventsHeatup(HttpServletRequest request , HttpServletResponse response,  int activityId) {
@@ -74,7 +79,8 @@ public class HeatController extends BaseCotroller {
 
 		String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(jsonObject)) ;
 		super.safeJsonPrint(response , json);
-		return ;
+
+		notificationService.addNotificationForAllUser(activityId , NotificationDO.NOTICE_TYPE_HEAT , loginUser.getId() , null );
 	}
 
 	/**

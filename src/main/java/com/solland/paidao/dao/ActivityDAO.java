@@ -95,4 +95,11 @@ public interface ActivityDAO {
 	 */
 	List<ActivityBO> selectActivityListForMap (Map<String , Object> map) ;
 
+	/**
+	 * 查询加热用户id列表
+	 * @param activityId
+	 * @return
+     */
+	List<Integer> selectHeatUserIdList (@Param("activityId") int activityId) ;
+
 }

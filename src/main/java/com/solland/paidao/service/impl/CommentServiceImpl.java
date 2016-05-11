@@ -37,4 +37,7 @@ public class CommentServiceImpl implements CommentService {
 		return commentDAO.selectCommentByActivityId(activityId);
 	}
 
+	public List<Integer> getCommentUserIdList (int activityId) {
+		return commentDAO.selectCommentUserIds(activityId) ;
+	}
 }

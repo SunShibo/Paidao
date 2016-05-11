@@ -6,7 +6,7 @@ package com.solland.paidao.util.page;
 public class QueryObj {
 
     private Integer pageNum ;
-    private Integer pageSize = 25 ;
+    private Integer pageSize = 10 ;
     private Integer lastItemId ;
     private Integer pageOffset ;
     private String search ;
@@ -36,6 +36,9 @@ public class QueryObj {
     }
 
     public Integer getPageOffset() {
+        if (pageNum == null || pageSize == null ) {
+            return null ;
+        }
         return (pageNum - 1) * pageSize;
     }
 

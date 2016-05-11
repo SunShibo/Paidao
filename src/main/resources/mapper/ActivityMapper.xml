@@ -141,14 +141,14 @@
 		LEFT JOIN pd_user_profile up ON up.id = ap.user_id
 		LEFT JOIN (select * from pd_heat_info phi where phi.user_id = #{userId} ) heat on heat.activity_id = ap.id
 		WHERE 1 = 1
-		<if test="lastItemId != null and lastItemId > 0">AND ap.id > #{lastItemId}</if>
+		<if test="lastItemId > 0">AND <![CDATA[ ap.id < #{lastItemId} ]]> </if>
 		<if test="removeList != null and removeList.size() > 0">
 			and
 			<foreach collection="removeList" item="item" index="index" open="(" separator="and" close=")">
 				ap.id != #{item.activityId}
 			</foreach>
 		</if>
-		ORDER BY heat_value DESC
+		ORDER BY ap.id DESC
 		LIMIT #{pageSize} OFFSET 0;
 
 	</select>
@@ -178,5 +178,10 @@
 		LIMIT 20 OFFSET 0;
 
 	</select>
-    
+
+	<!-- 查询加热用户id列表 -->
+	<select id="selectHeatUserIdList" parameterType="int" resultType="int">
+		select user_id from pd_heat_info
+		WHERE  activity_id = #{activityId}
+	</select>
 </mapper>

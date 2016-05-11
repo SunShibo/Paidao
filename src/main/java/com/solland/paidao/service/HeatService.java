@@ -26,4 +26,11 @@ public interface HeatService {
 	 * @return
 	 */
 	List<HeatDO> getHeatInfoByUidAndActivifyId(int userId , int activityId) ;
+
+	/**
+	 * 获取加热用户id列表
+	 * @param activityId
+	 * @return
+     */
+	List<Integer> getHeatUserIdList (int activityId)  ;
 }

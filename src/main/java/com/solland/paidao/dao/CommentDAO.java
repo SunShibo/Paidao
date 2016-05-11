@@ -30,4 +30,6 @@ public interface CommentDAO {
 	List<CommentBO> selectCommentByActivityId(int activityId);
 
 	int selectCommentCount (int activityId) ;
+
+	List<Integer> selectCommentUserIds (int activityId) ;
 }

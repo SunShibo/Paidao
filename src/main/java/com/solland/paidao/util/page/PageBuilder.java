@@ -8,7 +8,7 @@ public class PageBuilder<T> {
 	public static <T> Page savePage(List<T> list , QueryObj query) {
 		Page page = new Page() ;
 		page.setDatas(list) ;
-		page.setPageNum(query.getPageNum());
+		page.setPageNum(0);
 		page.setPageSize(query.getPageSize());
 		return page ;
 	}

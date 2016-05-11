@@ -35,5 +35,10 @@ public class HeatServiceImpl implements HeatService {
 		return activityDAO.selectHeatByUidAndAid(userId , activityId) ;
 	}
 
+	@Override
+	public List<Integer> getHeatUserIdList(int activityId) {
+		return null;
+	}
+
 
 }

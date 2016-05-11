@@ -73,7 +73,7 @@ public class ActivityServiceImpl implements ActivityService {
 	public Page<ActivityBO> getActivityPage (QueryActivityParam queryActivityParam , QueryObj queryObj) {
 		Map<String , Object> map = new HashMap() ;
 		map.put("offset" , queryObj.getPageOffset()) ;
-		map.put("itemId" , queryObj.getLastItemId()) ;
+		map.put("lastItemId" , queryObj.getLastItemId()) ;
 		map.put("pageSize" , queryObj.getPageSize()) ;
 		map.put("search", queryObj.getSearch()) ;
 		map.put("latitude" , queryActivityParam.getLatitude()) ;

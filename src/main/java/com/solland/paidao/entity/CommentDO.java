@@ -12,9 +12,9 @@ import java.util.Date;
 @SuppressWarnings("serial")
 public class CommentDO implements Serializable {
 	private int id;		// ID
-	private int activityId;		// 活动ID
-	private int criticId;		// 评论人ID
-	private int replyerId;		// 被回复人ID
+	private Integer activityId;		// 活动ID
+	private Integer criticId;		// 评论人ID
+	private Integer replyerId;		// 被回复人ID
 	private String content;		// 内容
 	private Date createTime;	// 创建时间
 	
@@ -30,27 +30,27 @@ public class CommentDO implements Serializable {
 		this.id = id;
 	}
 
-	public int getActivityId() {
+	public Integer getActivityId() {
 		return activityId;
 	}
 
-	public void setActivityId(int activityId) {
+	public void setActivityId(Integer activityId) {
 		this.activityId = activityId;
 	}
 
-	public int getCriticId() {
+	public Integer getCriticId() {
 		return criticId;
 	}
 
-	public void setCriticId(int criticId) {
+	public void setCriticId(Integer criticId) {
 		this.criticId = criticId;
 	}
 
-	public int getReplyerId() {
+	public Integer getReplyerId() {
 		return replyerId;
 	}
 
-	public void setReplyerId(int replyerId) {
+	public void setReplyerId(Integer replyerId) {
 		this.replyerId = replyerId;
 	}
 

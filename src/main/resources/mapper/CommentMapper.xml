@@ -34,5 +34,12 @@
 	<select id="selectCommentCount" parameterType="int" resultType="int">
 		select count(id) from pd_comment_profile where activity_id = #{activityId}
 	</select>
-    
+
+
+	<select id="selectCommentUserIds" parameterType="int" resultType="int">
+
+		select cp.critic_id
+		from pd_comment_profile cp
+		where cp.activity_id =  #{activityId}
+	</select>
 </mapper>

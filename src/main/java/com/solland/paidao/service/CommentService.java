@@ -21,4 +21,6 @@ public interface CommentService {
 	void insertComment(CommentDO commentDO);
 
 	List<CommentBO> getCommentlist (int activityId) ;
+
+	List<Integer> getCommentUserIdList (int activityId) ;
 }
