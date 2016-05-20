@@ -19,4 +19,6 @@ public interface NotificationService {
 	List<NotificationDO> getNotificationList (int loginUserId) ;
 
 	void addNotificationForReplyComment (int activityId, String type , int loginUserId , String content , int toUserId) ;
+
+	int delNotificationById (int notificaitonId) ;
 }

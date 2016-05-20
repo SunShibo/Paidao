@@ -43,4 +43,22 @@ public class NotificationController extends BaseCotroller {
 		super.safeJsonPrint(response , json);
 	}
 
+	@RequestMapping("/delNotification")
+	public void delNotification(HttpServletRequest request, HttpServletResponse response , @RequestParam("notificationId") int notificationId) {
+		if (notificationId == 0) {
+			String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001")) ;
+			super.safeJsonPrint(response , json);
+			return ;
+		}
+		int rowNum = notificationService.delNotificationById(notificationId) ;
+
+		if (rowNum > 0) {
+			String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success("") ) ;
+			super.safeJsonPrint(response , json);
+		} else {
+			String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000004")) ;
+			super.safeJsonPrint(response , json);
+		}
+	}
+
 }

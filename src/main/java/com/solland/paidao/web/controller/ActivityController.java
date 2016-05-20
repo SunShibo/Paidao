@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.solland.paidao.entity.RemoveActivityDO;
 import com.solland.paidao.entity.bo.UserBO;
 import com.solland.paidao.entity.dto.param.QueryActivityParam;
+import com.solland.paidao.service.NotificationService;
 import com.solland.paidao.util.StringUtils;
 import com.solland.paidao.util.TranCharset;
 import com.solland.paidao.util.page.Page;
@@ -46,6 +47,9 @@ public class ActivityController extends BaseCotroller {
 
 	@Resource( name = "activityService" )
 	private ActivityService activityService;
+
+	@Resource( name = "notificationService" )
+	private NotificationService notificationService ;
 
 	
 	/**
@@ -139,7 +143,8 @@ public class ActivityController extends BaseCotroller {
 
 
 	@RequestMapping( value = "/queryActivityInfo" )
-	public void queryActivityInfo (HttpServletRequest request , HttpServletResponse response, Integer activityId){
+	public void queryActivityInfo (HttpServletRequest request , HttpServletResponse response, Integer activityId
+			, @RequestParam(value="notificationId", required=false) Integer notificationId){
 
 		if ( activityId == null || activityId == 0) {
 			String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0000001")) ;
@@ -151,6 +156,9 @@ public class ActivityController extends BaseCotroller {
 			String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.failure("0020005")) ;
 			super.safeJsonPrint(response , json);
 			return ;
+		}
+		if (notificationId != null && notificationId != 0) {//修改通知状态
+			notificationService.readNotification(notificationId) ;
 		}
 		String json = JsonUtils.getJsonString4JavaPOJO(ResultDTOBuilder.success(activity)) ;
 		super.safeJsonPrint(response , json);

@@ -20,4 +20,6 @@ public interface NotificationDAO {
 
 	int updateStatus (int id) ;
 
+	int deleteNotificationById(int id) ;
+
 }

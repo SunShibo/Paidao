@@ -49,6 +49,11 @@ public class NotificationServiceImpl implements NotificationService
 		this.addItems(id , activityId , loginUserId , type , content);
 	}
 
+	@Override
+	public int delNotificationById(int notificaitonId) {
+		return notificationDAO.deleteNotificationById(notificaitonId) ;
+	}
+
 	public Set<Integer> getAllNeedToNoticeUserIds (int activityId) {
 		Set<Integer> idSet = Sets.newHashSet() ;
 

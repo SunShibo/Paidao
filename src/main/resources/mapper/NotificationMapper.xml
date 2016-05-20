@@ -5,8 +5,17 @@
 <!-- 【用户】 -->
 <mapper namespace="com.solland.paidao.dao.NotificationDAO">
 
-    <select id="selectNotificationListByUserId" resultType="com.solland.paidao.entity.NotificationDO" parameterType="int">
-        select * from pd_notification where to_user_id = #{userId} and notice_status = 'new'
+    <select id="selectNotificationListByUserId" resultType="com.solland.paidao.entity.bo.NotificationBO" parameterType="int">
+        select pn.* , ap.title , ap.description , ap.position  ,
+            ap.heat_value , ap.comment_num , up.head_portrait ,ap.media_type  ,
+            ap.media_paths , ap.thumbnail_url , ap.position
+
+        from pd_notification pn
+
+        left join pd_activity_profile ap on ap.id = pn.activity_id
+        left join pd_user_profile up on up.id = pn.do_user_id
+
+        where pn.to_user_id = #{userId} and pn.notice_status = 'new'
     </select>
 
 	<!-- 【注册】 -->
@@ -25,5 +34,10 @@
 	<update id="updateStatus" parameterType="int">
 		UPDATE pd_notification SET notice_status = 'pass' WHERE id = #{id}
 	</update>
+
+    <delete id="deleteNotificationById" parameterType="int">
+        DELETE FROM pd_notification WHERE
+        id = #{id}
+    </delete>
 
 </mapper>
