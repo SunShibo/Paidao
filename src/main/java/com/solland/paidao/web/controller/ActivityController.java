@@ -128,6 +128,7 @@ public class ActivityController extends BaseCotroller {
 			super.safeJsonPrint(response , json);
 			return ;
 		}
+
 		UserBO loginUser = super.getLoginUser(request);
 		queryActivityParam.setUserId(loginUser.getId());
 
